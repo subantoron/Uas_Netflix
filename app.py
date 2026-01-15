@@ -1,9 +1,6 @@
 import io
 import re
 from pathlib import Path
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 import numpy as np
 import pandas as pd
@@ -547,6 +544,16 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 2rem;
     }
+    
+    /* Custom Chart Container */
+    .chart-container {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 1rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -752,6 +759,21 @@ def split_and_count(series: pd.Series, sep: str = ",", top_k: int = 10) -> pd.Se
     exploded = s.str.split(sep).explode().astype(str).str.strip()
     exploded = exploded[exploded != ""]
     return exploded.value_counts().head(top_k)
+
+def create_custom_chart(title, data, chart_type="bar", color=None):
+    """Create custom styled chart container"""
+    st.markdown(f"""
+    <div class="chart-container">
+        <h4 style="color: #667eea; margin-bottom: 1rem;">{title}</h4>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if chart_type == "bar":
+        st.bar_chart(data)
+    elif chart_type == "line":
+        st.line_chart(data)
+    elif chart_type == "area":
+        st.area_chart(data)
 
 def display_recommendation_card(r: pd.Series, rank: int):
     """Display a beautiful recommendation card using Streamlit components"""
@@ -1003,7 +1025,7 @@ with st.sidebar:
     <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border-radius: 20px;">
         <p style="color: #718096; font-size: 0.85rem; margin: 0; line-height: 1.5;">
             Dibangun dengan ❤️ menggunakan<br>
-            <strong style="color: #667eea;">Streamlit</strong> + <strong style="color: #667eea;">Scikit-learn</strong> + <strong style="color: #667eea;">Plotly</strong>
+            <strong style="color: #667eea;">Streamlit</strong> + <strong style="color: #667eea;">Scikit-learn</strong>
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -1587,98 +1609,36 @@ elif page == "📊 Dashboard Analitik":
     col_chart1, col_chart2 = st.columns(2)
     
     with col_chart1:
-        # Content Type Distribution - Pie Chart
+        # Content Type Distribution
         st.markdown("### 🎭 Distribusi Tipe Konten")
         type_counts = df['type'].value_counts()
         
         if len(type_counts) > 0:
-            fig1 = px.pie(
-                values=type_counts.values,
-                names=type_counts.index,
-                color_discrete_sequence=['#667eea', '#764ba2', '#f093fb'],
-                hole=0.4
-            )
-            fig1.update_traces(
-                textposition='inside',
-                textinfo='percent+label',
-                hovertemplate="<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}"
-            )
-            fig1.update_layout(
-                showlegend=True,
-                legend=dict(
-                    orientation="h",
-                    yanchor="bottom",
-                    y=1.02,
-                    xanchor="right",
-                    x=1
-                ),
-                height=400,
-                margin=dict(t=0, b=0, l=0, r=0)
-            )
-            st.plotly_chart(fig1, use_container_width=True)
+            # Create custom styled chart
+            create_custom_chart("Distribusi berdasarkan Tipe", type_counts)
+            st.bar_chart(type_counts)
         
         # Top Countries
         st.markdown("### 🌍 Top 10 Negara")
         top_countries = split_and_count(df["country"], sep=",", top_k=10)
         if len(top_countries) > 0:
-            fig2 = px.bar(
-                x=top_countries.values,
-                y=top_countries.index,
-                orientation='h',
-                color=top_countries.values,
-                color_continuous_scale='Viridis'
-            )
-            fig2.update_layout(
-                xaxis_title="Jumlah Konten",
-                yaxis_title="Negara",
-                showlegend=False,
-                height=400,
-                margin=dict(t=30, b=30, l=100, r=30)
-            )
-            st.plotly_chart(fig2, use_container_width=True)
+            create_custom_chart("Negara dengan Konten Terbanyak", top_countries)
+            st.bar_chart(top_countries)
     
     with col_chart2:
         # Top Genres
         st.markdown("### 🎬 Top 10 Genre")
         top_genres = split_and_count(df["listed_in"], sep=",", top_k=10)
         if len(top_genres) > 0:
-            fig3 = px.bar(
-                x=top_genres.index,
-                y=top_genres.values,
-                color=top_genres.values,
-                color_continuous_scale='Plasma'
-            )
-            fig3.update_layout(
-                xaxis_title="Genre",
-                yaxis_title="Jumlah Konten",
-                xaxis_tickangle=-45,
-                showlegend=False,
-                height=400,
-                margin=dict(t=30, b=100, l=30, r=30)
-            )
-            st.plotly_chart(fig3, use_container_width=True)
+            create_custom_chart("Genre Paling Populer", top_genres)
+            st.bar_chart(top_genres)
         
         # Release Year Trend
         st.markdown("### 📅 Tren Tahun Rilis")
         year_counts = df["release_year"].replace(0, np.nan).dropna().astype(int).value_counts().sort_index()
         if len(year_counts) > 0:
-            fig4 = px.line(
-                x=year_counts.index,
-                y=year_counts.values,
-                markers=True
-            )
-            fig4.update_traces(
-                line=dict(color='#667eea', width=3),
-                marker=dict(size=8, color='#764ba2')
-            )
-            fig4.update_layout(
-                xaxis_title="Tahun Rilis",
-                yaxis_title="Jumlah Konten",
-                showlegend=False,
-                height=400,
-                margin=dict(t=30, b=30, l=30, r=30)
-            )
-            st.plotly_chart(fig4, use_container_width=True)
+            create_custom_chart("Tren Rilis per Tahun", year_counts)
+            st.line_chart(year_counts)
     
     st.divider()
     
