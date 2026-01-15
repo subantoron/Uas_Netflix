@@ -1,9 +1,3 @@
-[file name]: image.png
-[file content begin]
-arr
-PENGATURAN DATASET
-[file content end]
-
 import io
 import re
 import warnings
