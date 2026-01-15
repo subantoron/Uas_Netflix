@@ -25,102 +25,62 @@ st.set_page_config(
 DEFAULT_DATA_PATH = Path(__file__).parent / "netflix_titles.csv"
 
 # -----------------------------
-# Custom CSS - Netflix Black & Red Theme
+# Custom CSS - Netflix Style with Yellow Accent
 # -----------------------------
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Netflix+Sans:wght@400;500;700;800;900&display=swap');
-</style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
 * {
     font-family: 'Netflix Sans', 'Inter', sans-serif !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-</style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
 .stApp {
     background: #000000 !important;
     color: #FFFFFF !important;
 }
 
+/* TYPOGRAPHY - SUPER CLEAR & BOLD */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Netflix Sans', sans-serif !important;
     font-weight: 900 !important;
     color: #FFFFFF !important;
     letter-spacing: -0.5px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    line-height: 1.2 !important;
 }
 
-p, span, div, label, input, textarea, select, option {
-    color: #F0F0F0 !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+h1 { font-size: 3.5rem !important; }
+h2 { font-size: 2.5rem !important; }
+h3 { font-size: 2rem !important; }
+h4 { font-size: 1.5rem !important; }
+
+p, span, div, label {
+    color: #F5F5F5 !important;
     font-weight: 600 !important;
+    line-height: 1.6 !important;
 }
 
-.metric-card h3 {
-    color: #FFFFFF !important;
-    font-size: 3.2rem !important;
-    margin-bottom: 0.5rem;
-    font-weight: 900 !important;
-    text-shadow: 3px 3px 0 #E50914;
-    letter-spacing: -1px;
-}
-
-.metric-card div:not(.metric-card h3) {
-    color: #E0E0E0 !important;
-    font-weight: 700 !important;
-    font-size: 1.3rem !important;
-}
-
-.metric-card div:last-child {
-    color: #CCCCCC !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-}
-
-.recommendation-card h3 {
-    color: #FFFFFF !important;
-    font-size: 1.9rem !important;
-    font-weight: 900 !important;
-    text-shadow: 2px 2px 0 #E50914;
-}
-
-.similarity-score {
-    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%);
-    color: #FFFFFF !important;
-    font-weight: 900 !important;
-    font-size: 1.3rem !important;
-    border: 2px solid #FFFFFF;
-}
-
-.badge {
-    color: #FFFFFF !important;
+strong, b {
+    color: #FFD700 !important;
     font-weight: 800 !important;
-    font-size: 0.95rem !important;
 }
-</style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
+/* MAIN HEADER */
 .main-header {
-    background: linear-gradient(rgba(20, 20, 20, 0.95), rgba(20, 20, 20, 0.98)),
+    background: linear-gradient(rgba(20, 20, 20, 0.98), rgba(0, 0, 0, 0.95)),
                 url('https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/710d74e0-7158-408e-8d9b-23c219dee5df/IN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg');
     background-size: cover;
     background-position: center;
     padding: 4rem 3rem;
-    border-radius: 8px;
-    margin-bottom: 2.5rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
     position: relative;
     overflow: hidden;
-    border-left: 8px solid #E50914;
+    border: 3px solid #E50914;
+    box-shadow: 0 20px 60px rgba(229, 9, 20, 0.3);
 }
 
 .main-header::before {
@@ -130,45 +90,27 @@ st.markdown("""
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to right, rgba(229, 9, 20, 0.3), transparent 50%);
+    background: linear-gradient(to right, rgba(229, 9, 20, 0.2), transparent 60%);
     z-index: 1;
 }
 
-@keyframes netflix-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(229, 9, 20, 0.3); }
-    50% { box-shadow: 0 0 40px rgba(229, 9, 20, 0.6); }
+.main-header-content {
+    position: relative;
+    z-index: 2;
 }
 
-.recommendation-card {
-    background: linear-gradient(145deg, #1A1A1A, #141414);
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 1.5rem 0;
-    border-left: 6px solid #E50914;
+/* METRIC CARDS - EXTRA CLEAR */
+.metric-card {
+    background: linear-gradient(145deg, #1A1A1A, #0F0F0F);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border: 2px solid #333333;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    animation: netflix-glow 3s infinite;
-}
-
-.recommendation-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-left: 6px solid #FF0000;
-    box-shadow: 0 25px 50px rgba(229, 9, 20, 0.4);
-    background: linear-gradient(145deg, #222222, #1A1A1A);
-}
-
-.metric-card {
-    background: linear-gradient(145deg, #1A1A1A, #141414);
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    border: 2px solid #2D2D2D;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    margin-bottom: 1.5rem;
 }
 
 .metric-card::before {
@@ -177,214 +119,374 @@ st.markdown("""
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #E50914, #B81D24);
+    height: 5px;
+    background: linear-gradient(90deg, #E50914, #FFD700);
 }
 
 .metric-card:hover {
-    transform: translateY(-5px);
-    border-color: #E50914;
-    box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3);
+    transform: translateY(-8px) scale(1.02);
+    border-color: #FFD700;
+    box-shadow: 0 25px 50px rgba(255, 215, 0, 0.3);
 }
-</style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.6rem 1.3rem;
-    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%);
-    color: white !important;
-    border-radius: 30px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-right: 0.8rem;
+.metric-card h3 {
+    color: #FFD700 !important;
+    font-size: 3.5rem !important;
     margin-bottom: 0.8rem;
-    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
-    transition: all 0.3s ease;
+    font-weight: 1000 !important;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+    letter-spacing: -1.5px;
+}
+
+.metric-card-title {
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    font-size: 1.4rem !important;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.metric-card-subtitle {
+    color: #CCCCCC !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    opacity: 0.9;
+}
+
+.metric-card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    color: #E50914;
+    display: block;
+}
+
+/* RECOMMENDATION CARDS */
+.recommendation-card {
+    background: linear-gradient(145deg, #1A1A1A, #141414);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+    border-left: 8px solid #FFD700;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    border: none;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    border: 1px solid #333333;
 }
 
-.badge::after {
+.recommendation-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-left: 8px solid #E50914;
+    box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+    background: linear-gradient(145deg, #222222, #1A1A1A);
+}
+
+.recommendation-card::after {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, transparent 50%, rgba(255, 215, 0, 0.1) 50%);
+    border-radius: 0 0 0 120px;
 }
 
-.badge:hover::after {
-    left: 100%;
+.similarity-score {
+    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%);
+    color: #000000 !important;
+    font-weight: 1000 !important;
+    font-size: 1.4rem !important;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    border: 3px solid #FFFFFF;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    min-width: 120px;
+    justify-content: center;
+}
+
+/* BADGES - YELLOW ACCENT */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%);
+    color: #FFFFFF !important;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 800;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.3);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .badge:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(229, 9, 20, 0.5);
+    background: linear-gradient(135deg, #FF0000 0%, #E50914 100%);
 }
 
 .badge-movie {
-    background: linear-gradient(135deg, #E50914 0%, #8B0000 100%) !important;
+    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
 }
 
 .badge-year {
     background: linear-gradient(135deg, #2D2D2D 0%, #4A4A4A 100%) !important;
+    color: #FFFFFF !important;
 }
 
 .badge-rating {
-    background: linear-gradient(135deg, #F5C518 0%, #D4AF37 100%) !important;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
     color: #000000 !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-.stButton > button {
-    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%) !important;
-    color: white !important;
-    border: none !important;
-    padding: 1rem 3rem !important;
-    border-radius: 8px !important;
     font-weight: 900 !important;
-    font-size: 1.1rem !important;
+}
+
+/* BUTTONS */
+.stButton > button {
+    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
+    color: #000000 !important;
+    border: none !important;
+    padding: 1.2rem 3rem !important;
+    border-radius: 12px !important;
+    font-weight: 1000 !important;
+    font-size: 1.2rem !important;
     transition: all 0.3s ease !important;
     width: 100% !important;
-    box-shadow: 0 10px 30px rgba(229, 9, 20, 0.3) !important;
-    position: relative !important;
-    overflow: hidden !important;
-    letter-spacing: 0.5px !important;
+    box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3) !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 15px 40px rgba(229, 9, 20, 0.5) !important;
-    background: linear-gradient(135deg, #FF0000 0%, #E50914 100%) !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.4) !important;
+    background: linear-gradient(135deg, #FF0000 0%, #FFD700 100%) !important;
 }
 
+/* TABS */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 0.5rem;
+    gap: 1rem;
     background: #141414 !important;
-    padding: 0.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    border: 2px solid #2D2D2D;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+    border: 2px solid #333333;
 }
 
 .stTabs [data-baseweb="tab"] {
     background: transparent !important;
-    border-radius: 8px !important;
-    padding: 1rem 2rem !important;
-    font-weight: 700 !important;
-    color: #808080 !important;
+    border-radius: 10px !important;
+    padding: 1.2rem 2.5rem !important;
+    font-weight: 800 !important;
+    color: #999999 !important;
     border: 2px solid transparent !important;
     transition: all 0.3s ease !important;
     font-size: 1.1rem !important;
 }
 
 .stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%) !important;
-    color: white !important;
-    box-shadow: 0 5px 20px rgba(229, 9, 20, 0.3) !important;
-    border-color: #E50914 !important;
+    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
+    color: #000000 !important;
+    font-weight: 1000 !important;
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3) !important;
+    border-color: #FFD700 !important;
 }
-</style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
+/* INPUTS */
 .stTextInput > div > div > input {
     background: #1A1A1A !important;
-    color: white !important;
-    border-radius: 8px !important;
-    border: 2px solid #2D2D2D !important;
-    padding: 1rem 1.5rem !important;
-    font-size: 1rem !important;
+    color: #FFFFFF !important;
+    border-radius: 12px !important;
+    border: 2px solid #333333 !important;
+    padding: 1.2rem 1.8rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
     transition: all 0.3s ease !important;
 }
 
 .stTextInput > div > div > input:focus {
-    border-color: #E50914 !important;
-    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.1) !important;
+    border-color: #FFD700 !important;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1) !important;
     background: #222222 !important;
 }
 
 .stSelectbox > div > div > div {
     background: #1A1A1A !important;
-    color: white !important;
-    border: 2px solid #2D2D2D !important;
-    border-radius: 8px !important;
+    color: #FFFFFF !important;
+    border: 2px solid #333333 !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
 }
 
-.stDataFrame {
-    border-radius: 8px !important;
-    border: 2px solid #2D2D2D !important;
-    background: #141414 !important;
+/* EXPANDER */
+.streamlit-expanderHeader {
+    background: linear-gradient(135deg, #1A1A1A, #141414) !important;
+    color: #FFD700 !important;
+    font-weight: 900 !important;
+    border-radius: 12px !important;
+    border: 2px solid #333333 !important;
+    font-size: 1.1rem !important;
 }
 
+/* GLASS PANEL */
 .glass-panel {
-    background: rgba(20, 20, 20, 0.9) !important;
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 2px solid #2D2D2D;
-    padding: 2rem;
+    background: rgba(26, 26, 26, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 2px solid #333333;
+    padding: 2.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 .stats-card {
     background: linear-gradient(145deg, #1A1A1A, #141414);
-    border-radius: 12px;
-    padding: 1.5rem;
-    border: 2px solid #2D2D2D;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 2px solid #333333;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
+/* TAGS */
 .tag {
     display: inline-block;
-    padding: 0.4rem 1rem;
-    margin: 0.3rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%);
-    color: white !important;
+    padding: 0.5rem 1.2rem;
+    margin: 0.4rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FFD700 0%, #E50914 100%);
+    color: #000000 !important;
     border: none;
-    box-shadow: 0 3px 10px rgba(229, 9, 20, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 12px;
+    background: #0F0F0F;
+}
+
+::-webkit-scrollbar-track {
+    background: #1A1A1A;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #FF0000 0%, #FFD700 100%);
+}
+
+/* ALERTS */
+.stAlert {
+    border-radius: 12px !important;
+    border: 2px solid !important;
+    font-weight: 600 !important;
+}
+
+/* DATA FRAME */
+.stDataFrame {
+    border-radius: 12px !important;
+    border: 2px solid #333333 !important;
+    background: #141414 !important;
+}
+
+.dataframe th {
+    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
+    color: #000000 !important;
+    font-weight: 1000 !important;
+    font-size: 1rem !important;
+}
+
+.dataframe td {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    background: #1A1A1A !important;
+}
+
+/* DIVIDER */
+hr {
+    border-color: #FFD700 !important;
+    opacity: 0.5;
+    margin: 3rem 0 !important;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background: #0F0F0F !important;
+    border-right: 3px solid #E50914;
+}
+
+[data-testid="stSidebar"] * {
+    color: #FFFFFF !important;
+}
+
+/* ANIMATIONS */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
+}
+
+.glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .main-header { padding: 2.5rem 1.5rem; }
+    h1 { font-size: 2.5rem !important; }
+    h2 { font-size: 2rem !important; }
+    .metric-card h3 { font-size: 2.8rem !important; }
+    .recommendation-card { padding: 2rem; }
+    .badge { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
 }
 </style>
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# UI helper (alert HTML aman)
+# UI helper
 # -----------------------------
 def ui_alert(kind: str, html: str):
     palette = {
-        "info": ("#E50914", "rgba(229, 9, 20, 0.15)", "ℹ️"),
+        "info": ("#FFD700", "rgba(255, 215, 0, 0.15)", "ℹ️"),
         "success": ("#00B894", "rgba(0, 184, 148, 0.15)", "✅"),
-        "warning": ("#FDCB6E", "rgba(253, 203, 110, 0.15)", "⚠️"),
+        "warning": ("#FFD700", "rgba(255, 215, 0, 0.15)", "⚠️"),
         "error": ("#E50914", "rgba(229, 9, 20, 0.15)", "⛔"),
     }
     border, bg, icon = palette.get(kind, palette["info"])
     st.markdown(
         f"""
         <div style="
-            border: 2px solid {border}40;
+            border: 3px solid {border}40;
             background: {bg};
-            border-left: 6px solid {border};
-            border-radius: 12px;
-            padding: 1.25rem 1.5rem;
-            margin: 1rem 0;
+            border-left: 8px solid {border};
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         ">
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <div style="font-size: 1.8rem; line-height: 1; color: {border};">{icon}</div>
-                <div style="flex: 1; color: #FFFFFF !important;">{html}</div>
+            <div style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                <div style="font-size: 2rem; line-height: 1; color: {border};">{icon}</div>
+                <div style="flex: 1; color: #FFFFFF !important; font-weight: 600; line-height: 1.6;">{html}</div>
             </div>
         </div>
         """,
@@ -392,7 +494,7 @@ def ui_alert(kind: str, html: str):
     )
 
 # -----------------------------
-# Helper Functions (keep the same as before)
+# Helper Functions
 # -----------------------------
 def _normalize_text(x: object) -> str:
     if x is None:
@@ -651,12 +753,16 @@ def display_recommendation_card(r: pd.Series, rank: int):
         st.markdown(
             f"""
         <div class="recommendation-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <div>
-                    <h4 style="margin: 0; color: #E50914 !important; font-size: 1.2rem; font-weight: 900;">#{rank}</h4>
-                    <h3 style="margin: 0.5rem 0; color: #FFFFFF !important; font-size: 1.8rem; font-weight: 900;">{title}</h3>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: linear-gradient(135deg, #E50914 0%, #FFD700 100%); color: #000000; padding: 0.5rem 1.5rem; border-radius: 50px; font-weight: 1000; font-size: 1.2rem;">
+                            #{rank}
+                        </div>
+                        <h3 style="margin: 0; color: #FFD700 !important; font-size: 2.2rem; font-weight: 900;">{title}</h3>
+                    </div>
                 </div>
-                <div class="similarity-score" style="color: #FFFFFF !important;">{similarity:.1%}</div>
+                <div class="similarity-score">{similarity:.1%}</div>
             </div>
         </div>
         """,
@@ -676,21 +782,21 @@ def display_recommendation_card(r: pd.Series, rank: int):
         if genre and genre != "Not specified":
             st.markdown(
                 """
-            <div style="margin: 1.5rem 0;">
-                <strong style="color: #E50914 !important; font-size: 1.1rem;">🎭 Genre</strong>
+            <div style="margin: 2rem 0 1rem 0;">
+                <strong style="color: #FFD700 !important; font-size: 1.3rem; font-weight: 900;">🎭 GENRE</strong>
             </div>
             """,
                 unsafe_allow_html=True,
             )
             genres = [g.strip() for g in str(genre).split(",") if g.strip()]
             tags_html = "".join([f'<span class="tag">{g}</span>' for g in genres[:5]])
-            st.markdown(f'<div style="margin-bottom: 1.5rem;">{tags_html}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="margin-bottom: 2rem;">{tags_html}</div>', unsafe_allow_html=True)
 
         if description and description != "No description available":
-            with st.expander("📖 Deskripsi", expanded=False):
+            with st.expander("📖 DESKRIPSI LENGKAP", expanded=False):
                 st.markdown(
                     f"""
-                <div style="font-size: 1rem; color: #CCCCCC !important; line-height: 1.7; padding: 1rem; background: #1A1A1A; border-radius: 8px;">
+                <div style="font-size: 1.1rem; color: #F5F5F5 !important; line-height: 1.8; padding: 1.5rem; background: rgba(255, 215, 0, 0.05); border-radius: 12px; border-left: 4px solid #FFD700;">
                     {description}
                 </div>
                 """,
@@ -702,9 +808,9 @@ def display_recommendation_card(r: pd.Series, rank: int):
             if director and director != "Not specified":
                 st.markdown(
                     f"""
-                <div class="stats-card" style="margin-bottom: 1rem;">
-                    <strong style="color: #E50914 !important; font-size: 1rem;">🎬 Director</strong>
-                    <div style="color: #FFFFFF !important; font-size: 1rem; font-weight: 700; margin-top: 0.5rem;">{director}</div>
+                <div class="stats-card" style="margin-bottom: 1.5rem;">
+                    <strong style="color: #FFD700 !important; font-size: 1.1rem; font-weight: 900;">🎬 DIRECTOR</strong>
+                    <div style="color: #FFFFFF !important; font-size: 1.1rem; font-weight: 700; margin-top: 0.8rem;">{director}</div>
                 </div>
                 """,
                     unsafe_allow_html=True,
@@ -713,9 +819,9 @@ def display_recommendation_card(r: pd.Series, rank: int):
             if country and country != "Not specified":
                 st.markdown(
                     f"""
-                <div class="stats-card" style="margin-bottom: 1rem;">
-                    <strong style="color: #E50914 !important; font-size: 1rem;">🌍 Negara</strong>
-                    <div style="color: #FFFFFF !important; font-size: 1rem; font-weight: 700; margin-top: 0.5rem;">{country}</div>
+                <div class="stats-card" style="margin-bottom: 1.5rem;">
+                    <strong style="color: #FFD700 !important; font-size: 1.1rem; font-weight: 900;">🌍 NEGARA</strong>
+                    <div style="color: #FFFFFF !important; font-size: 1.1rem; font-weight: 700; margin-top: 0.8rem;">{country}</div>
                 </div>
                 """,
                     unsafe_allow_html=True,
@@ -727,10 +833,10 @@ def display_metric_card(title: str, value: str, subtitle: str = "", icon: str = 
     st.markdown(
         f"""
     <div class="metric-card">
-        <div style="font-size: 3.5rem; margin-bottom: 1rem; color: #E50914;">{icon}</div>
+        <div class="metric-card-icon floating">{icon}</div>
         <h3>{value}</h3>
-        <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1.3rem; margin-bottom: 0.5rem;">{title}</div>
-        <div style="font-size: 1rem; color: #CCCCCC !important; font-weight: 600;">{subtitle}</div>
+        <span class="metric-card-title">{title}</span>
+        <span class="metric-card-subtitle">{subtitle}</span>
     </div>
     """,
         unsafe_allow_html=True,
@@ -764,24 +870,26 @@ def create_dashboard_stats(df: pd.DataFrame):
 st.markdown(
     """
 <div class="main-header">
-    <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; position: relative; z-index: 2;">
-        <div style="font-size: 6rem; color: #E50914;">🎬</div>
-        <div>
-            <h1 style="font-size: 4.5rem !important; color: #E50914 !important; text-shadow: 3px 3px 0 #000000;">NETFLIX RECOMMENDER</h1>
-            <p style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #FFFFFF !important;">
-                Sistem Rekomendasi Berbasis Machine Learning
-            </p>
+    <div class="main-header-content">
+        <div style="display: flex; align-items: center; gap: 2.5rem; margin-bottom: 2.5rem;">
+            <div style="font-size: 6rem; color: #FFD700;" class="floating">🎬</div>
+            <div>
+                <h1 style="color: #FFD700 !important; text-shadow: 4px 4px 0 rgba(0,0,0,0.5); margin-bottom: 1rem;">NETFLIX RECOMMENDER</h1>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700; color: #FFFFFF !important; line-height: 1.6;">
+                    Sistem Rekomendasi Berbasis Machine Learning
+                </p>
+            </div>
         </div>
-    </div>
-    <p style="position: relative; z-index: 2; color: #F0F0F0 !important; font-weight: 600;">
-        Temukan konten yang paling sesuai dengan preferensi Anda menggunakan <strong style="color: #E50914 !important;">Content-Based Filtering</strong>
-        dengan <strong style="color: #E50914 !important;">TF-IDF Vectorization</strong> dan <strong style="color: #E50914 !important;">Cosine Similarity</strong>.
-    </p>
-    <div style="display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; position: relative; z-index: 2;">
-        <span class="badge badge-movie">🎯 REKOMENDASI PRESISI</span>
-        <span class="badge badge-year">⚡ PEMROSESAN CEPAT</span>
-        <span class="badge badge-rating">📌 BERBASIS KONTEN</span>
-        <span class="badge" style="background: linear-gradient(135deg, #E50914 0%, #8B0000 100%) !important;">📊 ANALISIS DATA</span>
+        <p style="color: #F5F5F5 !important; font-weight: 600; font-size: 1.3rem; line-height: 1.8; margin-bottom: 2.5rem;">
+            Temukan konten yang paling sesuai dengan preferensi Anda menggunakan <strong>Content-Based Filtering</strong>
+            dengan <strong>TF-IDF Vectorization</strong> dan <strong>Cosine Similarity</strong>.
+        </p>
+        <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+            <span class="badge badge-movie">🎯 REKOMENDASI PRESISI</span>
+            <span class="badge badge-year">⚡ PEMROSESAN CEPAT</span>
+            <span class="badge badge-rating">📌 BERBASIS KONTEN</span>
+            <span class="badge" style="background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;">📊 ANALISIS DATA</span>
+        </div>
     </div>
 </div>
 """,
@@ -794,12 +902,12 @@ st.markdown(
 with st.sidebar:
     st.markdown(
         """
-    <div style="text-align: center; margin-bottom: 2.5rem; padding: 2.5rem 1.5rem;
-                background: linear-gradient(135deg, rgba(229, 9, 20, 0.2) 0%, rgba(184, 29, 36, 0.2) 100%);
-                border-radius: 12px; border: 2px solid #E50914;">
-        <div style="font-size: 4rem; color: #E50914; margin-bottom: 1rem;">🎬</div>
-        <h2 style="color: #FFFFFF !important; margin: 0; font-size: 2rem; font-weight: 900;">NETFLIX</h2>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; margin-top: 0.5rem; font-weight: 600;">Recommender System</p>
+    <div style="text-align: center; margin-bottom: 3rem; padding: 3rem 2rem;
+                background: linear-gradient(135deg, rgba(229, 9, 20, 0.2) 0%, rgba(255, 215, 0, 0.2) 100%);
+                border-radius: 16px; border: 3px solid #FFD700;">
+        <div style="font-size: 5rem; color: #FFD700; margin-bottom: 1.5rem;" class="floating">🎬</div>
+        <h2 style="color: #FFD700 !important; margin: 0; font-size: 2.5rem; font-weight: 900;">NETFLIX</h2>
+        <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.2rem; margin-top: 0.8rem; font-weight: 700;">Recommender System</p>
     </div>
     """,
         unsafe_allow_html=True,
@@ -861,13 +969,13 @@ if not data_loaded:
     ui_alert(
         "info",
         """
-        <div style="padding: 1.25rem;">
-            <h3 style="color: #E50914 !important; margin-bottom: 0.75rem;">📋 CARA MENGGUNAKAN</h3>
-            <ol style="color: #CCCCCC !important; margin-left: 1.25rem; line-height: 1.7;">
+        <div>
+            <h3 style="color: #FFD700 !important; margin-bottom: 1rem;">📋 CARA MENGGUNAKAN</h3>
+            <ol style="color: #F5F5F5 !important; margin-left: 1.5rem; line-height: 1.8;">
                 <li>Unggah file CSV dataset Netflix, atau</li>
-                <li>Letakkan file <code style="color: #E50914 !important;">netflix_titles.csv</code> di folder aplikasi</li>
+                <li>Letakkan file <code style="color: #FFD700 !important;">netflix_titles.csv</code> di folder aplikasi</li>
             </ol>
-            <div style="color: #CCCCCC !important; margin-top: 0.75rem;">
+            <div style="color: #CCCCCC !important; margin-top: 1rem;">
                 Format dataset: CSV dengan kolom standar Netflix (title, type, description, dsb).
             </div>
         </div>
@@ -875,7 +983,7 @@ if not data_loaded:
     )
 
     with st.expander("🎮 COBA DEMO DENGAN DATA CONTOH", expanded=False):
-        if st.button("Muat Data Contoh"):
+        if st.button("MUAT DATA CONTOH", use_container_width=True):
             sample_data = {
                 "show_id": ["s1", "s2", "s3", "s4", "s5"],
                 "type": ["Movie", "Movie", "TV Show", "Movie", "TV Show"],
@@ -943,11 +1051,11 @@ with st.sidebar:
     ui_alert(
         "success",
         """
-        <div style="display: flex; align-items: center; gap: 0.8rem;">
-            <div style="font-size: 1.5rem; color: #00B894;">✅</div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="font-size: 2rem; color: #00B894;">✅</div>
             <div>
-                <div style="font-weight: 900; color: #00B894 !important;">SISTEM AKTIF</div>
-                <div style="font-size: 0.95rem; color: #CCCCCC !important;">Dataset berhasil diproses</div>
+                <div style="font-weight: 900; color: #00B894 !important; font-size: 1.2rem;">SISTEM AKTIF</div>
+                <div style="font-size: 1rem; color: #CCCCCC !important;">Dataset berhasil diproses</div>
             </div>
         </div>
         """,
@@ -956,25 +1064,25 @@ with st.sidebar:
     st.markdown("### 📊 STATISTIK DATASET")
     st.markdown(
         f"""
-        <div class="glass-panel" style="padding: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+        <div class="glass-panel" style="padding: 2rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
                 <div>
-                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">Total Data</div>
-                    <div style="font-size: 1.8rem; font-weight: 900; color: #E50914 !important;">{stats['total']:,}</div>
+                    <div style="font-size: 1rem; color: #CCCCCC !important;">Total Data</div>
+                    <div style="font-size: 2rem; font-weight: 900; color: #FFD700 !important;">{stats['total']:,}</div>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">Unique Types</div>
-                    <div style="font-size: 1.8rem; font-weight: 900; color: #E50914 !important;">{stats['unique_types']}</div>
+                    <div style="font-size: 1rem; color: #CCCCCC !important;">Unique Types</div>
+                    <div style="font-size: 2rem; font-weight: 900; color: #FFD700 !important;">{stats['unique_types']}</div>
                 </div>
             </div>
             <div style="display: flex; justify-content: space-between;">
                 <div>
-                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">Movies</div>
-                    <div style="font-size: 1.4rem; font-weight: 900; color: #00B894 !important;">{stats['movies']:,}</div>
+                    <div style="font-size: 1rem; color: #CCCCCC !important;">Movies</div>
+                    <div style="font-size: 1.6rem; font-weight: 900; color: #00B894 !important;">{stats['movies']:,}</div>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">TV Shows</div>
-                    <div style="font-size: 1.4rem; font-weight: 900; color: #FDCB6E !important;">{stats['tv_shows']:,}</div>
+                    <div style="font-size: 1rem; color: #CCCCCC !important;">TV Shows</div>
+                    <div style="font-size: 1.6rem; font-weight: 900; color: #FDCB6E !important;">{stats['tv_shows']:,}</div>
                 </div>
             </div>
         </div>
@@ -1009,8 +1117,8 @@ if page == "🎯 REKOMENDASI":
         with col1:
             st.markdown("### 🎯 PILIH KONTEN UNTUK DIREKOMENDASIKAN")
 
-            st.markdown('<div class="glass-panel" style="padding: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 1.2rem; font-weight: 900; color: #E50914 !important; margin-bottom: 1rem;">🎭 FILTER TIPE KONTEN</div>', unsafe_allow_html=True)
+            st.markdown('<div class="glass-panel" style="padding: 2rem;">', unsafe_allow_html=True)
+            st.markdown('<div style="font-size: 1.3rem; font-weight: 900; color: #FFD700 !important; margin-bottom: 1.5rem;">🎭 FILTER TIPE KONTEN</div>', unsafe_allow_html=True)
 
             filter_type_for_selector = st.selectbox(
                 "Pilih tipe konten:",
@@ -1026,7 +1134,7 @@ if page == "🎯 REKOMENDASI":
             else:
                 selector_df = df[df["type"] == filter_type_for_selector]
 
-            st.markdown('<div style="font-size: 1.2rem; font-weight: 900; color: #E50914 !important; margin: 1.5rem 0 1rem;">📝 PILIH JUDUL</div>', unsafe_allow_html=True)
+            st.markdown('<div style="font-size: 1.3rem; font-weight: 900; color: #FFD700 !important; margin: 2rem 0 1.5rem;">📝 PILIH JUDUL</div>', unsafe_allow_html=True)
 
             if len(selector_df) > 0:
                 options = selector_df["display_title"].tolist()
@@ -1049,18 +1157,18 @@ if page == "🎯 REKOMENDASI":
 
             with col_settings1:
                 st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<div style="font-size: 1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">JUMLAH REKOMENDASI</div>', unsafe_allow_html=True)
+                st.markdown('<div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.8rem;">JUMLAH REKOMENDASI</div>', unsafe_allow_html=True)
                 top_n = st.slider("Jumlah:", 5, 20, 10, 1, label_visibility="collapsed", key="top_n_slider")
                 st.markdown("</div>", unsafe_allow_html=True)
 
             with col_settings2:
                 st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<div style="font-size: 1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">FILTER TIPE</div>', unsafe_allow_html=True)
+                st.markdown('<div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.8rem;">FILTER TIPE</div>', unsafe_allow_html=True)
                 same_type = st.checkbox("Hanya tipe yang sama", value=True, help="Movie↔Movie atau TV Show↔TV Show", key="same_type_check")
                 st.markdown("</div>", unsafe_allow_html=True)
 
             with col_settings3:
-                st.markdown('<div class="stats-card"><div style="font-size: 1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">TINDAKAN</div></div>', unsafe_allow_html=True)
+                st.markdown('<div class="stats-card"><div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.8rem;">TINDAKAN</div></div>', unsafe_allow_html=True)
 
             st.markdown("### 📅 FILTER TAHUN RILIS")
             year_range = st.slider(
@@ -1090,14 +1198,14 @@ if page == "🎯 REKOMENDASI":
                         st.markdown(
                             f"""
                             <div class="glass-panel">
-                                <h3 style="color: #FFFFFF !important; margin-bottom: 1rem; font-weight: 900;">{_safe_str(selected_item['title'])}</h3>
-                                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                                <h3 style="color: #FFD700 !important; margin-bottom: 1.5rem; font-weight: 900;">{_safe_str(selected_item['title'])}</h3>
+                                <div style="display: flex; gap: 1.2rem; margin-bottom: 2rem; flex-wrap: wrap;">
                                     <span class="badge badge-movie">{_safe_str(selected_item['type'])}</span>
                                     <span class="badge badge-year">{int(selected_item['release_year'])}</span>
                                     <span class="badge badge-rating">{_safe_str(selected_item['rating'])}</span>
                                     <span class="badge">⏱️ {_safe_str(selected_item['duration'])}</span>
                                 </div>
-                                <div style="color: #CCCCCC !important; line-height: 1.7; padding: 1.5rem; background: #1A1A1A; border-radius: 12px; border-left: 4px solid #E50914;">
+                                <div style="color: #F5F5F5 !important; line-height: 1.8; padding: 2rem; background: rgba(255, 215, 0, 0.05); border-radius: 12px; border-left: 5px solid #FFD700;">
                                     {_safe_str(selected_item['description']) or "Tidak ada deskripsi tersedia"}
                                 </div>
                             </div>
@@ -1109,21 +1217,21 @@ if page == "🎯 REKOMENDASI":
                         st.markdown(
                             f"""
                             <div class="stats-card">
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">🎭 GENRE</div>
-                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1rem;">{_safe_str(selected_item['listed_in']) or "Tidak tersedia"}</div>
+                                <div style="margin-bottom: 2rem;">
+                                    <div style="font-size: 1rem; color: #CCCCCC !important;">🎭 GENRE</div>
+                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1.1rem; margin-top: 0.8rem;">{_safe_str(selected_item['listed_in']) or "Tidak tersedia"}</div>
                                 </div>
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">🌍 NEGARA</div>
-                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1rem;">{_safe_str(selected_item['country']) or "Tidak tersedia"}</div>
+                                <div style="margin-bottom: 2rem;">
+                                    <div style="font-size: 1rem; color: #CCCCCC !important;">🌍 NEGARA</div>
+                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1.1rem; margin-top: 0.8rem;">{_safe_str(selected_item['country']) or "Tidak tersedia"}</div>
                                 </div>
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">🎬 DIRECTOR</div>
-                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1rem;">{_safe_str(selected_item['director']) or "Tidak tersedia"}</div>
+                                <div style="margin-bottom: 2rem;">
+                                    <div style="font-size: 1rem; color: #CCCCCC !important;">🎬 DIRECTOR</div>
+                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1.1rem; margin-top: 0.8rem;">{_safe_str(selected_item['director']) or "Tidak tersedia"}</div>
                                 </div>
                                 <div>
-                                    <div style="font-size: 0.9rem; color: #CCCCCC !important;">🆔 ID</div>
-                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1rem;">{_safe_str(selected_item.get('show_id','N/A'))}</div>
+                                    <div style="font-size: 1rem; color: #CCCCCC !important;">🆔 ID</div>
+                                    <div style="font-weight: 900; color: #FFFFFF !important; font-size: 1.1rem; margin-top: 0.8rem;">{_safe_str(selected_item.get('show_id','N/A'))}</div>
                                 </div>
                             </div>
                             """,
@@ -1147,12 +1255,12 @@ if page == "🎯 REKOMENDASI":
                         ui_alert(
                             "warning",
                             """
-                            <div class="glass-panel" style="padding: 1.5rem;">
-                                <div style="display: flex; align-items: center; gap: 1.5rem;">
-                                    <div style="font-size: 3rem; color: #E50914;">🤖</div>
+                            <div class="glass-panel" style="padding: 2rem;">
+                                <div style="display: flex; align-items: center; gap: 2rem;">
+                                    <div style="font-size: 4rem; color: #FFD700;">🤖</div>
                                     <div>
-                                        <h3 style="margin: 0; color: #E50914 !important;">TIDAK MENEMUKAN REKOMENDASI</h3>
-                                        <div style="margin-top: 0.5rem; color: #CCCCCC !important;">Coba sesuaikan filter untuk hasil lebih baik.</div>
+                                        <h3 style="margin: 0; color: #FFD700 !important;">TIDAK MENEMUKAN REKOMENDASI</h3>
+                                        <div style="margin-top: 0.8rem; color: #F5F5F5 !important;">Coba sesuaikan filter untuk hasil lebih baik.</div>
                                     </div>
                                 </div>
                             </div>
@@ -1161,11 +1269,11 @@ if page == "🎯 REKOMENDASI":
                     else:
                         st.markdown(
                             f"""
-                            <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, rgba(184, 29, 36, 0.1) 100%);
-                                        border-radius: 12px; margin: 2rem 0; border: 2px solid #E50914;">
-                                <div style="font-size: 4rem; color: #E50914; margin-bottom: 1rem;">🎯</div>
-                                <h3 style="color: #FFFFFF !important; margin: 0; font-weight: 900;">{len(recs)} REKOMENDASI TERBAIK</h3>
-                                <p style="color: #CCCCCC !important; margin: 0.5rem 0 0 0;">Berdasarkan kemiripan konten (TF-IDF + Cosine Similarity)</p>
+                            <div style="text-align: center; padding: 3rem; background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+                                        border-radius: 16px; margin: 3rem 0; border: 3px solid #FFD700;">
+                                <div style="font-size: 5rem; color: #FFD700; margin-bottom: 1.5rem;" class="floating">🎯</div>
+                                <h2 style="color: #FFD700 !important; margin: 0; font-weight: 900;">{len(recs)} REKOMENDASI TERBAIK</h2>
+                                <p style="color: #F5F5F5 !important; margin: 1rem 0 0 0; font-size: 1.2rem;">Berdasarkan kemiripan konten (TF-IDF + Cosine Similarity)</p>
                             </div>
                             """,
                             unsafe_allow_html=True,
@@ -1187,11 +1295,11 @@ if page == "🎯 REKOMENDASI":
                 for genre, count in top_genres.items():
                     st.markdown(
                         f"""
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;
-                                    background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, rgba(184, 29, 36, 0.1) 100%);
-                                    border-radius: 12px; margin: 0.8rem 0; border: 1px solid #2D2D2D;">
-                            <span style="color: #FFFFFF !important; font-weight: 700; font-size: 0.95rem;">{genre[:20]}{'...' if len(genre)>20 else ''}</span>
-                            <span class="badge" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; min-width: 40px; justify-content: center;">{count}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.2rem;
+                                    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(229, 9, 20, 0.1) 100%);
+                                    border-radius: 12px; margin: 1rem 0; border: 2px solid #333333;">
+                            <span style="color: #FFFFFF !important; font-weight: 700; font-size: 1rem;">{genre[:20]}{'...' if len(genre)>20 else ''}</span>
+                            <span class="badge" style="font-size: 0.9rem; padding: 0.5rem 1rem; min-width: 45px; justify-content: center;">{count}</span>
                         </div>
                         """,
                         unsafe_allow_html=True,
@@ -1217,19 +1325,19 @@ if page == "🎯 REKOMENDASI":
         col_filter1, col_filter2, col_filter3 = st.columns(3)
         with col_filter1:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">FILTER TIPE</div>', unsafe_allow_html=True)
+            st.markdown('<div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.8rem;">FILTER TIPE</div>', unsafe_allow_html=True)
             type_filter = st.selectbox("Tipe:", options=type_options, index=0, label_visibility="collapsed", key="type_filter_search")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col_filter2:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">JUMLAH HASIL</div>', unsafe_allow_html=True)
+            st.markdown('<div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.8rem;">JUMLAH HASIL</div>', unsafe_allow_html=True)
             top_n_q = st.slider("Hasil:", 5, 20, 10, label_visibility="collapsed", key="top_n_search")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col_filter3:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">TAHUN RILIS</div>', unsafe_allow_html=True)
+            st.markdown('<div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.8rem;">TAHUN RILIS</div>', unsafe_allow_html=True)
             year_range_q = st.slider("Tahun:", min_value=min_year, max_value=max_year, value=(min_year, max_year), key="year_range_search", label_visibility="collapsed")
             st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1255,10 +1363,10 @@ if page == "🎯 REKOMENDASI":
                     ui_alert(
                         "error",
                         f"""
-                        <div class="glass-panel" style="padding: 1.5rem;">
-                            <h3 style="margin: 0; color: #E50914 !important;">TIDAK MENEMUKAN HASIL</h3>
-                            <div style="margin-top: 0.5rem; color: #CCCCCC !important;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
-                            <div style="margin-top: 1.5rem; color: #CCCCCC !important;">
+                        <div class="glass-panel" style="padding: 2rem;">
+                            <h3 style="margin: 0; color: #FFD700 !important;">TIDAK MENEMUKAN HASIL</h3>
+                            <div style="margin-top: 1rem; color: #F5F5F5 !important;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
+                            <div style="margin-top: 2rem; color: #CCCCCC !important;">
                                 Tips: pakai keyword bahasa Inggris, kurangi filter, dan gunakan kata yang lebih umum.
                             </div>
                         </div>
@@ -1269,9 +1377,9 @@ if page == "🎯 REKOMENDASI":
                         "success",
                         f"""
                         <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; color: #00B894;">🎉</div>
-                            <div style="font-weight: 900; color: #00B894 !important; font-size: 1.5rem;">{len(recs_q)} HASIL DITEMUKAN!</div>
-                            <div style="color: #CCCCCC !important; margin-top: 0.5rem;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
+                            <div style="font-size: 3rem; color: #00B894;">🎉</div>
+                            <div style="font-weight: 900; color: #00B894 !important; font-size: 1.8rem;">{len(recs_q)} HASIL DITEMUKAN!</div>
+                            <div style="color: #F5F5F5 !important; margin-top: 1rem; font-size: 1.1rem;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
                         </div>
                         """,
                     )
@@ -1309,20 +1417,20 @@ if page == "🎯 REKOMENDASI":
                 with cols[i % 2]:
                     st.markdown(
                         f"""
-                        <div class="glass-panel" style="padding: 1.5rem;">
-                            <h4 style="margin: 0 0 1rem 0; color: #FFFFFF !important; font-size: 1.2rem; font-weight: 900;">
+                        <div class="glass-panel" style="padding: 2rem;">
+                            <h4 style="margin: 0 0 1.2rem 0; color: #FFD700 !important; font-size: 1.4rem; font-weight: 900;">
                                 {_safe_str(item['title'])[:40]}{'...' if len(_safe_str(item['title']))>40 else ''}
                             </h4>
-                            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem;">
-                                <span class="badge badge-movie" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;">{_safe_str(item['type'])}</span>
-                                <span class="badge badge-year" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;">{int(item['release_year'])}</span>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                                <span class="badge badge-movie" style="font-size: 0.8rem; padding: 0.5rem 1rem;">{_safe_str(item['type'])}</span>
+                                <span class="badge badge-year" style="font-size: 0.8rem; padding: 0.5rem 1rem;">{int(item['release_year'])}</span>
                             </div>
-                            <div style="color: #CCCCCC !important; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
-                                {_safe_str(item['description'])[:100]}{'...' if len(_safe_str(item['description']))>100 else ''}
+                            <div style="color: #F5F5F5 !important; font-size: 1rem; line-height: 1.7; margin-bottom: 2rem;">
+                                {_safe_str(item['description'])[:120]}{'...' if len(_safe_str(item['description']))>120 else ''}
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
-                                <span style="color: #CCCCCC !important;">⭐ {_safe_str(item['rating']) or 'N/A'}</span>
-                                <span style="color: #CCCCCC !important;">⏱️ {_safe_str(item['duration']) or 'N/A'}</span>
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1rem;">
+                                <span style="color: #FFD700 !important; font-weight: 700;">⭐ {_safe_str(item['rating']) or 'N/A'}</span>
+                                <span style="color: #FFD700 !important; font-weight: 700;">⏱️ {_safe_str(item['duration']) or 'N/A'}</span>
                             </div>
                         </div>
                         """,
@@ -1434,8 +1542,8 @@ elif page == "📊 DASHBOARD ANALITIK":
         st.markdown(
             """
             <div class="glass-panel">
-                <h4 style="color: #E50914 !important; margin-bottom: 1rem;">📥 DOWNLOAD DATASET</h4>
-                <p style="color: #CCCCCC !important; margin-bottom: 0;">Unduh dataset yang telah diproses dalam format CSV.</p>
+                <h4 style="color: #FFD700 !important; margin-bottom: 1.5rem;">📥 DOWNLOAD DATASET</h4>
+                <p style="color: #F5F5F5 !important; margin-bottom: 0; font-size: 1.1rem;">Unduh dataset yang telah diproses dalam format CSV.</p>
             </div>
             """,
             unsafe_allow_html=True,
@@ -1462,9 +1570,9 @@ elif page == "🤖 TENTANG SISTEM":
         st.markdown(
             """
         <div class="glass-panel">
-            <h3 style="color: #E50914 !important; margin-bottom: 1.5rem;">📌 RINGKASAN</h3>
-            <p style="color: #CCCCCC !important; line-height: 1.8; margin-bottom: 0;">
-                Sistem ini menggunakan <b style="color: #E50914 !important;">Content-Based Filtering</b> dengan <b style="color: #E50914 !important;">TF-IDF</b> dan <b style="color: #E50914 !important;">Cosine Similarity</b>
+            <h3 style="color: #FFD700 !important; margin-bottom: 2rem;">📌 RINGKASAN</h3>
+            <p style="color: #F5F5F5 !important; line-height: 1.8; margin-bottom: 0; font-size: 1.1rem;">
+                Sistem ini menggunakan <strong>Content-Based Filtering</strong> dengan <strong>TF-IDF</strong> dan <strong>Cosine Similarity</strong>
                 untuk memberikan rekomendasi berdasarkan kemiripan metadata (genre, deskripsi, cast, director, dsb).
             </p>
         </div>
@@ -1481,13 +1589,13 @@ elif page == "🤖 TENTANG SISTEM":
     st.divider()
     st.markdown(
         """
-    <div style="text-align: center; padding: 3rem; border-radius: 12px; border: 2px solid #E50914;
-                background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, rgba(184, 29, 36, 0.1) 50%, rgba(139, 0, 0, 0.1) 100%);">
-        <div style="font-size: 4rem; color: #E50914;">🎬</div>
-        <h3 style="color: #E50914 !important; margin: 1rem 0; font-weight: 900;">TERIMA KASIH!</h3>
-        <p style="color: #CCCCCC !important; margin: 0; font-size: 1.1rem;">Built with Streamlit + Scikit-learn</p>
-        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
-            <span class="badge" style="background: linear-gradient(135deg, #E50914 0%, #8B0000 100%) !important;">NETFLIX STYLE</span>
+    <div style="text-align: center; padding: 4rem; border-radius: 20px; border: 3px solid #FFD700;
+                background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);">
+        <div style="font-size: 5rem; color: #FFD700; margin-bottom: 2rem;" class="floating">🎬</div>
+        <h2 style="color: #FFD700 !important; margin: 0; font-weight: 900;">TERIMA KASIH!</h2>
+        <p style="color: #F5F5F5 !important; margin: 1rem 0 0 0; font-size: 1.2rem;">Built with Streamlit + Scikit-learn</p>
+        <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 3rem;">
+            <span class="badge" style="background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;">NETFLIX STYLE</span>
             <span class="badge" style="background: linear-gradient(135deg, #2D2D2D 0%, #4A4A4A 100%) !important;">MACHINE LEARNING</span>
         </div>
     </div>
@@ -1500,10 +1608,13 @@ elif page == "🤖 TENTANG SISTEM":
 # -----------------------------
 st.markdown(
     """
-    <div style="text-align: center; margin-top: 4rem; padding: 2rem; border-top: 2px solid #E50914;">
-        <p style="color: #CCCCCC !important; margin: 0; font-size: 0.9rem;">
+    <div style="text-align: center; margin-top: 5rem; padding: 3rem; border-top: 3px solid #FFD700;">
+        <p style="color: #F5F5F5 !important; margin: 0; font-size: 1.1rem; font-weight: 600;">
             🎬 Netflix Recommender System • Powered by Content-Based Filtering • 
-            <span style="color: #E50914 !important; font-weight: 700;">NETFLIX</span>
+            <span style="color: #FFD700 !important; font-weight: 900;">NETFLIX</span>
+        </p>
+        <p style="color: #CCCCCC !important; margin: 1rem 0 0 0; font-size: 0.9rem;">
+            © 2024 Sistem Rekomendasi Netflix • All rights reserved
         </p>
     </div>
     """,
