@@ -1,7 +1,3 @@
-untuk hurufnya ini buatkan menjadi warna hitam saja
-serta Warna Navbarnya buatkan lebih Bagus lagi
-sertatampilannya
-Tolong buatkan lebih bagus lagi
 import io
 import re
 import warnings
