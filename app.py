@@ -11,11 +11,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
 warnings.filterwarnings("ignore")
+
 # -----------------------------
 # Config
 # -----------------------------
 st.set_page_config(
-    page_title="🎬 Netflix AI Recommender",
+    page_title="🎬 Netflix Recommender",
     page_icon="🎬",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -305,10 +306,9 @@ st.markdown(
 )
 
 # -----------------------------
-# UI helpers (FIX: no unsafe_allow_html on st.info/success/error)
+# UI helper (alert HTML aman)
 # -----------------------------
 def ui_alert(kind: str, html: str):
-    """Render an HTML alert box via st.markdown. kind: info|success|warning|error"""
     palette = {
         "info": ("#667eea", "rgba(102,126,234,0.12)", "ℹ️"),
         "success": ("#00b09b", "rgba(0,176,155,0.12)", "✅"),
@@ -329,9 +329,7 @@ def ui_alert(kind: str, html: str):
         ">
             <div style="display:flex; gap:0.75rem; align-items:flex-start;">
                 <div style="font-size:1.5rem; line-height:1;">{icon}</div>
-                <div style="flex:1;">
-                    {html}
-                </div>
+                <div style="flex:1;">{html}</div>
             </div>
         </div>
         """,
@@ -445,21 +443,17 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
         if col not in df.columns:
             df[col] = ""
 
-    # Standardize type values
     df["type"] = df["type"].astype(str).str.strip()
     df["type"] = df["type"].apply(lambda x: "TV Show" if str(x).lower() == "tv show" else x)
     df["type"] = df["type"].apply(lambda x: "Movie" if str(x).lower() == "movie" else x)
 
-    # Clean text columns
     text_cols = ["type", "title", "director", "cast", "country", "rating", "duration", "listed_in", "description"]
     for c in text_cols:
         df[c] = df[c].fillna("").astype(str)
         df[c] = df[c].replace({"unknown": "", "Unknown": "", "nan": "", "NaN": "", "None": "", "none": ""})
 
-    # release_year
     df["release_year"] = pd.to_numeric(df["release_year"], errors="coerce").fillna(0).astype(int)
 
-    # soup for vectorization
     df["soup"] = (
         df["title"].map(_normalize_text)
         + " "
@@ -478,10 +472,8 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
         + df["description"].map(_normalize_text)
     ).str.strip()
 
-    # display_title
     df["display_title"] = df["title"].astype(str) + " (" + df["type"].astype(str) + ", " + df["release_year"].astype(str) + ")"
 
-    # duplicates display_title
     dup = df["display_title"].duplicated(keep=False)
     if dup.any():
         df.loc[dup, "display_title"] = df.loc[dup].apply(
@@ -489,7 +481,6 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
             axis=1,
         )
 
-    # duplicates show_id
     if df["show_id"].astype(str).duplicated().any():
         df["show_id"] = df.apply(lambda r: f"{r.get('show_id','')}_{r.name}", axis=1)
 
@@ -498,14 +489,9 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
 
 @st.cache_resource(show_spinner=False)
 def build_vectorizer_and_matrix(corpus: pd.Series):
-    """
-    FIX: Jangan filter corpus keluar dari df, supaya tfidf_matrix barisnya SELARAS dengan df.
-    Dengan begitu, df.iloc[idx] <-> tfidf_matrix[idx] selalu cocok.
-    """
+    # Tidak memfilter keluar agar baris matrix selalu sama dengan df
     if corpus is None or len(corpus) == 0:
         return None, None
-
-    # Pastikan ada minimal 1 dokumen non-kosong agar vocabulary tidak empty
     if corpus.astype(str).str.strip().eq("").all():
         return None, None
 
@@ -533,7 +519,6 @@ def recommend_by_index(
         if idx < 0 or idx >= len(df):
             return pd.DataFrame()
 
-        # Jika soup kosong, similarity akan 0 semua -> tetap aman tapi hasil random-ish.
         sims = linear_kernel(tfidf_matrix[idx], tfidf_matrix).flatten()
         order = sims.argsort()[::-1]
         order = order[order != idx]
@@ -553,7 +538,7 @@ def recommend_by_index(
 
         return recs.head(top_n)
     except Exception as e:
-        st.error(f"Error in recommendation: {e}")
+        st.error(f"Error rekomendasi: {e}")
         return pd.DataFrame()
 
 
@@ -592,7 +577,7 @@ def recommend_by_query(
 
         return recs.head(top_n)
     except Exception as e:
-        st.error(f"Error in query recommendation: {e}")
+        st.error(f"Error pencarian: {e}")
         return pd.DataFrame()
 
 
@@ -692,7 +677,7 @@ def display_recommendation_card(r: pd.Series, rank: int):
                     unsafe_allow_html=True,
                 )
     except Exception as e:
-        st.error(f"Error displaying card: {e}")
+        st.error(f"Error card: {e}")
 
 
 def display_metric_card(title: str, value: str, subtitle: str = "", icon: str = "📊"):
@@ -741,18 +726,18 @@ st.markdown(
     <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1.5rem;">
         <div style="font-size:4rem;" class="floating-icon">🎬</div>
         <div>
-            <h1>Netflix AI Recommender</h1>
-            <p style="margin:0;">Sistem Rekomendasi Cerdas Berbasis Machine Learning</p>
+            <h1>Netflix Recommender</h1>
+            <p style="margin:0;">Sistem Rekomendasi Berbasis Machine Learning</p>
         </div>
     </div>
     <p>
-        Temukan konten yang paling sesuai dengan preferensi Anda menggunakan algoritma <strong>Content-Based Filtering</strong>
-        yang didukung oleh teknologi <strong>TF-IDF Vectorization</strong> dan <strong>Cosine Similarity</strong>.
+        Temukan konten yang paling sesuai dengan preferensi Anda menggunakan <strong>Content-Based Filtering</strong>
+        dengan <strong>TF-IDF Vectorization</strong> dan <strong>Cosine Similarity</strong>.
     </p>
     <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
         <span class="badge badge-movie">🎯 Rekomendasi Presisi</span>
-        <span class="badge badge-year">⚡ Real-time Processing</span>
-        <span class="badge badge-rating">🤖 AI-Powered</span>
+        <span class="badge badge-year">⚡ Pemrosesan Cepat</span>
+        <span class="badge badge-rating">📌 Berbasis Konten</span>
         <span class="badge" style="background:linear-gradient(135deg,#00b09b 0%,#96c93d 100%);">📊 Analisis Data</span>
     </div>
 </div>
@@ -770,7 +755,7 @@ with st.sidebar:
                 background: linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%);
                 border-radius:24px; border:1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px);">
         <div style="font-size:3.5rem; color:#667eea; margin-bottom:0.8rem;" class="floating-icon">🤖</div>
-        <h2 style="color:white; margin:0; font-size:1.8rem;">AI Recommender</h2>
+        <h2 style="color:white; margin:0; font-size:1.8rem;">Recommender</h2>
         <p style="color:rgba(255,255,255,0.9); font-size:0.95rem; margin-top:0.5rem;">Powered by Machine Learning</p>
     </div>
     """,
@@ -780,7 +765,7 @@ with st.sidebar:
     st.markdown("### 🧭 Menu Navigasi")
     page = st.radio(
         "Pilih Halaman:",
-        ["🎯 Rekomendasi", "📊 Dashboard Analitik", "🤖 Tentang AI"],
+        ["🎯 Rekomendasi", "📊 Dashboard Analitik", "🤖 Tentang Sistem"],
         index=0,
         label_visibility="collapsed",
     )
@@ -885,7 +870,7 @@ if not data_loaded:
 # Process Data
 # -----------------------------
 try:
-    with st.spinner("🤖 Memproses data dengan AI..."):
+    with st.spinner("⚙️ Memproses data..."):
         df = prepare_data(raw_df)
 
         if df.empty:
@@ -894,7 +879,7 @@ try:
 
         vectorizer, tfidf_matrix = build_vectorizer_and_matrix(df["soup"])
         if vectorizer is None or tfidf_matrix is None:
-            ui_alert("error", "Gagal membangun model AI (teks kosong / vocabulary kosong).")
+            ui_alert("error", "Model tidak dapat dibangun (teks kosong / vocabulary kosong).")
             st.stop()
 
         st.session_state.df = df
@@ -1047,7 +1032,7 @@ if page == "🎯 Rekomendasi":
             )
             year_min, year_max = year_range
 
-            if selected_display and st.button("🚀 Dapatkan Rekomendasi AI", type="primary", use_container_width=True, key="get_recs_btn"):
+            if selected_display and st.button("🚀 Dapatkan Rekomendasi", type="primary", use_container_width=True, key="get_recs_btn"):
                 matches = df[df["display_title"] == selected_display]
                 if len(matches) == 0:
                     ui_alert("error", "Judul tidak ditemukan!")
@@ -1103,7 +1088,7 @@ if page == "🎯 Rekomendasi":
                             unsafe_allow_html=True,
                         )
 
-                    with st.spinner("🤖 AI sedang mencari rekomendasi terbaik..."):
+                    with st.spinner("🔎 Mencari rekomendasi terbaik..."):
                         recs = recommend_by_index(
                             idx=idx,
                             df=df,
@@ -1124,7 +1109,7 @@ if page == "🎯 Rekomendasi":
                                 <div style="display:flex; align-items:center; gap:1rem;">
                                     <div style="font-size:2.5rem;">🤖</div>
                                     <div>
-                                        <h3 style="margin:0; color:#667eea;">AI Tidak Menemukan Rekomendasi</h3>
+                                        <h3 style="margin:0; color:#667eea;">Tidak Menemukan Rekomendasi</h3>
                                         <div style="margin-top:0.35rem; color:#718096;">Coba sesuaikan filter untuk hasil lebih baik.</div>
                                     </div>
                                 </div>
@@ -1172,8 +1157,8 @@ if page == "🎯 Rekomendasi":
 
     # Tab 2
     with tabs[1]:
-        st.markdown("### 🔍 Pencarian AI dengan Kata Kunci")
-        st.markdown("Masukkan kata kunci dan biarkan AI menemukan konten yang paling sesuai.")
+        st.markdown("### 🔍 Pencarian dengan Kata Kunci")
+        st.markdown("Masukkan kata kunci untuk menemukan konten yang sesuai.")
 
         col_search1, col_search2 = st.columns([3, 1])
         with col_search1:
@@ -1185,7 +1170,7 @@ if page == "🎯 Rekomendasi":
                 key="search_query",
             )
         with col_search2:
-            search_btn = st.button("🔍 Cari dengan AI", type="primary", use_container_width=True, key="search_btn")
+            search_btn = st.button("🔍 Cari", type="primary", use_container_width=True, key="search_btn")
 
         col_filter1, col_filter2, col_filter3 = st.columns(3)
         with col_filter1:
@@ -1212,7 +1197,7 @@ if page == "🎯 Rekomendasi":
             if not query:
                 ui_alert("warning", "Masukkan kata kunci dulu ya 🙂")
             else:
-                with st.spinner("🤖 AI sedang menganalisis kata kunci..."):
+                with st.spinner("🔎 Menganalisis kata kunci..."):
                     recs_q = recommend_by_query(
                         query=query,
                         df=df,
@@ -1229,7 +1214,7 @@ if page == "🎯 Rekomendasi":
                         "error",
                         f"""
                         <div class="glass-panel" style="padding:1.25rem;">
-                            <h3 style="margin:0; color:#667eea;">AI Tidak Menemukan Hasil</h3>
+                            <h3 style="margin:0; color:#667eea;">Tidak Menemukan Hasil</h3>
                             <div style="margin-top:0.4rem; color:#718096;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
                             <div style="margin-top:1rem; color:#718096;">
                                 Tips: pakai keyword bahasa Inggris, kurangi filter, dan gunakan kata yang lebih umum.
@@ -1253,29 +1238,25 @@ if page == "🎯 Rekomendasi":
 
     # Tab 3
     with tabs[2]:
-        st.markdown("## ⭐ Konten Populer & Trending")
+        st.markdown("## ⭐ Konten Populer")
 
         col_pop1, col_pop2, col_pop3, col_pop4 = st.columns(4)
-
         with col_pop1:
             most_common_rating = df["rating"].value_counts().index[0] if len(df["rating"].value_counts()) > 0 else "N/A"
             display_metric_card("Rating Terpopuler", most_common_rating, "Paling sering muncul", "⭐")
-
         with col_pop2:
             display_metric_card("Tahun Rata-rata", str(stats.get("avg_year", 2000)), "Rata-rata rilis", "📅")
-
         with col_pop3:
             top_countries = split_and_count(df["country"], sep=",", top_k=1)
             most_common_country = top_countries.index[0] if len(top_countries) > 0 else "N/A"
             display_metric_card("Negara Teratas", most_common_country[:10], "Produksi terbanyak", "🌍")
-
         with col_pop4:
             top_genres = split_and_count(df["listed_in"], sep=",", top_k=1)
             most_common_genre = top_genres.index[0] if len(top_genres) > 0 else "N/A"
             display_metric_card("Genre Terpopuler", most_common_genre[:12], "Paling banyak", "🎭")
 
         st.divider()
-        st.markdown("### 🎲 Rekomendasi Acak Populer")
+        st.markdown("### 🎲 Rekomendasi Acak")
 
         if len(df) > 0:
             sample_size = min(8, len(df))
@@ -1423,26 +1404,26 @@ elif page == "📊 Dashboard Analitik":
         st.download_button(
             label="📥 Download CSV",
             data=csv,
-            file_name="netflix_ai_dataset.csv",
+            file_name="netflix_dataset.csv",
             mime="text/csv",
             use_container_width=True,
         )
 
 # -----------------------------
-# Page: About AI
+# Page: About System
 # -----------------------------
-elif page == "🤖 Tentang AI":
+elif page == "🤖 Tentang Sistem":
     col_about1, col_about2 = st.columns([2, 1])
 
     with col_about1:
-        st.markdown("## 🤖 Tentang Sistem AI Recommender")
+        st.markdown("## 🤖 Tentang Sistem Rekomendasi")
         st.markdown(
             """
         <div class="glass-panel">
-            <h3 style="color:#667eea; margin-bottom:1rem;">🎯 Visi & Misi</h3>
+            <h3 style="color:#667eea; margin-bottom:1rem;">📌 Ringkasan</h3>
             <p style="color:#4a5568; line-height:1.8; margin-bottom:0;">
                 Sistem ini menggunakan <b>Content-Based Filtering</b> dengan <b>TF-IDF</b> dan <b>Cosine Similarity</b>
-                untuk memberikan rekomendasi konten berdasarkan metadata (genre, deskripsi, cast, director, dsb).
+                untuk memberikan rekomendasi berdasarkan kemiripan metadata (genre, deskripsi, cast, director, dsb).
             </p>
         </div>
         """,
@@ -1450,10 +1431,10 @@ elif page == "🤖 Tentang AI":
         )
 
     with col_about2:
-        st.markdown("## 📈 Performa Sistem")
+        st.markdown("## 📈 Info Teknis")
         display_metric_card("Ukuran Dataset", f"{len(df):,}", "item konten", "📁")
-        display_metric_card("Vector Dimensions", f"{tfidf_matrix.shape[1]:,}", "fitur TF-IDF", "🔢")
-        display_metric_card("Response Time", "< 500ms", "rata-rata", "⚡")
+        display_metric_card("Dimensi Vektor", f"{tfidf_matrix.shape[1]:,}", "fitur TF-IDF", "🔢")
+        display_metric_card("Waktu Respon", "< 500ms", "rata-rata", "⚡")
 
     st.divider()
     st.markdown(
@@ -1461,7 +1442,7 @@ elif page == "🤖 Tentang AI":
     <div style="text-align:center; padding:2.25rem; border-radius:32px; border:1px solid rgba(102,126,234,0.1);
                 background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 50%, rgba(240,147,251,0.05) 100%);">
         <div style="font-size:3rem;" class="floating-icon">🎬</div>
-        <h3 style="color:#667eea; margin:0.75rem 0;">Terima Kasih Telah Menggunakan Netflix AI Recommender!</h3>
+        <h3 style="color:#667eea; margin:0.75rem 0;">Terima Kasih!</h3>
         <p style="color:#718096; margin:0;">Built with Streamlit + Scikit-learn</p>
     </div>
     """,
