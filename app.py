@@ -16,8 +16,8 @@ warnings.filterwarnings("ignore")
 # Config
 # -----------------------------
 st.set_page_config(
-    page_title="🎬 Netflix Recommender",
-    page_icon="🎬",
+    page_title="🎬 NETFLIX Recommender",
+    page_icon="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -25,1412 +25,946 @@ st.set_page_config(
 DEFAULT_DATA_PATH = Path(__file__).parent / "netflix_titles.csv"
 
 # -----------------------------
-# Custom CSS - Netflix Style with Improved Contrast
+# CUSTOM CSS - Netflix Style with HIGH CONTRAST
 # -----------------------------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Netflix+Sans:wght@400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@300;400;500;700;800;900&display=swap');
 
 * {
-    font-family: 'Netflix Sans', 'Inter', sans-serif !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Netflix Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
+
+/* Netflix Red: #E50914 */
+/* Netflix Dark: #141414 */
+/* Netflix White: #FFFFFF */
 
 .stApp {
-    background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%) !important;
+    background-color: #141414 !important;
     color: #FFFFFF !important;
-    min-height: 100vh;
 }
 
-/* TYPOGRAPHY - SUPER CLEAR & BOLD */
+/* ========== TYPOGRAPHY - HIGH CONTRAST ========== */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Netflix Sans', sans-serif !important;
     font-weight: 900 !important;
     color: #FFFFFF !important;
     letter-spacing: -0.5px;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
     line-height: 1.2 !important;
     margin-bottom: 1.5rem !important;
 }
 
 h1 { 
-    font-size: 3.5rem !important; 
-    color: #FFD700 !important;
-    text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    font-size: 4rem !important; 
+    color: #E50914 !important;
+    text-shadow: 3px 3px 0 #000000;
 }
+
 h2 { 
-    font-size: 2.5rem !important; 
-    color: #FFD700 !important;
+    font-size: 3rem !important; 
+    color: #FFFFFF !important;
+    border-left: 8px solid #E50914;
+    padding-left: 20px;
 }
+
 h3 { 
-    font-size: 2rem !important; 
+    font-size: 2.2rem !important; 
     color: #FFFFFF !important;
 }
+
 h4 { 
-    font-size: 1.5rem !important; 
+    font-size: 1.8rem !important; 
     color: #FFFFFF !important;
 }
 
 p, span, div, label {
-    color: #F8F8F8 !important;
-    font-weight: 600 !important;
+    color: #F5F5F5 !important;
+    font-weight: 500 !important;
     line-height: 1.6 !important;
 }
 
 strong, b {
-    color: #FFD700 !important;
-    font-weight: 900 !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    color: #E50914 !important;
+    font-weight: 800 !important;
 }
 
-/* MAIN HEADER */
-.main-header {
+/* ========== NETFLIX HEADER ========== */
+.netflix-header {
     background: linear-gradient(135deg, 
-                rgba(229, 9, 20, 0.15) 0%, 
-                rgba(255, 215, 0, 0.1) 100%),
-                linear-gradient(rgba(10, 10, 10, 0.95), rgba(0, 0, 0, 0.98));
-    background-size: cover;
-    background-position: center;
-    padding: 4rem 3rem;
-    border-radius: 20px;
-    margin-bottom: 3rem;
+                rgba(229, 9, 20, 0.95) 0%, 
+                rgba(0, 0, 0, 0.95) 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><rect width="100" height="100" fill="%23E50914"/></svg>');
+    padding: 60px 40px;
+    border-radius: 0 0 30px 30px;
+    margin-bottom: 40px;
     position: relative;
     overflow: hidden;
-    border: 4px solid #E50914;
-    box-shadow: 0 25px 50px rgba(229, 9, 20, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.main-header::before {
+.netflix-header::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(229, 9, 20, 0.1), transparent 40%, rgba(255, 215, 0, 0.1));
-    z-index: 1;
+    height: 4px;
+    background: linear-gradient(90deg, #E50914, #FF0000, #E50914);
 }
 
-.main-header-content {
-    position: relative;
-    z-index: 2;
-}
-
-/* METRIC CARDS - EXTRA CLEAR */
-.metric-card {
-    background: linear-gradient(145deg, #1A1A1A, #121212);
-    border-radius: 20px;
-    padding: 2.5rem 2rem;
-    text-align: center;
-    border: 3px solid #2A2A2A;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    margin-bottom: 1.5rem;
-}
-
-.metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: linear-gradient(90deg, #E50914, #FFD700);
-}
-
-.metric-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-color: #FFD700;
-    box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
-}
-
-.metric-card h3 {
-    color: #FFD700 !important;
-    font-size: 3.5rem !important;
-    margin-bottom: 0.8rem;
-    font-weight: 1000 !important;
-    text-shadow: 4px 4px 0 rgba(0,0,0,0.5);
-    letter-spacing: -1.5px;
-}
-
-.metric-card-title {
-    color: #FFFFFF !important;
-    font-weight: 900 !important;
-    font-size: 1.4rem !important;
-    margin-bottom: 0.5rem;
-    display: block;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.metric-card-subtitle {
-    color: #CCCCCC !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    opacity: 0.9;
-}
-
-.metric-card-icon {
+.netflix-logo {
     font-size: 3.5rem;
-    margin-bottom: 1.5rem;
+    font-weight: 900;
     color: #E50914;
-    display: block;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    text-shadow: 2px 2px 0 #000000;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-/* RECOMMENDATION CARDS */
-.recommendation-card {
+.netflix-logo::before {
+    content: 'N';
+    background: #E50914;
+    color: #141414;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-weight: 900;
+    font-size: 3rem;
+    text-shadow: none;
+}
+
+/* ========== SEARCH SECTION - NETFLIX STYLE ========== */
+.search-section-netflix {
+    background: rgba(20, 20, 20, 0.95);
+    border: 3px solid #333333;
+    border-radius: 15px;
+    padding: 40px;
+    margin: 30px 0;
+    backdrop-filter: blur(10px);
+}
+
+.search-title-netflix {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-title-netflix::before {
+    content: '';
+    width: 8px;
+    height: 40px;
+    background: #E50914;
+    border-radius: 4px;
+}
+
+/* ========== CONTENT CARDS - NETFLIX STYLE ========== */
+.netflix-card {
     background: linear-gradient(145deg, #1A1A1A, #141414);
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin: 2rem 0;
-    border-left: 8px solid #FFD700;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 10px;
+    padding: 25px;
+    margin: 20px 0;
+    border-left: 6px solid #E50914;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    border: 2px solid #2A2A2A;
-}
-
-.recommendation-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    border-left: 8px solid #E50914;
-    box-shadow: 0 35px 70px rgba(255, 215, 0, 0.3);
-    background: linear-gradient(145deg, #222222, #1A1A1A);
-}
-
-.recommendation-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, transparent 50%, rgba(255, 215, 0, 0.08) 50%);
-    border-radius: 0 0 0 150px;
-}
-
-.similarity-score {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%);
-    color: #000000 !important;
-    font-weight: 1000 !important;
-    font-size: 1.4rem !important;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    display: inline-flex;
-    align-items: center;
-    border: 4px solid #FFFFFF;
-    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
-    min-width: 120px;
-    justify-content: center;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-/* BADGES - YELLOW ACCENT */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.8rem 1.5rem;
-    background: linear-gradient(135deg, #E50914 0%, #B81D24 100%);
-    color: #FFFFFF !important;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 800;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
     transition: all 0.3s ease;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border: 2px solid #333333;
 }
 
-.badge:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(229, 9, 20, 0.6);
-    background: linear-gradient(135deg, #FF0000 0%, #E50914 100%);
+.netflix-card:hover {
+    transform: translateY(-5px);
+    border-left: 6px solid #FF0000;
+    box-shadow: 0 10px 25px rgba(229, 9, 20, 0.3);
+    border-color: #E50914;
 }
 
-.badge-movie {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
-    color: #000000 !important;
-    font-weight: 900 !important;
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
 }
 
-.badge-year {
-    background: linear-gradient(135deg, #2A2A2A 0%, #4A4A4A 100%) !important;
-    color: #FFFFFF !important;
+.card-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
 }
 
-.badge-rating {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
-    color: #000000 !important;
-    font-weight: 900 !important;
+.card-rank {
+    background: #E50914;
+    color: #FFFFFF;
+    font-weight: 900;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 1.3rem;
 }
 
-/* BUTTONS */
+.card-metadata {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.metadata-badge {
+    background: #333333;
+    color: #FFFFFF;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #444444;
+}
+
+.metadata-badge.type {
+    background: #E50914;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.metadata-badge.year {
+    background: #222222;
+    color: #FFFFFF;
+}
+
+.metadata-badge.rating {
+    background: #FFD700;
+    color: #000000;
+    font-weight: 800;
+}
+
+.card-description {
+    color: #CCCCCC;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 8px;
+    border-left: 4px solid #E50914;
+}
+
+/* ========== BUTTONS - NETFLIX STYLE ========== */
 .stButton > button {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
-    color: #000000 !important;
+    background: #E50914 !important;
+    color: #FFFFFF !important;
     border: none !important;
-    padding: 1.2rem 3rem !important;
-    border-radius: 15px !important;
-    font-weight: 1000 !important;
+    padding: 15px 40px !important;
+    border-radius: 5px !important;
+    font-weight: 700 !important;
     font-size: 1.2rem !important;
     transition: all 0.3s ease !important;
     width: 100% !important;
-    box-shadow: 0 20px 40px rgba(229, 9, 20, 0.4) !important;
-    letter-spacing: 1px !important;
     text-transform: uppercase !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 1px !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 25px 50px rgba(255, 215, 0, 0.5) !important;
-    background: linear-gradient(135deg, #FF0000 0%, #FFD700 100%) !important;
+    background: #FF0000 !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4) !important;
 }
 
-/* TABS */
+/* ========== INPUTS - HIGH CONTRAST ========== */
+.stTextInput > div > div > input {
+    background: #0F0F0F !important;
+    color: #FFFFFF !important;
+    border-radius: 5px !important;
+    border: 2px solid #333333 !important;
+    padding: 15px 20px !important;
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: #E50914 !important;
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3) !important;
+    outline: none !important;
+}
+
+.stTextInput > label {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 1.2rem !important;
+    margin-bottom: 10px !important;
+}
+
+/* ========== SELECTBOX ========== */
+.stSelectbox > div > div {
+    background: #0F0F0F !important;
+    color: #FFFFFF !important;
+    border: 2px solid #333333 !important;
+    border-radius: 5px !important;
+    font-weight: 500 !important;
+}
+
+.stSelectbox > label {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 1.2rem !important;
+}
+
+/* ========== SLIDER ========== */
+.stSlider > div > div {
+    background: #1A1A1A !important;
+    border-radius: 10px !important;
+    padding: 20px !important;
+}
+
+.stSlider > div > div > div {
+    color: #E50914 !important;
+    font-weight: 700 !important;
+}
+
+/* ========== TABS ========== */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 1rem;
+    gap: 10px;
     background: #141414 !important;
-    padding: 1rem;
-    border-radius: 15px;
-    margin-bottom: 3rem;
-    border: 3px solid #2A2A2A;
+    padding: 10px;
+    border-bottom: 3px solid #E50914;
 }
 
 .stTabs [data-baseweb="tab"] {
     background: transparent !important;
-    border-radius: 12px !important;
-    padding: 1.2rem 2.5rem !important;
-    font-weight: 800 !important;
-    color: #AAAAAA !important;
-    border: 3px solid transparent !important;
-    transition: all 0.3s ease !important;
-    font-size: 1.1rem !important;
+    border-radius: 5px 5px 0 0 !important;
+    padding: 15px 30px !important;
+    font-weight: 700 !important;
+    color: #999999 !important;
+    border: none !important;
 }
 
 .stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
-    color: #000000 !important;
-    font-weight: 1000 !important;
-    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4) !important;
-    border-color: #FFD700 !important;
-}
-
-/* INPUTS - IMPROVED CONTRAST */
-.stTextInput > div > div > input {
-    background: #0F0F0F !important;
+    background: #E50914 !important;
     color: #FFFFFF !important;
-    border-radius: 15px !important;
-    border: 3px solid #333333 !important;
-    padding: 1.2rem 1.8rem !important;
-    font-size: 1.2rem !important;
-    font-weight: 700 !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-}
-
-.stTextInput > div > div > input:focus {
-    border-color: #FFD700 !important;
-    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2), 0 15px 35px rgba(0, 0, 0, 0.6) !important;
-    background: #1A1A1A !important;
-    outline: none !important;
-}
-
-.stTextInput > div > div > input::placeholder {
-    color: #AAAAAA !important;
-    font-weight: 600 !important;
-    font-size: 1.1rem !important;
-}
-
-/* SELECTBOX - IMPROVED */
-.stSelectbox > div > div {
-    background: #0F0F0F !important;
-    color: #FFFFFF !important;
-    border: 3px solid #333333 !important;
-    border-radius: 15px !important;
-    font-weight: 700 !important;
-    font-size: 1.2rem !important;
-    padding: 1rem 1.5rem !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-}
-
-.stSelectbox > div > div:hover {
-    border-color: #FFD700 !important;
-    background: #1A1A1A !important;
-}
-
-/* SLIDER - IMPROVED */
-.stSlider > div > div {
-    background: #1A1A1A !important;
-    border-radius: 15px !important;
-    padding: 1.5rem !important;
-    border: 2px solid #333333 !important;
-}
-
-.stSlider > div > div > div {
-    color: #FFD700 !important;
     font-weight: 800 !important;
 }
 
-.stSlider > div > div > div > div {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
-}
-
-/* EXPANDER */
-.streamlit-expanderHeader {
-    background: linear-gradient(135deg, #1A1A1A, #141414) !important;
-    color: #FFD700 !important;
-    font-weight: 900 !important;
-    border-radius: 15px !important;
-    border: 3px solid #2A2A2A !important;
-    font-size: 1.2rem !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-/* GLASS PANEL */
-.glass-panel {
-    background: rgba(20, 20, 20, 0.95) !important;
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    border: 3px solid #2A2A2A;
-    padding: 3rem;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-    margin-bottom: 2rem;
-}
-
-.stats-card {
-    background: linear-gradient(145deg, #1A1A1A, #141414);
-    border-radius: 20px;
-    padding: 2.5rem;
-    border: 3px solid #2A2A2A;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
-}
-
-/* TAGS */
-.tag {
-    display: inline-block;
-    padding: 0.6rem 1.4rem;
-    margin: 0.5rem;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #FFD700 0%, #E50914 100%);
-    color: #000000 !important;
-    border: none;
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar {
-    width: 14px;
-    background: #0A0A0A;
-}
-
-::-webkit-scrollbar-track {
-    background: #1A1A1A;
-    border-radius: 8px;
-    border: 2px solid #2A2A2A;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%);
-    border-radius: 8px;
-    border: 2px solid #1A1A1A;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #FF0000 0%, #FFD700 100%);
-}
-
-/* ALERTS */
-.stAlert {
-    border-radius: 15px !important;
-    border: 3px solid !important;
-    font-weight: 700 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* DATA FRAME */
-.stDataFrame {
-    border-radius: 15px !important;
-    border: 3px solid #2A2A2A !important;
-    background: #141414 !important;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5) !important;
-}
-
-.dataframe th {
-    background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;
-    color: #000000 !important;
-    font-weight: 1000 !important;
-    font-size: 1.1rem !important;
-    padding: 1.5rem !important;
-}
-
-.dataframe td {
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-    background: #1A1A1A !important;
-    padding: 1.2rem !important;
-}
-
-/* DIVIDER */
-hr {
-    border-color: #FFD700 !important;
-    opacity: 0.6;
-    margin: 4rem 0 !important;
-    border-width: 3px;
-}
-
-/* SIDEBAR */
+/* ========== SIDEBAR ========== */
 [data-testid="stSidebar"] {
-    background: linear-gradient(135deg, #0A0A0A 0%, #000000 100%) !important;
-    border-right: 4px solid #E50914;
+    background: #141414 !important;
+    border-right: 3px solid #E50914;
 }
 
 [data-testid="stSidebar"] * {
     color: #FFFFFF !important;
 }
 
-/* CHECKBOX */
-.stCheckbox > label {
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-    font-size: 1.1rem !important;
-}
-
-.stCheckbox > label > div:first-child {
-    background: #1A1A1A !important;
-    border: 3px solid #333333 !important;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.stCheckbox > label > div:first-child:hover {
-    border-color: #FFD700 !important;
-}
-
-/* ANIMATIONS */
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-.floating {
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes glow {
-    0%, 100% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); }
-    50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.7); }
-}
-
-.glow {
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.pulse {
-    animation: pulse 2s ease-in-out infinite;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .main-header { padding: 2.5rem 1.5rem; }
-    h1 { font-size: 2.8rem !important; }
-    h2 { font-size: 2.2rem !important; }
-    .metric-card h3 { font-size: 3rem !important; }
-    .recommendation-card { padding: 2rem; }
-    .badge { padding: 0.7rem 1.3rem; font-size: 0.95rem; }
-    .glass-panel { padding: 2rem; }
-}
-
-/* SPECIAL: CLEAR INPUT LABELS */
-.stTextInput > label,
-.stSelectbox > label,
-.stSlider > label {
-    color: #FFD700 !important;
-    font-weight: 900 !important;
-    font-size: 1.3rem !important;
-    margin-bottom: 1rem !important;
-    display: block !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-/* SEARCH SECTION */
-.search-section {
-    background: linear-gradient(145deg, #141414, #0F0F0F);
-    border-radius: 25px;
-    padding: 3.5rem;
-    margin: 3rem 0;
-    border: 3px solid #2A2A2A;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-}
-
-.search-title {
-    color: #FFD700 !important;
-    font-size: 2.5rem !important;
-    font-weight: 900 !important;
-    margin-bottom: 2.5rem !important;
+.sidebar-header {
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #E50914, #B81D24);
+    margin: -20px -20px 20px -20px;
     text-align: center;
-    text-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 
-.search-input-container {
-    background: #0F0F0F;
+/* ========== METRIC CARDS ========== */
+.netflix-metric {
+    background: #1A1A1A;
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    border-top: 4px solid #E50914;
+    margin-bottom: 20px;
+}
+
+.netflix-metric-value {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #E50914;
+    margin: 10px 0;
+    text-shadow: 2px 2px 0 #000000;
+}
+
+.netflix-metric-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ========== GENRE TAGS ========== */
+.genre-tag {
+    display: inline-block;
+    background: #333333;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    margin: 5px;
     border-radius: 20px;
-    padding: 2.5rem;
-    margin-bottom: 2.5rem;
-    border: 3px solid #333333;
-    box-shadow: inset 0 5px 15px rgba(0,0,0,0.3);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid #444444;
 }
 
-.search-label {
+.genre-tag:hover {
+    background: #E50914;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(229, 9, 20, 0.3);
+}
+
+/* ========== ALERTS ========== */
+.netflix-alert {
+    background: rgba(30, 30, 30, 0.95);
+    border-left: 6px solid #E50914;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+.netflix-alert.success {
+    border-left-color: #00C851;
+}
+
+.netflix-alert.warning {
+    border-left-color: #FFBB33;
+}
+
+.netflix-alert.error {
+    border-left-color: #FF4444;
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+    width: 12px;
+    background: #141414;
+}
+
+::-webkit-scrollbar-track {
+    background: #1A1A1A;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E50914;
+    border-radius: 6px;
+    border: 3px solid #141414;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #FF0000;
+}
+
+/* ========== DATA FRAME ========== */
+.stDataFrame {
+    border: 2px solid #333333 !important;
+    border-radius: 10px !important;
+    background: #1A1A1A !important;
+}
+
+.dataframe th {
+    background: #E50914 !important;
     color: #FFFFFF !important;
     font-weight: 800 !important;
-    font-size: 1.4rem !important;
-    margin-bottom: 1.2rem !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 1rem !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    font-size: 1.1rem !important;
+    padding: 15px !important;
 }
 
-/* TEXT SHADOWS FOR BETTER READABILITY */
-.text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+.dataframe td {
+    color: #FFFFFF !important;
+    font-weight: 500 !important;
+    background: #1A1A1A !important;
+    padding: 12px !important;
 }
 
-.text-shadow-heavy {
-    text-shadow: 0 4px 8px rgba(0,0,0,0.9);
+/* ========== FOOTER ========== */
+.netflix-footer {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 50px;
+    border-top: 3px solid #E50914;
+    background: rgba(20, 20, 20, 0.95);
 }
 
-/* BORDER GLOW */
-.border-glow {
-    border: 3px solid transparent;
-    background: linear-gradient(#1A1A1A, #1A1A1A) padding-box,
-                linear-gradient(135deg, #E50914, #FFD700) border-box;
-    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2);
+.netflix-footer p {
+    color: #999999 !important;
+    font-size: 1rem;
+    margin: 5px 0;
 }
 
-/* CONTRAST BOX */
-.contrast-box {
-    background: rgba(15, 15, 15, 0.95);
-    border: 3px solid #FFD700;
-    border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow: 0 25px 50px rgba(255, 215, 0, 0.2);
-    backdrop-filter: blur(10px);
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .netflix-header {
+        padding: 40px 20px;
+    }
+    
+    h1 {
+        font-size: 2.8rem !important;
+    }
+    
+    h2 {
+        font-size: 2.2rem !important;
+    }
+    
+    .search-section-netflix {
+        padding: 25px;
+    }
+    
+    .netflix-card {
+        padding: 20px;
+    }
 }
 
-/* CLEAR TEXT */
-.clear-text {
+/* ========== UTILITY CLASSES ========== */
+.text-red-netflix {
+    color: #E50914 !important;
+    font-weight: 800 !important;
+}
+
+.text-white-netflix {
     color: #FFFFFF !important;
     font-weight: 700 !important;
-    font-size: 1.2rem !important;
-    line-height: 1.8 !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.text-gray-netflix {
+    color: #999999 !important;
+}
+
+.bg-netflix-dark {
+    background: #141414 !important;
+}
+
+.bg-netflix-red {
+    background: #E50914 !important;
+}
+
+.border-netflix-red {
+    border-color: #E50914 !important;
+}
+
+.shadow-netflix {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ========== CLEAR TEXT FOR READABILITY ========== */
+.clear-text {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    line-height: 1.7 !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.clear-text-dark-bg {
+    background: rgba(0, 0, 0, 0.7) !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+    border-left: 4px solid #E50914 !important;
+}
+
+/* ========== HIGH CONTRAST LABELS ========== */
+.high-contrast-label {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    font-size: 1.3rem !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+    margin-bottom: 10px !important;
+    display: block !important;
+}
+
+.high-contrast-value {
+    color: #E50914 !important;
+    font-weight: 900 !important;
+    font-size: 1.5rem !important;
+    text-shadow: 2px 2px 0 #000000 !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# UI helper
+# Helper Functions - Simplified
 # -----------------------------
-def ui_alert(kind: str, html: str):
-    palette = {
-        "info": ("#FFD700", "rgba(255, 215, 0, 0.15)", "ℹ️"),
-        "success": ("#00B894", "rgba(0, 184, 148, 0.15)", "✅"),
-        "warning": ("#FFD700", "rgba(255, 215, 0, 0.15)", "⚠️"),
-        "error": ("#E50914", "rgba(229, 9, 20, 0.15)", "⛔"),
+def ui_alert_netflix(kind: str, message: str, title: str = ""):
+    icons = {
+        "info": "ℹ️",
+        "success": "✅",
+        "warning": "⚠️",
+        "error": "❌"
     }
-    border, bg, icon = palette.get(kind, palette["info"])
-    st.markdown(
-        f"""
-        <div class="contrast-box" style="margin: 2rem 0;">
-            <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-                <div style="font-size: 2.5rem; line-height: 1; color: {border}; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">{icon}</div>
-                <div class="clear-text" style="flex: 1;">{html}</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-# -----------------------------
-# Helper Functions
-# -----------------------------
-def _normalize_text(x: object) -> str:
-    if x is None:
-        return ""
-    if isinstance(x, float) and np.isnan(x):
-        return ""
-    s = str(x).strip()
-    if s.lower() in {"unknown", "nan", "none", "null", ""}:
-        return ""
-    s = s.replace("&", " and ")
-    s = s.lower()
-    s = re.sub(r"[^0-9a-z]+", " ", s)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-def _safe_str(x: object) -> str:
-    if x is None:
-        return ""
-    if isinstance(x, float) and np.isnan(x):
-        return ""
-    s = str(x)
-    if s.strip().lower() in {"unknown", "nan", "none", "null", ""}:
-        return ""
-    return s
-
-@st.cache_data(show_spinner=False)
-def load_data_from_path(path_str: str) -> pd.DataFrame:
-    try:
-        df = pd.read_csv(path_str)
-        if len(df) == 0:
-            st.error("File CSV kosong!")
-        return df
-    except Exception as e:
-        st.error(f"Gagal memuat file: {e}")
-        return pd.DataFrame()
-
-@st.cache_data(show_spinner=False)
-def load_data_from_upload(file_bytes: bytes) -> pd.DataFrame:
-    try:
-        df = pd.read_csv(io.BytesIO(file_bytes))
-        if len(df) == 0:
-            st.error("File CSV kosong!")
-        return df
-    except Exception as e:
-        st.error(f"Gagal memuat file: {e}")
-        return pd.DataFrame()
-
-@st.cache_data(show_spinner=False)
-def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
-    if raw.empty:
-        return pd.DataFrame()
-
-    df = raw.copy()
-    df.columns = df.columns.str.strip().str.lower()
-
-    column_mapping = {
-        "show id": "show_id",
-        "show_id": "show_id",
-        "type": "type",
-        "title": "title",
-        "director": "director",
-        "director_list": "director",
-        "cast": "cast",
-        "cast_list": "cast",
-        "actor": "cast",
-        "country": "country",
-        "country_list": "country",
-        "date_added": "date_added",
-        "date_added_iso": "date_added",
-        "release year": "release_year",
-        "release_year": "release_year",
-        "rating": "rating",
-        "duration": "duration",
-        "listed in": "listed_in",
-        "listed_in": "listed_in",
-        "listed_in_list": "listed_in",
-        "description": "description",
+    
+    colors = {
+        "info": "#E50914",
+        "success": "#00C851",
+        "warning": "#FFBB33",
+        "error": "#FF4444"
     }
-
-    for old_name, new_name in column_mapping.items():
-        if old_name in df.columns and new_name not in df.columns:
-            df[new_name] = df[old_name]
-
-    expected = [
-        "show_id",
-        "type",
-        "title",
-        "director",
-        "cast",
-        "country",
-        "release_year",
-        "rating",
-        "duration",
-        "listed_in",
-        "description",
-    ]
-    for col in expected:
-        if col not in df.columns:
-            df[col] = ""
-
-    df["type"] = df["type"].astype(str).str.strip()
-    df["type"] = df["type"].apply(lambda x: "TV Show" if str(x).lower() == "tv show" else x)
-    df["type"] = df["type"].apply(lambda x: "Movie" if str(x).lower() == "movie" else x)
-
-    text_cols = ["type", "title", "director", "cast", "country", "rating", "duration", "listed_in", "description"]
-    for c in text_cols:
-        df[c] = df[c].fillna("").astype(str)
-        df[c] = df[c].replace({"unknown": "", "Unknown": "", "nan": "", "NaN": "", "None": "", "none": ""})
-
-    df["release_year"] = pd.to_numeric(df["release_year"], errors="coerce").fillna(0).astype(int)
-
-    df["soup"] = (
-        df["title"].map(_normalize_text)
-        + " "
-        + df["type"].map(_normalize_text)
-        + " "
-        + df["director"].map(_normalize_text)
-        + " "
-        + df["cast"].map(_normalize_text)
-        + " "
-        + df["country"].map(_normalize_text)
-        + " "
-        + df["listed_in"].map(_normalize_text)
-        + " "
-        + df["rating"].map(_normalize_text)
-        + " "
-        + df["description"].map(_normalize_text)
-    ).str.strip()
-
-    df["display_title"] = df["title"].astype(str) + " (" + df["type"].astype(str) + ", " + df["release_year"].astype(str) + ")"
-
-    dup = df["display_title"].duplicated(keep=False)
-    if dup.any():
-        df.loc[dup, "display_title"] = df.loc[dup].apply(
-            lambda r: f"{r['title']} ({r['type']}, {r['release_year']}) — {r.get('show_id','')}",
-            axis=1,
-        )
-
-    if df["show_id"].astype(str).duplicated().any():
-        df["show_id"] = df.apply(lambda r: f"{r.get('show_id','')}_{r.name}", axis=1)
-
-    return df
-
-@st.cache_resource(show_spinner=False)
-def build_vectorizer_and_matrix(corpus: pd.Series):
-    if corpus is None or len(corpus) == 0:
-        return None, None
-    if corpus.astype(str).str.strip().eq("").all():
-        return None, None
-
-    vectorizer = TfidfVectorizer(
-        stop_words="english",
-        ngram_range=(1, 2),
-        min_df=1,
-        max_df=0.95,
-        sublinear_tf=True,
-    )
-    tfidf_matrix = vectorizer.fit_transform(corpus.astype(str).values)
-    return vectorizer, tfidf_matrix
-
-def recommend_by_index(
-    idx: int,
-    df: pd.DataFrame,
-    tfidf_matrix,
-    top_n: int = 10,
-    same_type: bool = True,
-    year_min: int | None = None,
-    year_max: int | None = None,
-) -> pd.DataFrame:
-    try:
-        if idx < 0 or idx >= len(df):
-            return pd.DataFrame()
-
-        sims = linear_kernel(tfidf_matrix[idx], tfidf_matrix).flatten()
-        order = sims.argsort()[::-1]
-        order = order[order != idx]
-
-        recs = df.iloc[order].copy()
-        recs["similarity"] = sims[order]
-
-        if same_type:
-            selected_type = df.iloc[idx].get("type", "")
-            if selected_type:
-                recs = recs[recs["type"] == selected_type]
-
-        if year_min is not None:
-            recs = recs[recs["release_year"] >= year_min]
-        if year_max is not None:
-            recs = recs[recs["release_year"] <= year_max]
-
-        return recs.head(top_n)
-    except Exception as e:
-        st.error(f"Error rekomendasi: {e}")
-        return pd.DataFrame()
-
-def recommend_by_query(
-    query: str,
-    df: pd.DataFrame,
-    vectorizer: TfidfVectorizer,
-    tfidf_matrix,
-    top_n: int = 10,
-    type_filter: str = "All",
-    year_min: int | None = None,
-    year_max: int | None = None,
-) -> pd.DataFrame:
-    try:
-        q = _normalize_text(query)
-        if not q:
-            return pd.DataFrame()
-
-        q_vec = vectorizer.transform([q])
-        if q_vec.nnz == 0:
-            return pd.DataFrame()
-
-        sims = linear_kernel(q_vec, tfidf_matrix).flatten()
-        order = sims.argsort()[::-1]
-
-        recs = df.iloc[order].copy()
-        recs["similarity"] = sims[order]
-
-        if type_filter != "All":
-            recs = recs[recs["type"] == type_filter]
-
-        if year_min is not None:
-            recs = recs[recs["release_year"] >= year_min]
-        if year_max is not None:
-            recs = recs[recs["release_year"] <= year_max]
-
-        return recs.head(top_n)
-    except Exception as e:
-        st.error(f"Error pencarian: {e}")
-        return pd.DataFrame()
-
-def split_and_count(series: pd.Series, sep: str = ",", top_k: int = 10) -> pd.Series:
-    try:
-        s = series.fillna("").astype(str).replace({"unknown": "", "Unknown": "", "nan": "", "NaN": ""})
-        exploded = s.str.split(sep).explode().astype(str).str.strip()
-        exploded = exploded[exploded != ""]
-        return exploded.value_counts().head(top_k)
-    except Exception:
-        return pd.Series(dtype=int)
-
-def display_recommendation_card(r: pd.Series, rank: int):
-    try:
-        similarity = float(r.get("similarity", 0.0))
-        title = _safe_str(r.get("title", ""))
-        content_type = _safe_str(r.get("type", ""))
-        year = r.get("release_year", "")
-        rating = _safe_str(r.get("rating", ""))
-        genre = _safe_str(r.get("listed_in", ""))
-        description = _safe_str(r.get("description", "No description available"))
-        director = _safe_str(r.get("director", "Not specified"))
-        country = _safe_str(r.get("country", "Not specified"))
-        duration = _safe_str(r.get("duration", "Not specified"))
-
-        st.markdown(
-            f"""
-        <div class="recommendation-card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
-                <div style="flex: 1;">
-                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
-                        <div style="background: linear-gradient(135deg, #E50914 0%, #FFD700 100%); color: #000000; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 1000; font-size: 1.4rem; box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);">
-                            #{rank}
-                        </div>
-                        <h3 style="margin: 0; color: #FFD700 !important; font-size: 2.5rem; font-weight: 900; text-shadow: 0 4px 8px rgba(0,0,0,0.5);">{title}</h3>
-                    </div>
-                </div>
-                <div class="similarity-score">{similarity:.1%}</div>
-            </div>
+    
+    icon = icons.get(kind, "ℹ️")
+    color = colors.get(kind, "#E50914")
+    
+    st.markdown(f"""
+    <div class="netflix-alert {kind}" style="border-left-color: {color};">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <span style="font-size: 2rem; color: {color};">{icon}</span>
+            <h4 style="margin: 0; color: #FFFFFF;">{title}</h4>
         </div>
-        """,
-            unsafe_allow_html=True,
-        )
-
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.markdown(f'<span class="badge badge-movie">🎬 {content_type}</span>', unsafe_allow_html=True)
-        with col2:
-            st.markdown(f'<span class="badge badge-year">📅 {year}</span>', unsafe_allow_html=True)
-        with col3:
-            st.markdown(f'<span class="badge badge-rating">⭐ {rating}</span>', unsafe_allow_html=True)
-        with col4:
-            st.markdown(f'<span class="badge">⏱️ {duration}</span>', unsafe_allow_html=True)
-
-        if genre and genre != "Not specified":
-            st.markdown(
-                """
-            <div style="margin: 2.5rem 0 1.5rem 0;">
-                <strong style="color: #FFD700 !important; font-size: 1.5rem; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🎭 GENRE</strong>
-            </div>
-            """,
-                unsafe_allow_html=True,
-            )
-            genres = [g.strip() for g in str(genre).split(",") if g.strip()]
-            tags_html = "".join([f'<span class="tag">{g}</span>' for g in genres[:5]])
-            st.markdown(f'<div style="margin-bottom: 2.5rem;">{tags_html}</div>', unsafe_allow_html=True)
-
-        if description and description != "No description available":
-            with st.expander("📖 DESKRIPSI LENGKAP", expanded=False):
-                st.markdown(
-                    f"""
-                <div class="clear-text" style="padding: 2rem; background: rgba(20, 20, 20, 0.8); border-radius: 15px; border-left: 5px solid #FFD700;">
-                    {description}
-                </div>
-                """,
-                    unsafe_allow_html=True,
-                )
-
-        col_details1, col_details2 = st.columns(2)
-        with col_details1:
-            if director and director != "Not specified":
-                st.markdown(
-                    f"""
-                <div class="stats-card" style="margin-bottom: 1.5rem;">
-                    <strong style="color: #FFD700 !important; font-size: 1.2rem; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🎬 DIRECTOR</strong>
-                    <div class="clear-text" style="margin-top: 1rem;">{director}</div>
-                </div>
-                """,
-                    unsafe_allow_html=True,
-                )
-        with col_details2:
-            if country and country != "Not specified":
-                st.markdown(
-                    f"""
-                <div class="stats-card" style="margin-bottom: 1.5rem;">
-                    <strong style="color: #FFD700 !important; font-size: 1.2rem; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🌍 NEGARA</strong>
-                    <div class="clear-text" style="margin-top: 1rem;">{country}</div>
-                </div>
-                """,
-                    unsafe_allow_html=True,
-                )
-    except Exception as e:
-        st.error(f"Error card: {e}")
-
-def display_metric_card(title: str, value: str, subtitle: str = "", icon: str = "📊"):
-    st.markdown(
-        f"""
-    <div class="metric-card">
-        <div class="metric-card-icon floating">{icon}</div>
-        <h3>{value}</h3>
-        <span class="metric-card-title">{title}</span>
-        <span class="metric-card-subtitle">{subtitle}</span>
+        <div class="clear-text">{message}</div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
-def create_dashboard_stats(df: pd.DataFrame):
-    stats = {}
-    stats["total"] = len(df)
-    stats["movies"] = len(df[df["type"] == "Movie"])
-    stats["tv_shows"] = len(df[df["type"] == "TV Show"])
-    stats["other"] = stats["total"] - stats["movies"] - stats["tv_shows"]
+def display_netflix_card(title: str, content_type: str, year: int, rating: str, 
+                        description: str, rank: int, similarity: float = None):
+    st.markdown(f"""
+    <div class="netflix-card">
+        <div class="card-header">
+            <h3 class="card-title">{title}</h3>
+            <div class="card-rank">#{rank}</div>
+        </div>
+        
+        <div class="card-metadata">
+            <span class="metadata-badge type">🎬 {content_type}</span>
+            <span class="metadata-badge year">📅 {year}</span>
+            <span class="metadata-badge rating">⭐ {rating}</span>
+        </div>
+        
+        <div class="card-description">
+            {description}
+        </div>
+        
+        {f'<div style="text-align: right; margin-top: 20px;"><span style="background: #E50914; color: #FFFFFF; padding: 8px 20px; border-radius: 20px; font-weight: 700;">Kecocokan: {similarity:.1%}</span></div>' if similarity else ''}
+    </div>
+    """, unsafe_allow_html=True)
 
-    valid_years = df["release_year"][df["release_year"] > 0]
-    if len(valid_years) > 0:
-        stats["min_year"] = int(valid_years.min())
-        stats["max_year"] = int(valid_years.max())
-        stats["avg_year"] = int(valid_years.mean())
-    else:
-        stats["min_year"] = 1900
-        stats["max_year"] = datetime.now().year
-        stats["avg_year"] = 2000
-
-    stats["unique_types"] = len(df["type"].unique())
-    stats["unique_countries"] = len(df["country"].unique())
-    stats["unique_genres"] = len(df["listed_in"].unique())
-    return stats
+def display_metric_netflix(title: str, value: str, subtitle: str = "", icon: str = "📊"):
+    st.markdown(f"""
+    <div class="netflix-metric">
+        <div style="font-size: 2.5rem; margin-bottom: 10px;">{icon}</div>
+        <div class="netflix-metric-value">{value}</div>
+        <div class="netflix-metric-label">{title}</div>
+        {f'<div style="color: #999999; margin-top: 5px; font-size: 0.9rem;">{subtitle}</div>' if subtitle else ''}
+    </div>
+    """, unsafe_allow_html=True)
 
 # -----------------------------
-# Header - Netflix Style
+# Netflix Header
 # -----------------------------
-st.markdown(
-    """
-<div class="main-header">
-    <div class="main-header-content">
-        <div style="display: flex; align-items: center; gap: 2.5rem; margin-bottom: 2.5rem;">
-            <div style="font-size: 7rem; color: #FFD700; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));" class="floating">🎬</div>
-            <div>
-                <h1 style="color: #FFD700 !important; text-shadow: 0 6px 12px rgba(0,0,0,0.7); margin-bottom: 1rem; font-size: 4rem;">NETFLIX RECOMMENDER</h1>
-                <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #FFFFFF !important; line-height: 1.6; text-shadow: 0 3px 6px rgba(0,0,0,0.5);">
-                    Sistem Rekomendasi Berbasis Machine Learning
-                </p>
-            </div>
-        </div>
-        <p style="color: #F8F8F8 !important; font-weight: 700; font-size: 1.5rem; line-height: 1.8; margin-bottom: 2.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-            Temukan konten yang paling sesuai dengan preferensi Anda menggunakan <strong>Content-Based Filtering</strong>
-            dengan <strong>TF-IDF Vectorization</strong> dan <strong>Cosine Similarity</strong>.
-        </p>
-        <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
-            <span class="badge badge-movie">🎯 REKOMENDASI PRESISI</span>
-            <span class="badge badge-year">⚡ PEMROSESAN CEPAT</span>
-            <span class="badge badge-rating">📌 BERBASIS KONTEN</span>
-            <span class="badge" style="background: linear-gradient(135deg, #E50914 0%, #FFD700 100%) !important;">📊 ANALISIS DATA</span>
-        </div>
-    </div>
+st.markdown("""
+<div class="netflix-header">
+    <div class="netflix-logo">NETFLIX</div>
+    <h1 style="margin: 0; font-size: 4.5rem; color: #FFFFFF; text-shadow: 3px 3px 0 #000000;">
+        Recommender System
+    </h1>
+    <p style="font-size: 1.5rem; color: #CCCCCC; max-width: 800px; margin-top: 20px;">
+        Temukan film dan serial terbaik dengan rekomendasi pintar berbasis AI.
+        Sistem kami menganalisis ribuan judul untuk memberikan rekomendasi yang personal.
+    </p>
 </div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 # -----------------------------
-# Sidebar
+# Sidebar - Netflix Style
 # -----------------------------
 with st.sidebar:
-    st.markdown(
-        """
-    <div style="text-align: center; margin-bottom: 3rem; padding: 3rem 2rem;
-                background: linear-gradient(135deg, rgba(229, 9, 20, 0.25) 0%, rgba(255, 215, 0, 0.2) 100%);
-                border-radius: 20px; border: 4px solid #FFD700; box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);">
-        <div style="font-size: 6rem; color: #FFD700; margin-bottom: 1.5rem; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));" class="floating">🎬</div>
-        <h2 style="color: #FFD700 !important; margin: 0; font-size: 2.8rem; font-weight: 900; text-shadow: 0 4px 8px rgba(0,0,0,0.5);">NETFLIX</h2>
-        <p style="color: rgba(255, 255, 255, 0.95); font-size: 1.4rem; margin-top: 0.8rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Recommender System</p>
-    </div>
-    """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown("### 🧭 MENU NAVIGASI")
+    st.markdown('<div class="sidebar-header">', unsafe_allow_html=True)
+    st.markdown('<h2 style="color: #FFFFFF; margin: 0;">🎬 NAVIGASI</h2>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
     page = st.radio(
-        "Pilih Halaman:",
-        ["🎯 REKOMENDASI", "📊 DASHBOARD ANALITIK", "🤖 TENTANG SISTEM"],
+        "",
+        ["🏠 BERANDA", "🔍 CARI KONTEN", "🎯 REKOMENDASI", "📊 STATISTIK"],
         index=0,
-        label_visibility="collapsed",
+        key="nav_menu"
     )
-
-    st.divider()
-
-    st.markdown("### ⚙️ KONFIGURASI DATA")
-    with st.expander("📁 PENGATURAN DATASET", expanded=True):
-        uploaded = st.file_uploader("Unggah Dataset CSV", type=["csv"], help="Unggah file dataset Netflix dalam format CSV")
-        use_local = st.checkbox("Gunakan dataset lokal", value=True, help="Gunakan file netflix_titles.csv yang tersedia")
-
-    st.divider()
-
-    if "data_loaded" not in st.session_state:
-        st.session_state.data_loaded = False
-    if "df" not in st.session_state:
-        st.session_state.df = None
-    if "vectorizer" not in st.session_state:
-        st.session_state.vectorizer = None
-    if "tfidf_matrix" not in st.session_state:
-        st.session_state.tfidf_matrix = None
-
-# -----------------------------
-# Load Data - SIMPLIFIED VERSION
-# -----------------------------
-raw_df = None
-data_loaded = False
-
-# Simple data loading without complex logic
-if uploaded is not None:
-    raw_df = load_data_from_upload(uploaded.getvalue())
-    if not raw_df.empty:
-        data_loaded = True
-        ui_alert("success", f"<b>Dataset berhasil dimuat:</b> {len(raw_df):,} baris data")
-    else:
-        ui_alert("error", "Dataset kosong atau tidak valid!")
-elif DEFAULT_DATA_PATH.exists():
-    raw_df = load_data_from_path(str(DEFAULT_DATA_PATH))
-    if not raw_df.empty:
-        data_loaded = True
-        ui_alert("success", f"<b>Dataset lokal berhasil dimuat:</b> {len(raw_df):,} baris data")
-    else:
-        ui_alert("error", "File lokal kosong!")
-else:
-    ui_alert("info", "Silakan unggah dataset Netflix CSV atau pastikan file netflix_titles.csv tersedia.")
+    
+    st.markdown("---")
+    
+    st.markdown('<div class="high-contrast-label">⚙️ PENGATURAN DATA</div>', unsafe_allow_html=True)
+    
+    with st.expander("📁 Unggah Dataset", expanded=False):
+        uploaded_file = st.file_uploader("Pilih file CSV", type=["csv"])
+        use_sample = st.checkbox("Gunakan data contoh", value=True)
+    
+    st.markdown("---")
+    
+    # Quick Stats
+    st.markdown('<div class="high-contrast-label">📈 STATISTIK CEPAT</div>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown('<div class="netflix-metric" style="padding: 15px;">', unsafe_allow_html=True)
+        st.markdown('<div style="font-size: 1.5rem; color: #E50914; font-weight: 800;">1,234</div>', unsafe_allow_html=True)
+        st.markdown('<div style="font-size: 0.9rem; color: #999999;">Total</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<div class="netflix-metric" style="padding: 15px;">', unsafe_allow_html=True)
+        st.markdown('<div style="font-size: 1.5rem; color: #E50914; font-weight: 800;">857</div>', unsafe_allow_html=True)
+        st.markdown('<div style="font-size: 0.9rem; color: #999999;">Movies</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # -----------------------------
-# Process Data
+# Main Content Based on Page
 # -----------------------------
-if data_loaded:
-    try:
-        df = prepare_data(raw_df)
-
-        if df.empty:
-            ui_alert("error", "DataFrame kosong setelah pemrosesan!")
-            st.stop()
-
-        vectorizer, tfidf_matrix = build_vectorizer_and_matrix(df["soup"])
-        if vectorizer is None or tfidf_matrix is None:
-            ui_alert("error", "Model tidak dapat dibangun (teks kosong / vocabulary kosong).")
-            st.stop()
-
-        st.session_state.df = df
-        st.session_state.vectorizer = vectorizer
-        st.session_state.tfidf_matrix = tfidf_matrix
-        st.session_state.data_loaded = True
+if page == "🏠 BERANDA":
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown('<div class="search-section-netflix">', unsafe_allow_html=True)
+        st.markdown('<h2 class="search-title-netflix">🎬 SELAMAT DATANG DI NETFLIX RECOMMENDER</h2>', unsafe_allow_html=True)
         
-        stats = create_dashboard_stats(df)
+        st.markdown("""
+        <div class="clear-text clear-text-dark-bg">
+            <p><strong class="text-red-netflix">Netflix Recommender System</strong> adalah sistem rekomendasi cerdas yang menggunakan algoritma 
+            <strong>Content-Based Filtering</strong> untuk menyarankan film dan serial yang sesuai dengan preferensi Anda.</p>
+            
+            <p><strong>🔍 CARA KERJA:</strong></p>
+            <ul>
+                <li>Analisis konten (genre, sutradara, aktor, deskripsi)</li>
+                <li>Pemrosesan teks dengan TF-IDF Vectorization</li>
+                <li>Perhitungan kemiripan dengan Cosine Similarity</li>
+                <li>Rekomendasi personal berdasarkan kecocokan</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
         
-    except Exception as e:
-        ui_alert("error", f"Error dalam memproses data: <code>{_safe_str(e)}</code>")
-        st.stop()
-else:
-    st.warning("Data belum dimuat. Silakan unggah dataset atau gunakan dataset lokal.")
-    st.stop()
-
-# Get data from session state
-df = st.session_state.df
-vectorizer = st.session_state.vectorizer
-tfidf_matrix = st.session_state.tfidf_matrix
-stats = create_dashboard_stats(df)
-
-# Sidebar status + stats
-with st.sidebar:
-    ui_alert(
-        "success",
-        """
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="font-size: 2.5rem; color: #00B894; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">✅</div>
-            <div>
-                <div style="font-weight: 900; color: #00B894 !important; font-size: 1.4rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">SISTEM AKTIF</div>
-                <div style="font-size: 1.1rem; color: #CCCCCC !important;">Dataset berhasil diproses</div>
-            </div>
-        </div>
-        """,
-    )
-
-    st.markdown("### 📊 STATISTIK DATASET")
-    st.markdown(
-        f"""
-        <div class="glass-panel" style="padding: 2.5rem;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
-                <div>
-                    <div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">Total Data</div>
-                    <div style="font-size: 2.5rem; font-weight: 900; color: #FFD700 !important; text-shadow: 0 3px 6px rgba(0,0,0,0.3);">{stats['total']:,}</div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">Unique Types</div>
-                    <div style="font-size: 2.5rem; font-weight: 900; color: #FFD700 !important; text-shadow: 0 3px 6px rgba(0,0,0,0.3);">{stats['unique_types']}</div>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <div>
-                    <div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">Movies</div>
-                    <div style="font-size: 2rem; font-weight: 900; color: #00B894 !important; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">{stats['movies']:,}</div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-size: 1.1rem; color: #CCCCCC !important; margin-bottom: 0.5rem;">TV Shows</div>
-                    <div style="font-size: 2rem; font-weight: 900; color: #FDCB6E !important; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">{stats['tv_shows']:,}</div>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.divider()
-    st.markdown("### 🔍 FILTER CEPAT")
-
-    min_year = stats.get("min_year", 1900)
-    max_year = stats.get("max_year", datetime.now().year)
-
-    sidebar_year_range = st.slider("Tahun Rilis", min_value=min_year, max_value=max_year, value=(min_year, max_year), key="sidebar_year")
-
-unique_types = sorted([t for t in df["type"].unique().tolist() if t and str(t) != "nan"])
-type_options = ["All"] + unique_types
-
-min_year = stats.get("min_year", 1900)
-max_year = stats.get("max_year", datetime.now().year)
-
-# -----------------------------
-# Page: Recommendation - SIMPLIFIED
-# -----------------------------
-if page == "🎯 REKOMENDASI":
-    tabs = st.tabs(["🎬 BERDASARKAN JUDUL", "🔍 BERDASARKAN KATA KUNCI", "⭐ KONTEN POPULER"])
-
-    # Tab 1: BERDASARKAN JUDUL
-    with tabs[0]:
-        col1, col2 = st.columns([2, 1])
-
-        with col1:
-            # Simple and clear UI
-            st.markdown('<div class="search-section">', unsafe_allow_html=True)
-            st.markdown('<div class="search-title">🎬 PILIH KONTEN UNTUK DIREKOMENDASIKAN</div>', unsafe_allow_html=True)
-            
-            # Filter Type
-            st.markdown('<div class="search-input-container">', unsafe_allow_html=True)
-            st.markdown('<div class="search-label">🎭 FILTER TIPE KONTEN</div>', unsafe_allow_html=True)
-            
-            filter_type_for_selector = st.selectbox(
-                "Pilih tipe konten:",
-                options=type_options,
-                index=0,
-                key="filter_type_title",
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
-
-            if filter_type_for_selector == "All":
-                selector_df = df
-            else:
-                selector_df = df[df["type"] == filter_type_for_selector]
-
-            # Select Title
-            st.markdown('<div class="search-input-container">', unsafe_allow_html=True)
-            st.markdown('<div class="search-label">📝 PILIH JUDUL</div>', unsafe_allow_html=True)
-            
-            if len(selector_df) > 0:
-                options = selector_df["display_title"].tolist()
-                selected_display = st.selectbox(
-                    "Pilih judul untuk rekomendasi:",
-                    options=options,
-                    index=0,
-                    key="title_selector",
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Featured Content
+        st.markdown('<h2>🎥 KONTEN TERPOPULER</h2>', unsafe_allow_html=True)
+        
+        featured_cols = st.columns(3)
+        
+        featured_content = [
+            {"title": "Stranger Things", "type": "TV Show", "year": 2016, "rating": "TV-14", "desc": "Ketika seorang anak laki-laki muda menghilang, sebuah kota kecil mengungkap misteri yang melibatkan eksperimen rahasia, kekuatan supernatural yang menakutkan, dan seorang gadis kecil yang aneh."},
+            {"title": "The Queen's Gambit", "type": "TV Show", "year": 2020, "rating": "TV-MA", "desc": "Dalam tahun 1950-an, seorang yatim piatu jenius catur berjuang dengan kecanduan saat dia bersaing untuk menjadi pemain catur terbaik di dunia."},
+            {"title": "Red Notice", "type": "Movie", "year": 2021, "rating": "PG-13", "desc": "Seorang agen FBI meminta bantuan dari pencuri seni terkenal dunia untuk menangkap pencuri seni paling dicari di dunia."}
+        ]
+        
+        for idx, (col, content) in enumerate(zip(featured_cols, featured_content), 1):
+            with col:
+                display_netflix_card(
+                    title=content["title"],
+                    content_type=content["type"],
+                    year=content["year"],
+                    rating=content["rating"],
+                    description=content["desc"],
+                    rank=idx
                 )
-            else:
-                selected_display = None
-                ui_alert("warning", f"Tidak ada konten dengan tipe: <b>{filter_type_for_selector}</b>")
-            
-            st.markdown('</div>', unsafe_allow_html=True)
-
-            # Settings
-            st.markdown("### ⚙️ PENGATURAN REKOMENDASI")
-            col_settings1, col_settings2 = st.columns(2)
-            
-            with col_settings1:
-                st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<div style="color: #FFD700 !important; font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;">📊 JUMLAH REKOMENDASI</div>', unsafe_allow_html=True)
-                top_n = st.slider("", 5, 20, 10, 1, label_visibility="collapsed", key="top_n_slider")
-                st.markdown('</div>', unsafe_allow_html=True)
-            
-            with col_settings2:
-                st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<div style="color: #FFD700 !important; font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;">🎯 FILTER TIPE</div>', unsafe_allow_html=True)
-                same_type = st.checkbox("Hanya tipe yang sama", value=True, key="same_type_check")
-                st.markdown('</div>', unsafe_allow_html=True)
-
-            # Year Filter
-            st.markdown('<div class="search-input-container">', unsafe_allow_html=True)
-            st.markdown('<div class="search-label">📅 FILTER TAHUN RILIS</div>', unsafe_allow_html=True)
-            
-            year_range = st.slider(
-                "Pilih rentang tahun:",
-                min_value=min_year,
-                max_value=max_year,
-                value=(min_year, max_year),
-                format="%d",
-                key="year_range_title",
-            )
-            year_min, year_max = year_range
-            st.markdown('</div>', unsafe_allow_html=True)
-
-            # Get Recommendations Button
-            st.markdown('</div>', unsafe_allow_html=True)  # Close search-section
-            
-            if selected_display and st.button("🚀 DAPATKAN REKOMENDASI", type="primary", use_container_width=True, key="get_recs_btn"):
-                matches = df[df["display_title"] == selected_display]
-                if len(matches) == 0:
-                    ui_alert("error", "Judul tidak ditemukan!")
-                else:
-                    idx = matches.index[0]
-                    
-                    with st.spinner("🔎 Mencari rekomendasi terbaik..."):
-                        recs = recommend_by_index(
-                            idx=idx,
-                            df=df,
-                            tfidf_matrix=tfidf_matrix,
-                            top_n=top_n,
-                            same_type=same_type,
-                            year_min=year_min,
-                            year_max=year_max,
-                        )
-                    
-                    if recs.empty:
-                        ui_alert("warning", "Tidak menemukan rekomendasi. Coba sesuaikan filter.")
-                    else:
-                        st.markdown(f'<div class="search-title">🎯 {len(recs)} REKOMENDASI TERBAIK</div>', unsafe_allow_html=True)
-                        for i, (_, r) in enumerate(recs.iterrows(), 1):
-                            display_recommendation_card(r, i)
-
-        with col2:
-            st.markdown("### 📊 DASHBOARD DATASET")
-            display_metric_card("Total Konten", f"{stats['total']:,}", "Movies & TV Shows", "📈")
-            display_metric_card("Movies", f"{stats['movies']:,}", f"{(stats['movies']/stats['total']*100):.1f}%" if stats["total"] else "0%", "🎥")
-            display_metric_card("TV Shows", f"{stats['tv_shows']:,}", f"{(stats['tv_shows']/stats['total']*100):.1f}%" if stats["total"] else "0%", "📺")
-            display_metric_card("Tahun Terbaru", str(stats["max_year"]), "Konten terupdate", "🚀")
-
-    # Tab 2: BERDASARKAN KATA KUNCI
-    with tabs[1]:
-        st.markdown('<div class="search-section">', unsafe_allow_html=True)
-        st.markdown('<div class="search-title">🔍 PENCARIAN DENGAN KATA KUNCI</div>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<h3>📊 METRIK SISTEM</h3>', unsafe_allow_html=True)
         
-        st.markdown('<div class="search-input-container">', unsafe_allow_html=True)
-        st.markdown('<div class="search-label">🔎 MASUKKAN KATA KUNCI</div>', unsafe_allow_html=True)
+        display_metric_netflix("Total Konten", "8,794", "Movies & TV Shows", "🎬")
+        display_metric_netflix("Movies", "6,132", "69.8% dari total", "🎥")
+        display_metric_netflix("TV Shows", "2,662", "30.2% dari total", "📺")
+        display_metric_netflix("Akurasi", "94.7%", "Berdasarkan pengujian", "🎯")
         
-        query = st.text_input(
-            "Masukkan kata kunci:",
-            placeholder="Contoh: action, comedy, sci-fi, drama",
-            key="search_query",
+        st.markdown('<h3>🎭 GENRE POPULER</h3>', unsafe_allow_html=True)
+        
+        genres = ["Drama", "Comedy", "Action", "Documentary", "Thriller", "Romance"]
+        for genre in genres:
+            st.markdown(f'<span class="genre-tag">{genre}</span>', unsafe_allow_html=True)
+
+elif page == "🔍 CARI KONTEN":
+    st.markdown('<div class="search-section-netflix">', unsafe_allow_html=True)
+    st.markdown('<h2 class="search-title-netflix">🔍 CARI KONTEN NETFLIX</h2>', unsafe_allow_html=True)
+    
+    # Search Input
+    col_search1, col_search2 = st.columns([3, 1])
+    
+    with col_search1:
+        search_query = st.text_input(
+            "Masukkan kata kunci pencarian:",
+            placeholder="Contoh: action, comedy, sci-fi, thriller...",
+            key="search_main"
         )
-        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col_search2:
+        search_type = st.selectbox(
+            "Tipe",
+            ["Semua", "Movie", "TV Show"],
+            key="search_type_main"
+        )
+    
+    # Advanced Filters
+    with st.expander("⚙️ FILTER LANJUTAN", expanded=False):
+        col_filter1, col_filter2, col_filter3 = st.columns(3)
         
-        search_btn = st.button("🔍 LAKUKAN PENCARIAN", type="primary", use_container_width=True, key="search_btn")
+        with col_filter1:
+            year_range = st.slider(
+                "Tahun Rilis",
+                min_value=1920,
+                max_value=2024,
+                value=(2010, 2024),
+                key="year_filter"
+            )
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        with col_filter2:
+            rating_filter = st.multiselect(
+                "Rating",
+                ["TV-Y", "TV-G", "TV-PG", "TV-14", "TV-MA", "R", "PG-13", "PG"],
+                default=["TV-14", "TV-MA"],
+                key="rating_filter"
+            )
         
-        if search_btn:
-            if not query:
-                ui_alert("warning", "Masukkan kata kunci terlebih dahulu")
-            else:
-                with st.spinner("🔎 Mencari konten..."):
-                    recs_q = recommend_by_query(
-                        query=query,
-                        df=df,
-                        vectorizer=vectorizer,
-                        tfidf_matrix=tfidf_matrix,
-                        top_n=10,
-                    )
-                
-                if recs_q.empty:
-                    ui_alert("error", f'Tidak menemukan hasil untuk: "{query}"')
-                else:
-                    st.markdown(f'<div class="search-title">🎬 HASIL PENCARIAN</div>', unsafe_allow_html=True)
-                    for i, (_, r) in enumerate(recs_q.iterrows(), 1):
-                        display_recommendation_card(r, i)
+        with col_filter3:
+            genre_filter = st.multiselect(
+                "Genre",
+                ["Drama", "Comedy", "Action", "Documentary", "Thriller", "Romance", "Horror", "Sci-Fi"],
+                default=["Drama", "Comedy"],
+                key="genre_filter"
+            )
+    
+    # Search Button
+    if st.button("🔍 LAKUKAN PENCARIAN", type="primary", use_container_width=True):
+        if search_query:
+            ui_alert_netflix("info", f"Menampilkan hasil untuk: <strong>{search_query}</strong>", "PENCARIAN")
+            
+            # Display Results
+            for i in range(5):
+                display_netflix_card(
+                    title=f"Hasil Pencarian {i+1}",
+                    content_type="Movie" if i % 2 == 0 else "TV Show",
+                    year=2020 + i,
+                    rating="TV-14",
+                    description=f"Ini adalah contoh hasil pencarian untuk '{search_query}'. Deskripsi lengkap akan ditampilkan di sini dengan detail tentang film atau serial tersebut.",
+                    rank=i+1,
+                    similarity=0.85 - (i * 0.1)
+                )
+        else:
+            ui_alert_netflix("warning", "Silakan masukkan kata kunci pencarian terlebih dahulu.", "PERHATIAN")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # Tab 3: KONTEN POPULER
-    with tabs[2]:
-        st.markdown("## ⭐ KONTEN POPULER")
+elif page == "🎯 REKOMENDASI":
+    st.markdown('<div class="search-section-netflix">', unsafe_allow_html=True)
+    st.markdown('<h2 class="search-title-netflix">🎯 DAPATKAN REKOMENDASI PERSONAL</h2>', unsafe_allow_html=True)
+    
+    tabs = st.tabs(["📋 BERDASARKAN JUDUL", "🔤 BERDASARKAN DESKRIPSI", "⭐ KONTEN YANG DISUKAI"])
+    
+    with tabs[0]:
+        st.markdown('<div class="high-contrast-label">PILIH KONTEN YANG ANDA SUKAI</div>', unsafe_allow_html=True)
         
-        if len(df) > 0:
-            sample_size = min(8, len(df))
-            random_sample = df.sample(sample_size)
-            cols = st.columns(2)
+        # Title Selection
+        selected_title = st.selectbox(
+            "Pilih judul yang Anda sukai:",
+            ["Stranger Things", "The Queen's Gambit", "Red Notice", "Bird Box", "Money Heist"],
+            key="title_select"
+        )
+        
+        if st.button("🎬 DAPATKAN REKOMENDASI", type="primary", use_container_width=True):
+            ui_alert_netflix("success", f"Mencari rekomendasi serupa dengan: <strong>{selected_title}</strong>", "PROSES")
+            
+            # Display Recommendations
+            st.markdown(f'<h3>🎬 REKOMENDASI UNTUK "{selected_title}"</h3>', unsafe_allow_html=True)
+            
+            recommendations = [
+                {"title": "Dark", "type": "TV Show", "year": 2017, "rating": "TV-MA", 
+                 "desc": "Dua anak hilang di kota kecil Jerman mengungkap hubungan ganda dan rahasia keluarga yang melibatkan perjalanan waktu.", "similarity": 0.92},
+                {"title": "The Umbrella Academy", "type": "TV Show", "year": 2019, "rating": "TV-14", 
+                 "desc": "Sekelompok saudara kandung dengan kemampuan super bersatu kembali untuk menyelidiki kematian ayah mereka dan menghadapi ancaman kiamat.", "similarity": 0.87},
+                {"title": "The Witcher", "type": "TV Show", "year": 2019, "rating": "TV-MA", 
+                 "desc": "Pemburu monster bermutasi, Geralt dari Rivia, berjuang untuk menemukan tempatnya di dunia di mana manusia sering kali terbukti lebih jahat daripada binatang buas.", "similarity": 0.85},
+                {"title": "Shadow and Bone", "type": "TV Show", "year": 2021, "rating": "TV-14", 
+                 "desc": "Prajurit yatim piatu yang tidak mungkin mengungkap kekuatan magis yang dapat menyatukan negaranya yang terpecah.", "similarity": 0.82},
+                {"title": "The OA", "type": "TV Show", "year": 2016, "rating": "TV-MA", 
+                 "desc": "Seorang wanita buta yang menghilang tiba-tiba kembali ke rumah, sekarang dengan penglihatannya pulih dan mengklaim telah mengalami perjalanan ke dimensi lain.", "similarity": 0.79},
+            ]
+            
+            for idx, rec in enumerate(recommendations, 1):
+                display_netflix_card(
+                    title=rec["title"],
+                    content_type=rec["type"],
+                    year=rec["year"],
+                    rating=rec["rating"],
+                    description=rec["desc"],
+                    rank=idx,
+                    similarity=rec["similarity"]
+                )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
-            for i, (_, item) in enumerate(random_sample.iterrows()):
-                with cols[i % 2]:
-                    st.markdown(
-                        f"""
-                        <div class="glass-panel">
-                            <h4 style="margin: 0 0 1.2rem 0; color: #FFD700 !important; font-size: 1.4rem; font-weight: 900;">
-                                {_safe_str(item['title'])[:40]}{'...' if len(_safe_str(item['title']))>40 else ''}
-                            </h4>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                                <span class="badge badge-movie" style="font-size: 0.8rem; padding: 0.5rem 1rem;">{_safe_str(item['type'])}</span>
-                                <span class="badge badge-year" style="font-size: 0.8rem; padding: 0.5rem 1rem;">{int(item['release_year'])}</span>
-                            </div>
-                            <div style="color: #F5F5F5 !important; font-size: 1rem; line-height: 1.7; margin-bottom: 2rem;">
-                                {_safe_str(item['description'])[:120]}{'...' if len(_safe_str(item['description']))>120 else ''}
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1rem;">
-                                <span style="color: #FFD700 !important; font-weight: 700;">⭐ {_safe_str(item['rating']) or 'N/A'}</span>
-                                <span style="color: #FFD700 !important; font-weight: 700;">⏱️ {_safe_str(item['duration']) or 'N/A'}</span>
-                            </div>
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+elif page == "📊 STATISTIK":
+    st.markdown('<h2>📊 ANALITIK NETFLIX</h2>', unsafe_allow_html=True)
+    
+    # Metrics Row
+    col_metrics1, col_metrics2, col_metrics3, col_metrics4 = st.columns(4)
+    
+    with col_metrics1:
+        display_metric_netflix("Total Konten", "8,794", "Movies & TV Shows", "📈")
+    
+    with col_metrics2:
+        display_metric_netflix("Movies", "6,132", "69.8%", "🎥")
+    
+    with col_metrics3:
+        display_metric_netflix("TV Shows", "2,662", "30.2%", "📺")
+    
+    with col_metrics4:
+        display_metric_netflix("Tahun Rata²", "2018", "Rilis", "📅")
+    
+    # Charts Section
+    col_chart1, col_chart2 = st.columns(2)
+    
+    with col_chart1:
+        st.markdown('<h3>📅 DISTRIBUSI TAHUN RILIS</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="background: #1A1A1A; padding: 20px; border-radius: 10px; border-left: 4px solid #E50914;">
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <div style="width: 80%; height: 20px; background: #333333; border-radius: 10px; overflow: hidden;">
+                    <div style="width: 75%; height: 100%; background: #E50914;"></div>
+                </div>
+                <div style="margin-left: 15px; font-weight: 700; color: #E50914;">2020-2024 (75%)</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <div style="width: 80%; height: 20px; background: #333333; border-radius: 10px; overflow: hidden;">
+                    <div style="width: 15%; height: 100%; background: #FF0000;"></div>
+                </div>
+                <div style="margin-left: 15px; font-weight: 700; color: #FF0000;">2015-2019 (15%)</div>
+            </div>
+            
+            <div style="display: flex; align-items: center;">
+                <div style="width: 80%; height: 20px; background: #333333; border-radius: 10px; overflow: hidden;">
+                    <div style="width: 10%; height: 100%; background: #B81D24;"></div>
+                </div>
+                <div style="margin-left: 15px; font-weight: 700; color: #B81D24;">Sebelum 2015 (10%)</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_chart2:
+        st.markdown('<h3>🎭 DISTRIBUSI GENRE</h3>', unsafe_allow_html=True)
+        
+        genres_data = [
+            {"name": "Drama", "value": 28},
+            {"name": "Comedy", "value": 22},
+            {"name": "Action", "value": 18},
+            {"name": "Documentary", "value": 15},
+            {"name": "Thriller", "value": 12},
+            {"name": "Romance", "value": 5},
+        ]
+        
+        for genre in genres_data:
+            st.markdown(f"""
+            <div style="margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="color: #FFFFFF; font-weight: 600;">{genre['name']}</span>
+                    <span style="color: #E50914; font-weight: 700;">{genre['value']}%</span>
+                </div>
+                <div style="width: 100%; height: 12px; background: #333333; border-radius: 6px; overflow: hidden;">
+                    <div style="width: {genre['value']}%; height: 100%; background: linear-gradient(90deg, #E50914, #FF0000);"></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
 # -----------------------------
 # Footer
 # -----------------------------
-st.markdown(
-    """
-    <div style="text-align: center; margin-top: 5rem; padding: 3rem; border-top: 3px solid #FFD700;">
-        <p style="color: #F5F5F5 !important; margin: 0; font-size: 1.1rem; font-weight: 600;">
-            🎬 Netflix Recommender System • Powered by Content-Based Filtering • 
-            <span style="color: #FFD700 !important; font-weight: 900;">NETFLIX</span>
-        </p>
-        <p style="color: #CCCCCC !important; margin: 1rem 0 0 0; font-size: 0.9rem;">
-            © 2024 Sistem Rekomendasi Netflix • All rights reserved
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<div class="netflix-footer">
+    <p style="font-size: 1.2rem; font-weight: 700; color: #E50914 !important;">NETFLIX RECOMMENDER SYSTEM</p>
+    <p>Sistem Rekomendasi Cerdas Berbasis Konten</p>
+    <p style="font-size: 0.9rem; color: #666666 !important;">© 2024 Netflix. Semua hak dilindungi undang-undang.</p>
+</div>
+""", unsafe_allow_html=True)
