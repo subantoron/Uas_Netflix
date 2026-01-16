@@ -146,28 +146,41 @@ div[role="listbox"] {
     margin-top: 4px !important;
     box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
     padding: 0 !important;
-    min-width: 200px !important;
+    min-width: 300px !important;
     z-index: 9999 !important;
 }
 
-/* Setiap option dalam dropdown - HITAM JELAS */
+/* Setiap option dalam dropdown - HITAM SANGAT JELAS */
 div[role="listbox"] div[role="option"] {
     color: #000000 !important;
     font-weight: 900 !important;
     background: #FFFFFF !important;
-    font-size: 18px !important;
-    padding: 16px 20px !important;
-    border-bottom: 2px solid #DDDDDD !important;
+    font-size: 16px !important;
+    padding: 18px 20px !important;
+    border-bottom: 1px solid #CCCCCC !important;
     opacity: 1 !important;
     visibility: visible !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
-    letter-spacing: 0.5px !important;
-    line-height: 1.5 !important;
-    min-height: 50px !important;
+    text-shadow: none !important;
+    letter-spacing: 0.3px !important;
+    line-height: 1.6 !important;
+    min-height: 55px !important;
     display: flex !important;
     align-items: center !important;
     position: relative !important;
     z-index: 10000 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+}
+
+/* Pastikan text dalam option terlihat */
+div[role="listbox"] div[role="option"] span,
+div[role="listbox"] div[role="option"] div {
+    color: #000000 !important;
+    font-weight: 900 !important;
+    font-size: 16px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* Option hover state */
@@ -176,7 +189,12 @@ div[role="listbox"] div[role="option"]:hover {
     color: #FFFFFF !important;
     font-weight: 900 !important;
     cursor: pointer !important;
-    border-bottom: 2px solid #C10810 !important;
+    border-bottom: 1px solid #C10810 !important;
+}
+
+div[role="listbox"] div[role="option"]:hover span,
+div[role="listbox"] div[role="option"]:hover div {
+    color: #FFFFFF !important;
 }
 
 /* Option selected state */
@@ -184,15 +202,28 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     background: #E50914 !important;
     color: #FFFFFF !important;
     font-weight: 900 !important;
-    border-bottom: 2px solid #C10810 !important;
+    border-bottom: 1px solid #C10810 !important;
+}
+
+div[role="listbox"] div[role="option"][aria-selected="true"] span,
+div[role="listbox"] div[role="option"][aria-selected="true"] div {
+    color: #FFFFFF !important;
 }
 
 /* Additional specificity for dropdown text */
 [data-baseweb="select"] [role="option"] {
     color: #000000 !important;
     font-weight: 900 !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
     background: #FFFFFF !important;
+    padding: 18px 20px !important;
+}
+
+/* Baseweb select option text */
+[data-baseweb="select"] [role="option"] span {
+    color: #000000 !important;
+    font-weight: 900 !important;
+}
     padding: 16px 20px !important;
 }
 
@@ -773,6 +804,7 @@ div.stRadio > div:nth-child(1) > label {
 div[role="listbox"] * {
     opacity: 1 !important;
     visibility: visible !important;
+    color: #000000 !important;
 }
 
 /* Force visibility of all dropdown text */
@@ -780,11 +812,23 @@ div[role="listbox"] div[role="option"] * {
     color: #000000 !important;
     opacity: 1 !important;
     visibility: visible !important;
+    font-weight: 900 !important;
 }
 
 /* Ensure dropdown menu shows on top */
 div[role="dialog"] {
     z-index: 9999 !important;
+}
+
+/* Make sure all text nodes are visible */
+div[role="listbox"] {
+    color: #000000 !important;
+}
+
+/* Protect against any inherited opacity */
+div[role="listbox"] div[role="option"]::before,
+div[role="listbox"] div[role="option"]::after {
+    opacity: 0 !important;
 }
 
 </style>
