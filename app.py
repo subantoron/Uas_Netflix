@@ -147,6 +147,7 @@ div[role="listbox"] {
     box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
     padding: 0 !important;
     min-width: 200px !important;
+    z-index: 9999 !important;
 }
 
 /* Setiap option dalam dropdown - HITAM JELAS */
@@ -165,6 +166,8 @@ div[role="listbox"] div[role="option"] {
     min-height: 50px !important;
     display: flex !important;
     align-items: center !important;
+    position: relative !important;
+    z-index: 10000 !important;
 }
 
 /* Option hover state */
@@ -182,6 +185,20 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     color: #FFFFFF !important;
     font-weight: 900 !important;
     border-bottom: 2px solid #C10810 !important;
+}
+
+/* Additional specificity for dropdown text */
+[data-baseweb="select"] [role="option"] {
+    color: #000000 !important;
+    font-weight: 900 !important;
+    font-size: 18px !important;
+    background: #FFFFFF !important;
+    padding: 16px 20px !important;
+}
+
+/* Popup overlay enhancement */
+[data-baseweb="popover"] {
+    z-index: 9999 !important;
 }
 
 /* Input field text color - HITAM JELAS */
@@ -749,6 +766,25 @@ div.stRadio > div:nth-child(1) > label {
     height: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
+}
+
+/* ========== DROPDOWN PROTECTION - ENSURE ALWAYS VISIBLE ========== */
+/* Protect dropdown from being hidden by any other CSS */
+div[role="listbox"] * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Force visibility of all dropdown text */
+div[role="listbox"] div[role="option"] * {
+    color: #000000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure dropdown menu shows on top */
+div[role="dialog"] {
+    z-index: 9999 !important;
 }
 
 </style>
