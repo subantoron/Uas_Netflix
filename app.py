@@ -181,7 +181,7 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
 
 /* Label selectbox */
 .stSelectbox label {
-    color: #000000 !important;
+    color: #FFFFFF !important;
     font-weight: 800 !important;
     font-size: 1rem !important;
     margin-bottom: 0.5rem !important;
