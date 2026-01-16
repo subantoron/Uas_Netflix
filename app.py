@@ -695,14 +695,14 @@ p, span, div, label {
 
 /* Placeholder text in inputs */
 ::placeholder {
-    color: #999999 !important;
-    font-weight: 600 !important;
+    color: #FFFF00 !important;
+    font-weight: 700 !important;
 }
 
 /* Search input styling */
 .stTextInput > div > div > input::placeholder {
-    color: #999999 !important;
-    font-weight: 600 !important;
+    color: #FFFF00 !important;
+    font-weight: 700 !important;
     font-size: 14px !important;
 }
 
