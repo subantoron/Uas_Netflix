@@ -25,7 +25,7 @@ st.set_page_config(
 DEFAULT_DATA_PATH = Path(__file__).parent / "netflix_titles.csv"
 
 # -----------------------------
-# Custom CSS - Netflix Black & Red Theme (FIXED DROPDOWN)
+# Custom CSS - Netflix Black & Red Theme (FIXED DROPDOWN TEXT - HITAM JELAS)
 # -----------------------------
 st.markdown("""
 <style>
@@ -105,7 +105,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.8rem !important;
 }
 
-/* ========== FIXED SELECTBOX - DROPDOWN TEXT COLOR ========== */
+/* ========== FIXED SELECTBOX - DROPDOWN TEXT COLOR HITAM JELAS ========== */
 /* Container utama selectbox */
 .stSelectbox > div > div {
     background: #FFFFFF !important;
@@ -116,11 +116,18 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 44px !important;
 }
 
-/* Text yang ditampilkan di selectbox */
+/* Text yang ditampilkan di selectbox - HITAM JELAS */
 .stSelectbox > div > div > div {
     color: #000000 !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+}
+
+/* Text dalam input selectbox yang terlihat */
+div[data-baseweb="select"] > div:first-child {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
 }
 
 /* Dropdown/menu options */
@@ -132,13 +139,13 @@ div[role="listbox"] {
     box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
 }
 
-/* Setiap option dalam dropdown */
+/* Setiap option dalam dropdown - HITAM JELAS */
 div[role="listbox"] div[role="option"] {
     color: #000000 !important;
     font-weight: 600 !important;
     background: #FFFFFF !important;
-    font-size: 14px !important;
-    padding: 10px 12px !important;
+    font-size: 16px !important;
+    padding: 12px 16px !important;
     border-bottom: 1px solid #EEEEEE !important;
 }
 
@@ -146,6 +153,7 @@ div[role="listbox"] div[role="option"] {
 div[role="listbox"] div[role="option"]:hover {
     background: #E50914 !important;
     color: #FFFFFF !important;
+    font-weight: 700 !important;
 }
 
 /* Option selected state */
@@ -155,18 +163,37 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     font-weight: 700 !important;
 }
 
-/* Input field text color */
+/* Input field text color - HITAM JELAS */
 .stTextInput > div > div > input {
     color: #000000 !important;
     font-weight: 600 !important;
     background: #FFFFFF !important;
+    font-size: 16px !important;
+}
+
+/* Input field container */
+.stTextInput > div > div {
+    background: #FFFFFF !important;
+    border: 2px solid #E50914 !important;
+    border-radius: 8px !important;
+    padding: 0.4rem 0.6rem !important;
 }
 
 /* Label selectbox */
 .stSelectbox label {
     color: #FFFFFF !important;
-    font-weight: 700 !important;
-    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Label text input */
+.stTextInput label {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    font-size: 1rem !important;
     margin-bottom: 0.5rem !important;
     display: block !important;
 }
@@ -348,26 +375,6 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4) !important;
     border-color: #E50914 !important;
     transform: translateY(-1px) !important;
-}
-
-/* Enhanced Input Fields */
-.stTextInput > div > div {
-    background: #FFFFFF !important;
-    border-radius: 8px !important;
-    border: 2px solid #E50914 !important;
-    padding: 0.4rem 0.6rem !important;
-    transition: all 0.3s ease !important;
-}
-
-.stTextInput > div > div > input {
-    color: #000000 !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-}
-
-.stTextInput > div > div:hover {
-    border-color: #FF0000 !important;
-    box-shadow: 0 0 12px rgba(229,9,20,0.4) !important;
 }
 
 /* Glass Panel Effect */
@@ -621,18 +628,12 @@ p, span, div, label {
     padding-bottom: 0 !important;
 }
 
-/* ========== TITLE SELECTOR STYLING ========== */
-/* Make sure the selected text in dropdown is visible */
-div[data-baseweb="select"] > div:first-child {
-    color: #000000 !important;
-    font-weight: 600 !important;
-}
-
-/* Select label styling */
-.stSelectbox label[data-testid="stWidgetLabel"] {
+/* ========== LABEL STYLING FOR INPUTS ========== */
+/* Custom label styling for inputs */
+.input-label {
     color: #FFFFFF !important;
-    font-weight: 700 !important;
-    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    font-size: 1.1rem !important;
     margin-bottom: 0.5rem !important;
     display: block !important;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
@@ -641,7 +642,7 @@ div[data-baseweb="select"] > div:first-child {
 /* Slider labels */
 .stSlider label {
     color: #FFFFFF !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
 }
 
 /* Checkbox labels */
@@ -650,13 +651,17 @@ div[data-baseweb="select"] > div:first-child {
     font-weight: 600 !important;
 }
 
-/* Text input labels */
-.stTextInput label {
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-    font-size: 0.95rem !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
+/* Placeholder text in inputs */
+::placeholder {
+    color: #666666 !important;
+    font-weight: 500 !important;
+}
+
+/* Search input styling */
+.stTextInput > div > div > input::placeholder {
+    color: #666666 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
 }
 
 </style>
@@ -709,7 +714,7 @@ def _normalize_text(x: object) -> str:
         return ""
     s = s.replace("&", " and ")
     s = s.lower()
-    s = re.sub(r"[^09a-z]+", " ", s)
+    s = re.sub(r"[^0-9a-z]+", " ", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
 
@@ -1319,23 +1324,23 @@ min_year = stats.get("min_year", 1900)
 max_year = stats.get("max_year", datetime.now().year)
 
 # -----------------------------
-# Page: Recommendation (DIPERBAIKI)
+# Page: Recommendation (DIPERBAIKI DENGAN TEXT HITAM JELAS)
 # -----------------------------
 if page == "🎯 REKOMENDASI":
     tabs = st.tabs(["🎬 BERDASARKAN JUDUL", "🔍 BERDASARKAN KATA KUNCI", "⭐ KONTEN POPULER"])
 
-    # Tab 1 - Berdasarkan Judul (DIPERBAIKI)
+    # Tab 1 - Berdasarkan Judul
     with tabs[0]:
         col1, col2 = st.columns([2, 1])
 
         with col1:
             st.markdown('<h3 style="color: #E50914 !important; margin-bottom: 1.2rem; font-weight: 800;">🎯 PILIH KONTEN UNTUK DIREKOMENDASIKAN</h3>', unsafe_allow_html=True)
 
-            # Filter Tipe Konten - DIPERBAIKI dengan label yang jelas
+            # Filter Tipe Konten
             st.markdown('<div class="glass-panel" style="padding: 1.5rem;">', unsafe_allow_html=True)
             
-            # Filter Tipe Konten dengan label terpisah
-            st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">🎭 FILTER TIPE KONTEN</p>', unsafe_allow_html=True)
+            # Filter Tipe Konten dengan label custom
+            st.markdown('<p class="input-label">🎭 FILTER TIPE KONTEN</p>', unsafe_allow_html=True)
             
             filter_type_for_selector = st.selectbox(
                 "Pilih tipe konten:",
@@ -1351,8 +1356,8 @@ if page == "🎯 REKOMENDASI":
             else:
                 selector_df = df[df["type"] == filter_type_for_selector]
 
-            # Pilih Judul - DIPERBAIKI dengan label terpisah
-            st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin: 1.2rem 0 0.5rem 0; font-size: 0.95rem;">📝 PILIH JUDUL</p>', unsafe_allow_html=True)
+            # Pilih Judul
+            st.markdown('<p class="input-label" style="margin-top: 1.2rem;">📝 PILIH JUDUL</p>', unsafe_allow_html=True)
 
             if len(selector_df) > 0:
                 options = selector_df["display_title"].tolist()
@@ -1386,8 +1391,9 @@ if page == "🎯 REKOMENDASI":
                 same_type = st.checkbox("Hanya tipe yang sama", value=True, help="Movie↔Movie atau TV Show↔TV Show", key="same_type_check")
                 st.markdown("</div>", unsafe_allow_html=True)
 
-            # Filter Tahun Rilis - DIPERBAIKI dengan label
+            # Filter Tahun Rilis
             st.markdown('<h4 style="color: #E50914 !important; margin: 1.5rem 0 1rem 0; font-weight: 800;">📅 FILTER TAHUN RILIS</h4>', unsafe_allow_html=True)
+            st.markdown('<p class="input-label">Pilih rentang tahun rilis:</p>', unsafe_allow_html=True)
             year_range = st.slider(
                 "Pilih rentang tahun:",
                 min_value=min_year,
@@ -1538,15 +1544,15 @@ if page == "🎯 REKOMENDASI":
                         unsafe_allow_html=True,
                     )
 
-    # Tab 2 - Berdasarkan Kata Kunci (DIPERBAIKI)
+    # Tab 2 - Berdasarkan Kata Kunci
     with tabs[1]:
         st.markdown('<h3 style="color: #E50914 !important; margin-bottom: 1.2rem; font-weight: 800;">🔍 PENCARIAN DENGAN KATA KUNCI</h3>', unsafe_allow_html=True)
         st.markdown('<p style="color: #CCCCCC !important; font-size: 0.95rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4;">Masukkan kata kunci untuk menemukan konten yang sesuai.</p>', unsafe_allow_html=True)
 
-        # Input Pencarian dengan label yang jelas
+        # Input Pencarian dengan label custom
         col_search1, col_search2 = st.columns([3, 1])
         with col_search1:
-            st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">🔍 MASUKKAN KATA KUNCI</p>', unsafe_allow_html=True)
+            st.markdown('<p class="input-label">🔍 MASUKKAN KATA KUNCI</p>', unsafe_allow_html=True)
             query = st.text_input(
                 "Masukkan kata kunci pencarian:",
                 placeholder="Contoh: action adventure, romantic comedy, sci-fi, crime drama",
@@ -1739,8 +1745,8 @@ elif page == "📊 DASHBOARD ANALITIK":
     # Eksplorasi Data
     st.markdown('<h4 style="color: #E50914 !important; margin: 1.5rem 0 1.2rem 0; font-weight: 800;">🔍 PRATINJAU & EKSPLORASI DATA</h4>', unsafe_allow_html=True)
 
-    # Search input dengan label yang jelas
-    st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">🔍 CARI DALAM DATASET</p>', unsafe_allow_html=True)
+    # Search input dengan label custom
+    st.markdown('<p class="input-label">🔍 CARI DALAM DATASET</p>', unsafe_allow_html=True)
     search_term = st.text_input("Masukkan kata kunci pencarian:", placeholder="Cari berdasarkan judul, deskripsi, sutradara...", key="data_search", label_visibility="collapsed")
 
     if search_term:
@@ -1757,8 +1763,8 @@ elif page == "📊 DASHBOARD ANALITIK":
     else:
         preview_df = df
 
-    # Slider dengan label yang jelas
-    st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">📊 PILIH JUMLAH SAMPEL</p>', unsafe_allow_html=True)
+    # Slider dengan label custom
+    st.markdown('<p class="input-label" style="margin-top: 1rem;">📊 PILIH JUMLAH SAMPEL</p>', unsafe_allow_html=True)
     sample_size = st.slider("", 5, 100, 20, key="sample_size", label_visibility="collapsed")
     
     display_cols = ["title", "type", "release_year", "rating", "duration", "listed_in"]
