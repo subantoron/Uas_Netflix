@@ -116,6 +116,14 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 44px !important;
 }
 
+/* Hide label above selectbox completely */
+.stSelectbox > div:first-child > label {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
 /* Text yang ditampilkan di selectbox - HITAM JELAS */
 .stSelectbox > div > div > div {
     color: #000000 !important;
@@ -181,12 +189,18 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
 
 /* Label selectbox */
 .stSelectbox label {
-    color: #000000 !important;
-    font-weight: 800 !important;
-    font-size: 1rem !important;
-    margin-bottom: 0.5rem !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     display: none !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    width: 0 !important;
+}
+
+/* Hide all selectbox label elements */
+.stSelectbox [data-baseweb="select"] label {
+    visibility: hidden !important;
+    height: 0 !important;
 }
 
 /* Label text input */
@@ -198,8 +212,12 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     display: block !important;
 }
 
-/* Hide radio label text */
+/* Hide radio label text completely */
 .stRadio > div > label {
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     display: none !important;
 }
 
@@ -636,12 +654,13 @@ p, span, div, label {
 /* ========== LABEL STYLING FOR INPUTS ========== */
 /* Custom label styling for inputs */
 .input-label {
-    color: #FFFFFF !important;
-    font-weight: 800 !important;
-    font-size: 1.1rem !important;
-    margin-bottom: 0.5rem !important;
+    color: #FFFF00 !important;
+    font-weight: 900 !important;
+    font-size: 1.2rem !important;
+    margin-bottom: 0.8rem !important;
     display: block !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(255,255,0,0.5) !important;
+    letter-spacing: 0.5px !important;
 }
 
 /* Slider labels */
@@ -667,6 +686,38 @@ p, span, div, label {
     color: #666666 !important;
     font-weight: 500 !important;
     font-size: 14px !important;
+}
+
+/* ========== UNIVERSAL LABEL HIDING ========== */
+/* Hide all label text in widgets that we marked as hidden */
+label[data-testid*="selectbox"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
+/* Hide label wrapper completely */
+div.stSelectbox > div:nth-child(1) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+
+div.stRadio > div:nth-child(1) > label {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+
+/* Universal label hide for all widgets */
+[data-testid="stSelectbox"] label,
+[data-testid="stRadio"] label {
+    visibility: hidden !important;
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 </style>
