@@ -803,14 +803,6 @@ with st.sidebar:
         key="nav_menu",
     )
 
-    st.markdown("<hr/>", unsafe_allow_html=True)
-
-    st.markdown('<div class="sidebar-title">📁 DATASET</div>', unsafe_allow_html=True)
-    uploaded = st.file_uploader("Unggah Dataset CSV", type=["csv"], key="uploader_csv")
-    use_local = st.checkbox("Gunakan dataset lokal (netflix_titles.csv)", value=True, key="use_local")
-
-    st.caption("Jika upload CSV → sistem pakai file upload. Jika tidak → pakai file lokal.")
-
 # =========================================================
 # LOAD DATA
 # =========================================================
