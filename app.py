@@ -174,9 +174,10 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
 /* Input field text color - HITAM JELAS */
 .stTextInput > div > div > input {
     color: #000000 !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     background: #FFFFFF !important;
     font-size: 16px !important;
+    letter-spacing: 0.3px !important;
 }
 
 /* Input field container */
@@ -187,6 +188,14 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     padding: 0.4rem 0.6rem !important;
 }
 
+/* Input field focus state */
+.stTextInput > div > div > input:focus {
+    outline: none !important;
+    border-color: #FF0000 !important;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.6) !important;
+    background: #FFFFFF !important;
+}
+
 /* Label selectbox */
 .stSelectbox label {
     visibility: hidden !important;
@@ -195,6 +204,15 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     padding: 0 !important;
     display: none !important;
     width: 0 !important;
+}
+
+/* Hide text input label */
+.stTextInput label {
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: none !important;
 }
 
 /* Hide all selectbox label elements */
@@ -677,14 +695,14 @@ p, span, div, label {
 
 /* Placeholder text in inputs */
 ::placeholder {
-    color: #666666 !important;
-    font-weight: 500 !important;
+    color: #999999 !important;
+    font-weight: 600 !important;
 }
 
 /* Search input styling */
 .stTextInput > div > div > input::placeholder {
-    color: #666666 !important;
-    font-weight: 500 !important;
+    color: #999999 !important;
+    font-weight: 600 !important;
     font-size: 14px !important;
 }
 
