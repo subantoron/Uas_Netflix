@@ -26,7 +26,7 @@ st.set_page_config(
 DEFAULT_DATA_PATH = Path(__file__).parent / "netflix_titles.csv"
 
 # =========================================================
-# CSS (FIXED + RAPIH + SIDEBAR SCROLL + SELECTBOX JELAS)
+# CSS (RAPIH + FIX SELECTBOX + SIDEBAR SCROLL + FIX ICON TEXT)
 # =========================================================
 NETFLIX_CSS = r"""
 <style>
@@ -58,7 +58,7 @@ NETFLIX_CSS = r"""
   overflow-x:hidden !important;
 }
 
-/* ---- Text aman (jangan target div global!) ---- */
+/* ---------- Typography (AMAN) ---------- */
 .stMarkdown, .stMarkdown p, .stMarkdown span, .stMarkdown li,
 .stApp p, .stApp label, .stApp li {
   color: var(--text) !important;
@@ -66,42 +66,75 @@ NETFLIX_CSS = r"""
 
 h1,h2,h3,h4,h5,h6{
   color:#FFFFFF !important;
-  font-weight:900 !important;
+  font-weight:800 !important;
   text-shadow:1px 1px 3px rgba(0,0,0,0.8);
   line-height:1.2 !important;
 }
 
 /* =========================================================
-   SIDEBAR FIX: FULL + SCROLL + ANTI KEPOTONG
+   FIX ICON TEXT: "keyboard_double_arrow_right"
+   ========================================================= */
+/* Jika ligature icon muncul sebagai teks, sembunyikan */
+span.material-symbols-outlined,
+span.material-icons,
+span[class*="material"]{
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Kalau masih muncul sebagai teks (fallback), kill by content */
+span:has(> span:contains("keyboard_double_arrow_right")){ display:none !important; }
+div:has(> span:contains("keyboard_double_arrow_right")){ display:none !important; }
+
+/* Seringnya muncul sebagai element dengan class tertentu */
+.keyboard_double, .keyboard_double_arrow_right { display:none !important; }
+
+/* =========================================================
+   SIDEBAR FIX (ANTI KE-POTONG + SCROLLABLE)
    ========================================================= */
 section[data-testid="stSidebar"],
 [data-testid="stSidebar"]{
   background: linear-gradient(135deg, var(--panel) 0%, #1A1A1A 100%) !important;
   border-right: 3px solid var(--red) !important;
   box-shadow: 5px 0 20px rgba(0,0,0,0.8) !important;
-
-  padding: 0 !important;                /* penting */
-  overflow: visible !important;         /* penting */
+  padding: 0 !important;
+  overflow: hidden !important; /* shell hidden */
 }
 
+/* sidebar content scroll */
 div[data-testid="stSidebarContent"]{
   padding: 1.25rem 1rem !important;
   box-sizing: border-box !important;
-
-  height: 100vh !important;             /* bikin scroll */
-  overflow-y: auto !important;          /* bikin scroll */
+  height: 100vh !important;
+  overflow-y: auto !important;    /* ✅ scroll */
   overflow-x: hidden !important;
+}
+
+/* scrollbar sidebar */
+div[data-testid="stSidebarContent"]::-webkit-scrollbar{ width:8px; }
+div[data-testid="stSidebarContent"]::-webkit-scrollbar-track{ background: var(--panel); border-radius:4px; }
+div[data-testid="stSidebarContent"]::-webkit-scrollbar-thumb{
+  background: linear-gradient(135deg, var(--red), var(--red2));
+  border-radius:4px;
+  border:1px solid var(--panel);
+}
+
+@media (min-width: 992px){
+  section[data-testid="stSidebar"]{
+    min-width: 320px !important;
+    max-width: 320px !important;
+  }
 }
 
 .sidebar-title{
   color: var(--red) !important;
   font-weight: 900 !important;
   font-size: 1.05rem !important;
-  margin: 0.85rem 0 0.6rem 0 !important;
+  margin: 0.9rem 0 0.6rem 0 !important;
   letter-spacing: 0.4px;
 }
 
-/* radio sidebar rapi */
+/* radio group */
 section[data-testid="stSidebar"] div[role="radiogroup"]{
   background: rgba(20,20,20,0.85) !important;
   border: 1px solid var(--border) !important;
@@ -122,7 +155,7 @@ section[data-testid="stSidebar"] label[data-baseweb="radio"] span{
   font-weight: 850 !important;
 }
 
-/* uploader sidebar rapi */
+/* uploader */
 section[data-testid="stSidebar"] div[data-testid="stFileUploader"]{
   background: rgba(20,20,20,0.85) !important;
   border: 1px solid var(--border) !important;
@@ -137,13 +170,58 @@ section[data-testid="stSidebar"] div[data-testid="stFileUploader"] section{
 section[data-testid="stSidebar"] div[data-testid="stFileUploader"] *{
   color: #FFFFFF !important;
 }
-section[data-testid="stSidebar"] div[data-testid="stFileUploader"] button{
-  background: linear-gradient(135deg, var(--red), var(--red2)) !important;
-  color: #FFFFFF !important;
-  font-weight: 900 !important;
-  border: none !important;
-  border-radius: 10px !important;
+
+/* =========================================================
+   PANELS / CARDS
+   ========================================================= */
+.glass-panel{
+  background: rgba(15,15,15,0.92) !important;
+  border-radius: 12px;
+  border: 1px solid rgba(229,9,20,0.40);
+  padding: 1.5rem;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem !important;
 }
+
+.stats-card{
+  background: linear-gradient(145deg, var(--panel), #1A1A1A);
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem !important;
+}
+
+.stats-card::before{
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(90deg, var(--red), #FF0000);
+}
+
+.badge{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0.5rem 1rem !important;
+  border-radius: 20px !important;
+  font-size:0.85rem !important;
+  font-weight:900 !important;
+  margin-right:0.6rem !important;
+  margin-bottom:0.6rem !important;
+  background: linear-gradient(135deg, var(--red) 0%, var(--red2) 100%) !important;
+  color:#FFFFFF !important;
+  box-shadow:0 4px 12px rgba(229,9,20,0.4) !important;
+}
+
+.badge-year{ background: linear-gradient(135deg, #333 0%, #666 100%) !important; }
+.badge-rating{ background: linear-gradient(135deg, #F5C518 0%, #FFD700 100%) !important; color:#000 !important; }
 
 /* =========================================================
    HEADER
@@ -177,8 +255,8 @@ section[data-testid="stSidebar"] div[data-testid="stFileUploader"] button{
   position:relative;
 }
 .netflix-subtitle{
-  font-size:1.35rem !important;
-  font-weight:700 !important;
+  font-size:1.25rem !important;
+  font-weight:800 !important;
   color:#FFFFFF !important;
   text-shadow:2px 2px 4px rgba(0,0,0,0.8) !important;
   margin:0 0 1.2rem 0 !important;
@@ -188,84 +266,7 @@ section[data-testid="stSidebar"] div[data-testid="stFileUploader"] button{
 }
 
 /* =========================================================
-   CARDS
-   ========================================================= */
-.glass-panel{
-  background: rgba(15,15,15,0.92) !important;
-  border-radius: 12px;
-  border: 1px solid rgba(229,9,20,0.40);
-  padding: 1.5rem;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 1rem !important;
-}
-
-.stats-card{
-  background: linear-gradient(145deg, var(--panel), #1A1A1A);
-  border-radius: 12px;
-  padding: 1.2rem;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 1rem !important;
-}
-.stats-card::before{
-  content:'';
-  position:absolute;
-  top:0; left:0; right:0;
-  height:3px;
-  background: linear-gradient(90deg, var(--red), #FF0000);
-}
-.stats-card:hover{
-  border-color: var(--red);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(229,9,20,0.28);
-}
-
-/* badges */
-.badge{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  padding:0.5rem 1rem !important;
-  border-radius: 20px !important;
-  font-size:0.85rem !important;
-  font-weight:900 !important;
-  margin-right:0.6rem !important;
-  margin-bottom:0.6rem !important;
-  background: linear-gradient(135deg, var(--red) 0%, var(--red2) 100%) !important;
-  color:#FFFFFF !important;
-  box-shadow:0 4px 12px rgba(229,9,20,0.4) !important;
-}
-.badge-year{ background: linear-gradient(135deg, #333 0%, #666 100%) !important; }
-.badge-rating{ background: linear-gradient(135deg, #F5C518 0%, #FFD700 100%) !important; color:#000 !important; }
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-.stButton > button{
-  background: linear-gradient(135deg, var(--red) 0%, var(--red2) 100%) !important;
-  color: #FFFFFF !important;
-  border: none !important;
-  border-radius: 10px !important;
-  padding: 0.85rem 1.2rem !important;
-  font-weight: 900 !important;
-  box-shadow: 0 8px 24px rgba(229,9,20,0.4) !important;
-  transition: all 0.25s ease !important;
-  min-height: 48px !important;
-  width:100% !important;
-}
-.stButton > button:hover{
-  transform: translateY(-2px) !important;
-  box-shadow: 0 12px 30px rgba(229,9,20,0.55) !important;
-  background: linear-gradient(135deg, #FF0000 0%, var(--red) 100%) !important;
-}
-
-/* =========================================================
-   SELECTBOX FIX (JUDUL PANJANG TETAP JELAS)
+   INPUTS / SELECTBOX (CLEAR)
    ========================================================= */
 div[data-testid="stSelectbox"] div[data-baseweb="select"] > div{
   background: var(--panel2) !important;
@@ -278,15 +279,12 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
 div[data-testid="stSelectbox"] div[data-baseweb="select"] input{
   color: #FFFFFF !important;
   font-weight: 900 !important;
-  font-size: 14px !important;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.8) !important;
+  font-size: 15px !important;
 }
 div[data-testid="stSelectbox"] div[data-baseweb="select"] svg{
   color:#FFFFFF !important;
   fill:#FFFFFF !important;
 }
-
-/* dropdown popover */
 div[data-baseweb="popover"]{ z-index: 999999 !important; }
 div[data-baseweb="popover"] div[role="listbox"]{
   background: var(--panel2) !important;
@@ -301,7 +299,7 @@ div[data-baseweb="popover"] div[role="option"]{
   font-weight: 800 !important;
   font-size: 14px !important;
   border-radius: 10px !important;
-  padding: 0.6rem 0.7rem !important;
+  padding: 0.7rem 0.75rem !important;
 }
 div[data-baseweb="popover"] div[role="option"]:hover{
   background: rgba(229,9,20,0.25) !important;
@@ -310,25 +308,30 @@ div[data-baseweb="popover"] div[role="option"][aria-selected="true"]{
   background: rgba(229,9,20,0.35) !important;
 }
 
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-::-webkit-scrollbar{ width:8px; height:8px; }
-::-webkit-scrollbar-track{ background: var(--panel); border-radius:4px; }
-::-webkit-scrollbar-thumb{
-  background: linear-gradient(135deg, var(--red), var(--red2));
-  border-radius:4px;
-  border:1px solid var(--panel);
+/* Buttons */
+.stButton > button{
+  background: linear-gradient(135deg, var(--red) 0%, var(--red2) 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 0.85rem 1.2rem !important;
+  font-weight: 900 !important;
+  box-shadow: 0 8px 24px rgba(229,9,20,0.4) !important;
+  transition: all 0.25s ease !important;
+  min-height: 50px !important;
+  width:100% !important;
 }
-::-webkit-scrollbar-thumb:hover{
-  background: linear-gradient(135deg, #FF0000, var(--red));
+.stButton > button:hover{
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 30px rgba(229,9,20,0.55) !important;
+  background: linear-gradient(135deg, #FF0000 0%, var(--red) 100%) !important;
 }
 </style>
 """
 st.markdown(NETFLIX_CSS, unsafe_allow_html=True)
 
 # =========================================================
-# UI HELPERS
+# HELPERS
 # =========================================================
 def ui_alert(kind: str, html: str) -> None:
     palette = {
@@ -351,7 +354,7 @@ def ui_alert(kind: str, html: str) -> None:
         ">
           <div style="display:flex; gap:0.9rem; align-items:flex-start;">
             <div style="font-size:1.5rem; line-height:1; color:{border};">{icon}</div>
-            <div style="flex:1; color:#FFF !important; font-weight:750; line-height:1.45;">
+            <div style="flex:1; color:#FFF !important; font-weight:650; line-height:1.45;">
               {html}
             </div>
           </div>
@@ -360,9 +363,6 @@ def ui_alert(kind: str, html: str) -> None:
         unsafe_allow_html=True,
     )
 
-# =========================================================
-# TEXT HELPERS
-# =========================================================
 def _normalize_text(x: object) -> str:
     if x is None:
         return ""
@@ -371,8 +371,7 @@ def _normalize_text(x: object) -> str:
     s = str(x).strip()
     if s.lower() in {"unknown", "nan", "none", "null", ""}:
         return ""
-    s = s.replace("&", " and ")
-    s = s.lower()
+    s = s.replace("&", " and ").lower()
     s = re.sub(r"[^0-9a-z]+", " ", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
@@ -388,7 +387,7 @@ def _safe_str(x: object) -> str:
     return s
 
 # =========================================================
-# DATA LOADING
+# DATA
 # =========================================================
 @st.cache_data(show_spinner=False)
 def load_data_from_path(path_str: str) -> pd.DataFrame:
@@ -412,7 +411,7 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
     df = raw.copy()
     df.columns = df.columns.str.strip().str.lower()
 
-    mapping = {
+    column_mapping = {
         "show id": "show_id",
         "show_id": "show_id",
         "type": "type",
@@ -430,11 +429,14 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
         "description": "description",
     }
 
-    for old_name, new_name in mapping.items():
+    for old_name, new_name in column_mapping.items():
         if old_name in df.columns and new_name not in df.columns:
             df[new_name] = df[old_name]
 
-    expected = ["show_id","type","title","director","cast","country","release_year","rating","duration","listed_in","description"]
+    expected = [
+        "show_id","type","title","director","cast","country",
+        "release_year","rating","duration","listed_in","description"
+    ]
     for col in expected:
         if col not in df.columns:
             df[col] = ""
@@ -446,7 +448,7 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
     text_cols = ["type","title","director","cast","country","rating","duration","listed_in","description"]
     for c in text_cols:
         df[c] = df[c].fillna("").astype(str)
-        df[c] = df[c].replace({"unknown": "", "Unknown": "", "nan": "", "NaN": "", "None": "", "none": ""})
+        df[c] = df[c].replace({"unknown":"", "Unknown":"", "nan":"", "NaN":"", "None":"", "none":""})
 
     df["release_year"] = pd.to_numeric(df["release_year"], errors="coerce").fillna(0).astype(int)
 
@@ -476,7 +478,7 @@ def prepare_data(raw: pd.DataFrame) -> pd.DataFrame:
     return df
 
 # =========================================================
-# MODEL (TF-IDF)
+# MODEL
 # =========================================================
 @st.cache_resource(show_spinner=False)
 def build_vectorizer_and_matrix(corpus: pd.Series):
@@ -562,8 +564,11 @@ def recommend_by_query(
 
     return recs.head(top_n)
 
+# =========================================================
+# STATS / UI
+# =========================================================
 def split_and_count(series: pd.Series, sep: str = ",", top_k: int = 10) -> pd.Series:
-    s = series.fillna("").astype(str).replace({"unknown": "", "Unknown": "", "nan": "", "NaN": ""})
+    s = series.fillna("").astype(str).replace({"unknown":"", "Unknown":"", "nan":"", "NaN":""})
     exploded = s.str.split(sep).explode().astype(str).str.strip()
     exploded = exploded[exploded != ""]
     return exploded.value_counts().head(top_k)
@@ -573,6 +578,7 @@ def create_dashboard_stats(df: pd.DataFrame) -> dict:
     stats["total"] = len(df)
     stats["movies"] = int((df["type"] == "Movie").sum())
     stats["tv_shows"] = int((df["type"] == "TV Show").sum())
+
     valid_years = df["release_year"][df["release_year"] > 0]
     if len(valid_years) > 0:
         stats["min_year"] = int(valid_years.min())
@@ -584,9 +590,6 @@ def create_dashboard_stats(df: pd.DataFrame) -> dict:
         stats["avg_year"] = 2000
     return stats
 
-# =========================================================
-# UI CARDS
-# =========================================================
 def display_metric_card(title: str, value: str, subtitle: str = "", icon: str = "📊") -> None:
     st.markdown(
         f"""
@@ -594,13 +597,13 @@ def display_metric_card(title: str, value: str, subtitle: str = "", icon: str = 
           <div style="font-size:2.1rem; margin-bottom:0.6rem;">{icon}</div>
           <div style="font-size:2rem; font-weight:900; color:#FFFFFF; line-height:1;">{value}</div>
           <div style="margin-top:0.5rem; font-weight:900; color:#FFFFFF;">{title}</div>
-          <div style="margin-top:0.35rem; color:var(--muted); font-weight:750;">{subtitle}</div>
+          <div style="margin-top:0.35rem; color:var(--muted); font-weight:650;">{subtitle}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-def display_recommendation_card(r: pd.Series, rank: int) -> None:
+def display_item_card(r: pd.Series, rank: Optional[int] = None, show_similarity: bool = True) -> None:
     similarity = float(r.get("similarity", 0.0))
     title = _safe_str(r.get("title", ""))
     content_type = _safe_str(r.get("type", ""))
@@ -612,6 +615,10 @@ def display_recommendation_card(r: pd.Series, rank: int) -> None:
     country = _safe_str(r.get("country", ""))
     duration = _safe_str(r.get("duration", ""))
 
+    left_tag = f"#{rank}" if rank is not None else "⭐ PILIHAN"
+
+    sim_tag = f"{similarity:.1%}" if show_similarity else " "
+
     st.markdown(
         f"""
         <div class="glass-panel" style="padding:1.2rem;">
@@ -619,99 +626,34 @@ def display_recommendation_card(r: pd.Series, rank: int) -> None:
             <div style="display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
               <div style="background:linear-gradient(135deg,var(--red),var(--red2)); padding:0.45rem 0.85rem;
                           border-radius:10px; font-weight:900; border:1px solid #FFF;">
-                #{rank}
+                {left_tag}
               </div>
-              <div style="font-size:1.25rem; font-weight:900; color:#FFFFFF; word-break:break-word;">
+              <div style="font-size:1.35rem; font-weight:900; color:#FFFFFF; word-break:break-word;">
                 {title}
               </div>
             </div>
             <div style="background:linear-gradient(135deg,var(--red),var(--red2)); padding:0.45rem 0.85rem;
                         border-radius:18px; font-weight:900; border:1px solid #FFF; white-space:nowrap;">
-              {similarity:.1%}
+              {sim_tag}
             </div>
           </div>
 
           <div style="margin-top:0.9rem;">
-            <span class="badge">🎬 {content_type}</span>
+            <span class="badge">🎬 {content_type or "N/A"}</span>
             <span class="badge badge-year">📅 {year}</span>
             <span class="badge badge-rating">⭐ {rating or "N/A"}</span>
             <span class="badge">⏱️ {duration or "N/A"}</span>
           </div>
 
-          <div style="margin-top:0.8rem; color:var(--text); line-height:1.5;">
-            <b style="color:var(--red);">🎭 Genre:</b> {genre or "N/A"}
-          </div>
+          {"<div style='margin-top:0.8rem;'><strong style='color:var(--red);'>🎭 Genre:</strong> " + genre + "</div>" if genre else ""}
 
-          <div style="margin-top:0.6rem; color:var(--text); line-height:1.5;">
+          <div style="margin-top:0.9rem; color:var(--text); line-height:1.5;">
             {description}
           </div>
 
           <div style="margin-top:0.9rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
-            <div class="stats-card" style="flex:1; min-width:220px; padding:0.9rem;">
-              <div style="color:var(--red); font-weight:900;">🎬 Sutradara</div>
-              <div style="margin-top:0.45rem; font-weight:800; color:#FFF;">{director or "N/A"}</div>
-            </div>
-            <div class="stats-card" style="flex:1; min-width:220px; padding:0.9rem;">
-              <div style="color:var(--red); font-weight:900;">🌍 Negara</div>
-              <div style="margin-top:0.45rem; font-weight:800; color:#FFF;">{country or "N/A"}</div>
-            </div>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-def display_selected_card(item: pd.Series) -> None:
-    """Film/TV yang dipilih tampil seperti card (tanpa similarity)."""
-    title = _safe_str(item.get("title", ""))
-    content_type = _safe_str(item.get("type", ""))
-    year = item.get("release_year", "")
-    rating = _safe_str(item.get("rating", ""))
-    genre = _safe_str(item.get("listed_in", ""))
-    description = _safe_str(item.get("description", "Tidak ada deskripsi"))
-    director = _safe_str(item.get("director", ""))
-    country = _safe_str(item.get("country", ""))
-    duration = _safe_str(item.get("duration", ""))
-
-    st.markdown(
-        f"""
-        <div class="glass-panel" style="padding:1.2rem; border: 1px solid rgba(0,184,148,0.55);">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.8rem; flex-wrap:wrap;">
-            <div style="display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
-              <div style="background:rgba(0,184,148,0.15); padding:0.45rem 0.85rem;
-                          border-radius:10px; font-weight:900; border:1px solid rgba(0,184,148,0.7); color:#00B894;">
-                DIPILIH
-              </div>
-              <div style="font-size:1.25rem; font-weight:900; color:#FFFFFF; word-break:break-word;">
-                {title}
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:0.9rem;">
-            <span class="badge">🎬 {content_type}</span>
-            <span class="badge badge-year">📅 {year}</span>
-            <span class="badge badge-rating">⭐ {rating or "N/A"}</span>
-            <span class="badge">⏱️ {duration or "N/A"}</span>
-          </div>
-
-          <div style="margin-top:0.8rem; color:var(--text); line-height:1.5;">
-            <b style="color:var(--red);">🎭 Genre:</b> {genre or "N/A"}
-          </div>
-
-          <div style="margin-top:0.6rem; color:var(--text); line-height:1.5;">
-            {description}
-          </div>
-
-          <div style="margin-top:0.9rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
-            <div class="stats-card" style="flex:1; min-width:220px; padding:0.9rem;">
-              <div style="color:var(--red); font-weight:900;">🎬 Sutradara</div>
-              <div style="margin-top:0.45rem; font-weight:800; color:#FFF;">{director or "N/A"}</div>
-            </div>
-            <div class="stats-card" style="flex:1; min-width:220px; padding:0.9rem;">
-              <div style="color:var(--red); font-weight:900;">🌍 Negara</div>
-              <div style="margin-top:0.45rem; font-weight:800; color:#FFF;">{country or "N/A"}</div>
-            </div>
+            {"<div class='stats-card' style='flex:1; min-width:220px; padding:0.9rem;'><div style='color:var(--red); font-weight:900;'>🎬 Sutradara</div><div style='margin-top:0.45rem; font-weight:800;'>" + director + "</div></div>" if director else ""}
+            {"<div class='stats-card' style='flex:1; min-width:220px; padding:0.9rem;'><div style='color:var(--red); font-weight:900;'>🌍 Negara</div><div style='margin-top:0.45rem; font-weight:800;'>" + country + "</div></div>" if country else ""}
           </div>
         </div>
         """,
@@ -744,15 +686,15 @@ st.markdown(
 )
 
 # =========================================================
-# SIDEBAR (HANYA MENU + DATASET + STATUS)  ✅ SCROLL
+# SIDEBAR (SELALU ADA + SCROLL)
 # =========================================================
 with st.sidebar:
     st.markdown(
         """
-        <div class="stats-card" style="text-align:center; margin-bottom: 0.9rem;">
+        <div class="stats-card" style="text-align:center; margin-bottom:0.7rem;">
           <div style="font-size:2.8rem;">🎬</div>
-          <div style="font-size:1.35rem; font-weight:900; color:#FFFFFF; letter-spacing:0.5px;">NETFLIX</div>
-          <div style="color:var(--muted); font-weight:750; margin-top:0.15rem;">Recommender System</div>
+          <div style="font-size:1.35rem; font-weight:900; color:#FFFFFF;">NETFLIX</div>
+          <div style="color:var(--muted); font-weight:750;">Recommender System</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -772,7 +714,7 @@ with st.sidebar:
     use_local = st.checkbox("Gunakan dataset lokal (netflix_titles.csv)", value=True, key="use_local")
 
 # =========================================================
-# LOAD DATA (FIX NameError: uploaded sudah pasti ada)
+# LOAD DATA
 # =========================================================
 raw_df = None
 data_loaded = False
@@ -799,14 +741,7 @@ elif use_local:
         ui_alert("warning", "File <code>netflix_titles.csv</code> tidak ditemukan di folder aplikasi.")
 
 if not data_loaded:
-    ui_alert(
-        "info",
-        """
-        <b>Cara pakai:</b><br>
-        1) Upload CSV Netflix, atau<br>
-        2) Letakkan <code>netflix_titles.csv</code> di folder yang sama dengan <code>app.py</code>.
-        """,
-    )
+    ui_alert("info", "Silakan upload CSV atau gunakan dataset lokal.")
     st.stop()
 
 # =========================================================
@@ -821,44 +756,12 @@ if df.empty or vectorizer is None or tfidf_matrix is None:
     st.stop()
 
 stats = create_dashboard_stats(df)
+
 unique_types = sorted([t for t in df["type"].unique().tolist() if t and str(t) != "nan"])
 type_options = ["All"] + unique_types
+
 min_year = stats.get("min_year", 1900)
 max_year = stats.get("max_year", datetime.now().year)
-
-# Tambah status & statistik ke sidebar (biar kaya, dan bisa discroll)
-with st.sidebar:
-    st.markdown('<div class="sidebar-title">📊 STATUS</div>', unsafe_allow_html=True)
-    ui_alert("success", "<b>SISTEM AKTIF</b><br>Dataset berhasil diproses")
-
-    st.markdown('<div class="sidebar-title">📌 RINGKASAN DATA</div>', unsafe_allow_html=True)
-    st.markdown(
-        f"""
-        <div class="stats-card">
-          <div style="display:flex; justify-content:space-between; gap:1rem;">
-            <div>
-              <div style="color:var(--muted); font-weight:800;">TOTAL</div>
-              <div style="font-size:1.8rem; font-weight:900; color:#FFF;">{stats['total']:,}</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="color:var(--muted); font-weight:800;">MOVIE</div>
-              <div style="font-size:1.8rem; font-weight:900; color:#FFF;">{stats['movies']:,}</div>
-            </div>
-          </div>
-          <div style="display:flex; justify-content:space-between; gap:1rem; margin-top:0.8rem;">
-            <div>
-              <div style="color:var(--muted); font-weight:800;">TV SHOW</div>
-              <div style="font-size:1.6rem; font-weight:900; color:#FFF;">{stats['tv_shows']:,}</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="color:var(--muted); font-weight:800;">TAHUN</div>
-              <div style="font-size:1.6rem; font-weight:900; color:#FFF;">{stats['min_year']}–{stats['max_year']}</div>
-            </div>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 # =========================================================
 # PAGE: REKOMENDASI
@@ -866,73 +769,66 @@ with st.sidebar:
 if page == "🎯 REKOMENDASI":
     tabs = st.tabs(["🎬 Berdasarkan Judul", "🔍 Berdasarkan Kata Kunci", "⭐ Konten Populer"])
 
-    # -------------------------
-    # TAB 1: TITLE-BASED
-    # -------------------------
+    # TAB 1: TITLE BASED
     with tabs[0]:
         col1, col2 = st.columns([2, 1])
 
         with col1:
             st.markdown("## 🎯 Pilih Konten untuk Direkomendasikan")
 
-            st.markdown('<div class="glass-panel">', unsafe_allow_html=True)
-            st.markdown("### 📝 Pilih Judul")
+            # pilih tipe untuk selector
+            filter_type_for_selector = st.selectbox(
+                "Tipe konten",
+                options=type_options,
+                index=0,
+                key="filter_type_title",
+            )
+            selector_df = df if filter_type_for_selector == "All" else df[df["type"] == filter_type_for_selector]
 
-            # Cari judul (opsional)
+            st.markdown("### 📝 Pilih Judul")
             title_search = st.text_input(
                 "Cari judul (opsional)",
-                placeholder="Ketik sebagian judul (misal: naruto, money heist, avengers)...",
+                placeholder="Ketik sebagian judul...",
                 key="title_search",
             )
 
-            # Filter tipe untuk mempermudah list judul
-            type_filter_for_titles = st.selectbox(
-                "Tipe konten (untuk list judul)",
-                options=type_options,
-                index=0,
-                key="type_filter_titles",
-            )
-
-            selector_df = df if type_filter_for_titles == "All" else df[df["type"] == type_filter_for_titles]
             if title_search.strip():
                 mask = selector_df["display_title"].str.contains(title_search, case=False, na=False)
-                selector_df = selector_df[mask] if mask.any() else selector_df
+                selector_df_view = selector_df[mask].copy()
+                if selector_df_view.empty:
+                    selector_df_view = selector_df.copy()
+                    ui_alert("warning", "Tidak ada judul cocok, menampilkan semua judul sesuai filter.")
+            else:
+                selector_df_view = selector_df
 
-            options = selector_df["display_title"].tolist()
+            options = selector_df_view["display_title"].tolist()
             if not options:
                 ui_alert("warning", "Tidak ada konten untuk filter ini.")
-                st.markdown("</div>", unsafe_allow_html=True)
                 st.stop()
 
-            selected_display = st.selectbox(
-                "Judul",
-                options=options,
-                index=0,
-                key="title_selector",
-            )
+            selected_display = st.selectbox("Judul", options=options, index=0, key="title_selector")
 
-            # =========================================================
-            # ✅ FILTER CEPAT DIPINDAH KE BAWAH PILIH JUDUL
-            # =========================================================
-            st.markdown("### 🔍 Filter Cepat", unsafe_allow_html=True)
-            f1, f2, f3 = st.columns([1.2, 1.2, 1.0])
+            # ✅ FILTER CEPAT DIPINDAH KE BAWAH PILIH JUDUL (sesuai request kamu)
+            st.markdown("---")
+            st.markdown("## 🔍 FILTER CEPAT (DI BAWAH PILIH JUDUL)")
 
-            with f1:
-                top_n = st.slider("Jumlah rekomendasi", 5, 20, 10, 1, key="top_n_slider")
-            with f2:
+            fc1, fc2, fc3 = st.columns([1.2, 1.6, 1.2])
+            with fc1:
+                quick_type = st.selectbox("Tipe konten", options=type_options, index=0, key="quick_type")
+            with fc2:
                 year_range = st.slider(
                     "Pilih rentang tahun",
                     min_value=min_year,
                     max_value=max_year,
                     value=(min_year, max_year),
-                    key="year_range_title",
+                    key="quick_year",
                 )
-            with f3:
-                same_type = st.checkbox("Tipe sama", value=True, key="same_type_check")
+            with fc3:
+                top_n = st.slider("Jumlah", 5, 20, 10, 1, key="top_n")
+
+            same_type = st.checkbox("Hanya tipe yang sama dengan judul pilihan", value=True, key="same_type_check")
 
             year_min, year_max = year_range
-
-            st.markdown("</div>", unsafe_allow_html=True)
 
             if st.button("🚀 Dapatkan Rekomendasi", type="primary", key="get_recs_btn"):
                 matches = df[df["display_title"] == selected_display]
@@ -940,12 +836,12 @@ if page == "🎯 REKOMENDASI":
                     ui_alert("error", "Judul tidak ditemukan.")
                 else:
                     idx = matches.index[0]
-                    selected_item = df.loc[idx]
 
                     st.markdown("---")
-                    st.markdown("## ✅ Konten yang Dipilih")
-                    # ✅ tampil seperti card rekomendasi
-                    display_selected_card(selected_item)
+                    st.markdown("## 🎬 Konten yang Dipilih (Tampil seperti Card Rekomendasi)")
+                    selected_item = df.loc[idx].copy()
+                    selected_item["similarity"] = 1.0  # biar tampil 100%
+                    display_item_card(selected_item, rank=None, show_similarity=False)
 
                     with st.spinner("Mencari rekomendasi terbaik..."):
                         recs = recommend_by_index(
@@ -958,13 +854,17 @@ if page == "🎯 REKOMENDASI":
                             year_max=year_max,
                         )
 
+                    # tambahan filter cepat type (opsional)
+                    if quick_type != "All":
+                        recs = recs[recs["type"] == quick_type]
+
                     st.markdown("---")
                     if recs.empty:
                         ui_alert("warning", "Tidak menemukan rekomendasi. Coba longgarkan filter.")
                     else:
                         ui_alert("success", f"Menampilkan <b>{len(recs)}</b> rekomendasi teratas.")
                         for i, (_, r) in enumerate(recs.iterrows(), 1):
-                            display_recommendation_card(r, i)
+                            display_item_card(r, rank=i, show_similarity=True)
 
         with col2:
             st.markdown("## 📊 Statistik Dataset")
@@ -974,13 +874,11 @@ if page == "🎯 REKOMENDASI":
             display_metric_card("Tahun Terbaru", str(stats["max_year"]), "Konten terupdate", "🚀")
 
             st.markdown("## 🎭 Genre Populer")
-            top_genres = split_and_count(df["listed_in"], sep=",", top_k=8)
+            top_genres = split_and_count(df["listed_in"], sep=",", top_k=10)
             if len(top_genres) > 0:
                 st.bar_chart(top_genres)
 
-    # -------------------------
-    # TAB 2: QUERY-BASED
-    # -------------------------
+    # TAB 2: QUERY
     with tabs[1]:
         st.markdown("## 🔍 Pencarian Berdasarkan Kata Kunci")
 
@@ -1027,30 +925,27 @@ if page == "🎯 REKOMENDASI":
                         year_max=year_max_q,
                     )
 
+                st.markdown("---")
                 if recs_q.empty:
                     ui_alert("error", "Tidak ada hasil. Coba keyword bahasa Inggris yang lebih umum.")
                 else:
                     ui_alert("success", f"Ditemukan <b>{len(recs_q)}</b> hasil teratas.")
                     for i, (_, r) in enumerate(recs_q.iterrows(), 1):
-                        display_recommendation_card(r, i)
+                        display_item_card(r, rank=i, show_similarity=True)
 
-    # -------------------------
     # TAB 3: POPULAR
-    # -------------------------
     with tabs[2]:
         st.markdown("## ⭐ Konten Populer (Sampling)")
-        sample_size = min(8, len(df))
-        sample_df = df.sample(sample_size)
-
+        sample_df = df.sample(min(8, len(df)))
         cols = st.columns(2)
         for i, (_, item) in enumerate(sample_df.iterrows()):
             with cols[i % 2]:
-                tmp = item.copy()
-                tmp["similarity"] = 0.0
-                display_recommendation_card(tmp, i + 1)
+                item2 = item.copy()
+                item2["similarity"] = 0.0
+                display_item_card(item2, rank=None, show_similarity=False)
 
 # =========================================================
-# PAGE: DASHBOARD
+# PAGE: DASHBOARD ANALITIK
 # =========================================================
 elif page == "📊 DASHBOARD ANALITIK":
     st.markdown("## 📊 Dashboard Analitik Netflix")
@@ -1090,10 +985,10 @@ else:
         <div class="glass-panel">
           <h3 style="color:var(--red) !important;">📌 Ringkasan</h3>
           <p style="line-height:1.55;">
-            Sistem ini menggunakan <b>Content-Based Filtering</b> menggunakan metadata Netflix
-            (judul, genre, cast, director, negara, rating, deskripsi).
-            Teks diubah menjadi vektor dengan <b>TF-IDF</b>, lalu kemiripan dihitung dengan
-            <b>Cosine Similarity</b> (via <i>linear_kernel</i>).
+            Sistem ini menggunakan <b>Content-Based Filtering</b> dengan fitur gabungan (soup)
+            dari metadata Netflix (judul, genre, cast, director, negara, rating, deskripsi).
+            Teks diubah menjadi vektor menggunakan <b>TF-IDF</b>, lalu kemiripan dihitung memakai
+            <b>Cosine Similarity</b>.
           </p>
         </div>
         """,
@@ -1109,7 +1004,7 @@ st.markdown(
                 border-top:2px solid var(--red);
                 background:linear-gradient(to bottom, transparent, rgba(229,9,20,0.12));">
       <div style="font-weight:900; color:#FFF;">🎬 Netflix Recommender System</div>
-      <div style="color:var(--muted); font-weight:750; margin-top:0.35rem;">
+      <div style="color:var(--muted); font-weight:650; margin-top:0.35rem;">
         Built with Streamlit + Scikit-learn (Content-Based Filtering)
       </div>
     </div>
