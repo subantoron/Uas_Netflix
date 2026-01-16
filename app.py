@@ -25,7 +25,7 @@ st.set_page_config(
 DEFAULT_DATA_PATH = Path(__file__).parent / "netflix_titles.csv"
 
 # -----------------------------
-# Custom CSS - Netflix Black & Red Theme (FIXED VERSION)
+# Custom CSS - Netflix Black & Red Theme (FIXED DROPDOWN)
 # -----------------------------
 st.markdown("""
 <style>
@@ -105,40 +105,70 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.8rem !important;
 }
 
-/* FIX: Selectbox text color - HITAM untuk visibility */
-.stSelectbox > div > div > div > div {
-    color: #000000 !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-}
-
-.stSelectbox > div > div > div {
+/* ========== FIXED SELECTBOX - DROPDOWN TEXT COLOR ========== */
+/* Container utama selectbox */
+.stSelectbox > div > div {
     background: #FFFFFF !important;
-    color: #000000 !important;
     border: 2px solid #E50914 !important;
     border-radius: 8px !important;
-    font-weight: 600 !important;
     padding: 0.4rem 0.6rem !important;
     transition: all 0.3s ease !important;
     min-height: 44px !important;
 }
 
-.stSelectbox > div > div > div:hover {
-    border-color: #FF0000 !important;
-    box-shadow: 0 0 12px rgba(229,9,20,0.4) !important;
+/* Text yang ditampilkan di selectbox */
+.stSelectbox > div > div > div {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
 }
 
-/* Fix dropdown options text color */
-.stSelectbox div[role="listbox"] div {
+/* Dropdown/menu options */
+div[role="listbox"] {
+    background: #FFFFFF !important;
+    border: 2px solid #E50914 !important;
+    border-radius: 8px !important;
+    margin-top: 4px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
+}
+
+/* Setiap option dalam dropdown */
+div[role="listbox"] div[role="option"] {
     color: #000000 !important;
     font-weight: 600 !important;
     background: #FFFFFF !important;
     font-size: 14px !important;
+    padding: 10px 12px !important;
+    border-bottom: 1px solid #EEEEEE !important;
 }
 
-.stSelectbox div[role="listbox"] div:hover {
+/* Option hover state */
+div[role="listbox"] div[role="option"]:hover {
     background: #E50914 !important;
     color: #FFFFFF !important;
+}
+
+/* Option selected state */
+div[role="listbox"] div[role="option"][aria-selected="true"] {
+    background: #E50914 !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
+
+/* Input field text color */
+.stTextInput > div > div > input {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    background: #FFFFFF !important;
+}
+
+/* Label selectbox */
+.stSelectbox label {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
 }
 
 /* Enhanced Cards */
@@ -321,24 +351,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Enhanced Input Fields */
-.stTextInput > div > div > input {
-    background: #1A1A1A !important;
-    color: white !important;
+.stTextInput > div > div {
+    background: #FFFFFF !important;
     border-radius: 8px !important;
-    border: 1px solid #333333 !important;
-    padding: 0.8rem 1rem !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    transition: all 0.2s ease !important;
-    box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.5) !important;
-    min-height: 44px !important;
+    border: 2px solid #E50914 !important;
+    padding: 0.4rem 0.6rem !important;
+    transition: all 0.3s ease !important;
 }
 
-.stTextInput > div > div > input:focus {
-    border-color: #E50914 !important;
-    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2), inset 0 1px 6px rgba(0, 0, 0, 0.5) !important;
-    background: #222222 !important;
-    outline: none !important;
+.stTextInput > div > div > input {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+
+.stTextInput > div > div:hover {
+    border-color: #FF0000 !important;
+    box-shadow: 0 0 12px rgba(229,9,20,0.4) !important;
 }
 
 /* Glass Panel Effect */
@@ -404,7 +433,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 5px 15px rgba(229, 9, 20, 0.5);
 }
 
-/* Sidebar Enhancement - FIXED */
+/* Sidebar Enhancement */
 [data-testid="stSidebar"] {
     background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
     border-right: 3px solid #E50914 !important;
@@ -554,7 +583,7 @@ p, span, div, label {
     color: #F5F5F5 !important;
 }
 
-/* Special styling for sidebar content to make it more organized */
+/* Special styling for sidebar content */
 [data-testid="stSidebar"] div {
     color: #F5F5F5 !important;
 }
@@ -579,11 +608,6 @@ p, span, div, label {
     line-height: 1.4 !important;
 }
 
-/* Remove any keyboard double styling */
-.keyboard-double {
-    display: none !important;
-}
-
 /* Better spacing in sidebar */
 .sidebar-section {
     margin-bottom: 1.5rem !important;
@@ -595,6 +619,44 @@ p, span, div, label {
     border-bottom: none !important;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+}
+
+/* ========== TITLE SELECTOR STYLING ========== */
+/* Make sure the selected text in dropdown is visible */
+div[data-baseweb="select"] > div:first-child {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Select label styling */
+.stSelectbox label[data-testid="stWidgetLabel"] {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Slider labels */
+.stSlider label {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
+
+/* Checkbox labels */
+.stCheckbox label {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+
+/* Text input labels */
+.stTextInput label {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
 }
 
 </style>
@@ -647,7 +709,7 @@ def _normalize_text(x: object) -> str:
         return ""
     s = s.replace("&", " and ")
     s = s.lower()
-    s = re.sub(r"[^0-9a-z]+", " ", s)
+    s = re.sub(r"[^09a-z]+", " ", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
 
@@ -1257,21 +1319,23 @@ min_year = stats.get("min_year", 1900)
 max_year = stats.get("max_year", datetime.now().year)
 
 # -----------------------------
-# Page: Recommendation
+# Page: Recommendation (DIPERBAIKI)
 # -----------------------------
 if page == "🎯 REKOMENDASI":
     tabs = st.tabs(["🎬 BERDASARKAN JUDUL", "🔍 BERDASARKAN KATA KUNCI", "⭐ KONTEN POPULER"])
 
-    # Tab 1 - Berdasarkan Judul
+    # Tab 1 - Berdasarkan Judul (DIPERBAIKI)
     with tabs[0]:
         col1, col2 = st.columns([2, 1])
 
         with col1:
             st.markdown('<h3 style="color: #E50914 !important; margin-bottom: 1.2rem; font-weight: 800;">🎯 PILIH KONTEN UNTUK DIREKOMENDASIKAN</h3>', unsafe_allow_html=True)
 
-            # Filter Tipe Konten
+            # Filter Tipe Konten - DIPERBAIKI dengan label yang jelas
             st.markdown('<div class="glass-panel" style="padding: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<h4 style="color: #E50914 !important; margin-bottom: 0.8rem; font-weight: 700; font-size: 1.1rem;">🎭 FILTER TIPE KONTEN</h4>', unsafe_allow_html=True)
+            
+            # Filter Tipe Konten dengan label terpisah
+            st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">🎭 FILTER TIPE KONTEN</p>', unsafe_allow_html=True)
             
             filter_type_for_selector = st.selectbox(
                 "Pilih tipe konten:",
@@ -1287,8 +1351,8 @@ if page == "🎯 REKOMENDASI":
             else:
                 selector_df = df[df["type"] == filter_type_for_selector]
 
-            # Pilih Judul
-            st.markdown('<h4 style="color: #E50914 !important; margin: 1.2rem 0 0.8rem 0; font-weight: 700; font-size: 1.1rem;">📝 PILIH JUDUL</h4>', unsafe_allow_html=True)
+            # Pilih Judul - DIPERBAIKI dengan label terpisah
+            st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin: 1.2rem 0 0.5rem 0; font-size: 0.95rem;">📝 PILIH JUDUL</p>', unsafe_allow_html=True)
 
             if len(selector_df) > 0:
                 options = selector_df["display_title"].tolist()
@@ -1312,17 +1376,17 @@ if page == "🎯 REKOMENDASI":
 
             with col_settings1:
                 st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<div style="font-size: 0.9rem; color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700;">JUMLAH REKOMENDASI</div>', unsafe_allow_html=True)
+                st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">JUMLAH REKOMENDASI</p>', unsafe_allow_html=True)
                 top_n = st.slider("Jumlah:", 5, 20, 10, 1, label_visibility="collapsed", key="top_n_slider")
                 st.markdown("</div>", unsafe_allow_html=True)
 
             with col_settings2:
                 st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<div style="font-size: 0.9rem; color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700;">FILTER TIPE</div>', unsafe_allow_html=True)
+                st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">FILTER TIPE</p>', unsafe_allow_html=True)
                 same_type = st.checkbox("Hanya tipe yang sama", value=True, help="Movie↔Movie atau TV Show↔TV Show", key="same_type_check")
                 st.markdown("</div>", unsafe_allow_html=True)
 
-            # Filter Tahun Rilis
+            # Filter Tahun Rilis - DIPERBAIKI dengan label
             st.markdown('<h4 style="color: #E50914 !important; margin: 1.5rem 0 1rem 0; font-weight: 800;">📅 FILTER TAHUN RILIS</h4>', unsafe_allow_html=True)
             year_range = st.slider(
                 "Pilih rentang tahun:",
@@ -1336,6 +1400,7 @@ if page == "🎯 REKOMENDASI":
             year_min, year_max = year_range
 
             # Tombol Dapatkan Rekomendasi
+            st.markdown('<div style="margin: 2rem 0;">', unsafe_allow_html=True)
             if selected_display and st.button("🚀 DAPATKAN REKOMENDASI", type="primary", use_container_width=True, key="get_recs_btn"):
                 matches = df[df["display_title"] == selected_display]
                 if len(matches) == 0:
@@ -1441,6 +1506,7 @@ if page == "🎯 REKOMENDASI":
                         # Tampilkan setiap rekomendasi
                         for i, (_, r) in enumerate(recs.iterrows(), 1):
                             display_recommendation_card(r, i)
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
             # Dashboard Dataset
@@ -1472,14 +1538,15 @@ if page == "🎯 REKOMENDASI":
                         unsafe_allow_html=True,
                     )
 
-    # Tab 2 - Berdasarkan Kata Kunci
+    # Tab 2 - Berdasarkan Kata Kunci (DIPERBAIKI)
     with tabs[1]:
         st.markdown('<h3 style="color: #E50914 !important; margin-bottom: 1.2rem; font-weight: 800;">🔍 PENCARIAN DENGAN KATA KUNCI</h3>', unsafe_allow_html=True)
         st.markdown('<p style="color: #CCCCCC !important; font-size: 0.95rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4;">Masukkan kata kunci untuk menemukan konten yang sesuai.</p>', unsafe_allow_html=True)
 
-        # Input Pencarian
+        # Input Pencarian dengan label yang jelas
         col_search1, col_search2 = st.columns([3, 1])
         with col_search1:
+            st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">🔍 MASUKKAN KATA KUNCI</p>', unsafe_allow_html=True)
             query = st.text_input(
                 "Masukkan kata kunci pencarian:",
                 placeholder="Contoh: action adventure, romantic comedy, sci-fi, crime drama",
@@ -1488,6 +1555,7 @@ if page == "🎯 REKOMENDASI":
                 key="search_query",
             )
         with col_search2:
+            st.markdown('<div style="height: 28px;"></div>')
             search_btn = st.button("🔍 CARI", type="primary", use_container_width=True, key="search_btn")
 
         # Filter Pencarian
@@ -1496,25 +1564,26 @@ if page == "🎯 REKOMENDASI":
         
         with col_filter1:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 0.9rem; color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700;">FILTER TIPE</div>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">FILTER TIPE</p>', unsafe_allow_html=True)
             type_filter = st.selectbox("Tipe:", options=type_options, index=0, label_visibility="collapsed", key="type_filter_search")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col_filter2:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 0.9rem; color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700;">JUMLAH HASIL</div>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">JUMLAH HASIL</p>', unsafe_allow_html=True)
             top_n_q = st.slider("Hasil:", 5, 20, 10, label_visibility="collapsed", key="top_n_search")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col_filter3:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<div style="font-size: 0.9rem; color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700;">TAHUN RILIS</div>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">TAHUN RILIS</p>', unsafe_allow_html=True)
             year_range_q = st.slider("Tahun:", min_value=min_year, max_value=max_year, value=(min_year, max_year), key="year_range_search", label_visibility="collapsed")
             st.markdown("</div>", unsafe_allow_html=True)
 
         year_min_q, year_max_q = year_range_q
 
         # Proses Pencarian
+        st.markdown('<div style="margin: 2rem 0;">', unsafe_allow_html=True)
         if search_btn:
             if not query:
                 ui_alert("warning", "Masukkan kata kunci dulu ya 🙂")
@@ -1563,6 +1632,7 @@ if page == "🎯 REKOMENDASI":
                     # Tampilkan hasil
                     for i, (_, r) in enumerate(recs_q.iterrows(), 1):
                         display_recommendation_card(r, i)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # Tab 3 - Konten Populer
     with tabs[2]:
@@ -1669,7 +1739,9 @@ elif page == "📊 DASHBOARD ANALITIK":
     # Eksplorasi Data
     st.markdown('<h4 style="color: #E50914 !important; margin: 1.5rem 0 1.2rem 0; font-weight: 800;">🔍 PRATINJAU & EKSPLORASI DATA</h4>', unsafe_allow_html=True)
 
-    search_term = st.text_input("🔎 Cari dalam dataset:", placeholder="Masukkan kata kunci...", key="data_search")
+    # Search input dengan label yang jelas
+    st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">🔍 CARI DALAM DATASET</p>', unsafe_allow_html=True)
+    search_term = st.text_input("Masukkan kata kunci pencarian:", placeholder="Cari berdasarkan judul, deskripsi, sutradara...", key="data_search", label_visibility="collapsed")
 
     if search_term:
         search_cols = ["title", "description", "director", "cast", "listed_in"]
@@ -1685,7 +1757,10 @@ elif page == "📊 DASHBOARD ANALITIK":
     else:
         preview_df = df
 
-    sample_size = st.slider("**Pilih jumlah sampel:**", 5, 100, 20, key="sample_size")
+    # Slider dengan label yang jelas
+    st.markdown('<p style="color: #FFFFFF !important; font-weight: 700; margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">📊 PILIH JUMLAH SAMPEL</p>', unsafe_allow_html=True)
+    sample_size = st.slider("", 5, 100, 20, key="sample_size", label_visibility="collapsed")
+    
     display_cols = ["title", "type", "release_year", "rating", "duration", "listed_in"]
     available_cols = [c for c in display_cols if c in preview_df.columns]
 
