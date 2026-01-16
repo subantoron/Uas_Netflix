@@ -114,6 +114,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.4rem 0.6rem !important;
     transition: all 0.3s ease !important;
     min-height: 44px !important;
+    overflow: visible !important;
 }
 
 /* Hide label above selectbox completely */
@@ -129,6 +130,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #000000 !important;
     font-weight: 700 !important;
     font-size: 16px !important;
+    opacity: 1 !important;
 }
 
 /* Text dalam input selectbox yang terlihat */
@@ -136,6 +138,16 @@ div[data-baseweb="select"] > div:first-child {
     color: #000000 !important;
     font-weight: 700 !important;
     font-size: 16px !important;
+    opacity: 1 !important;
+}
+
+/* Ensure selectbox itself is visible */
+.stSelectbox {
+    overflow: visible !important;
+}
+
+.stSelectbox > div {
+    overflow: visible !important;
 }
 
 /* Dropdown/menu options */
@@ -874,6 +886,81 @@ div[role="listbox"] div[role="option"]::after {
 div[role="listbox"] {
     filter: none !important;
     -webkit-filter: none !important;
+}
+
+/* ========== EXTREME DROPDOWN TEXT VISIBILITY ========== */
+/* Target all possible dropdown item containers */
+div[role="listbox"],
+div[role="listbox"] div,
+div[role="listbox"] span,
+div[role="listbox"] p,
+div[role="listbox"] a,
+div[role="option"],
+li[role="option"],
+[role="option"],
+[data-baseweb="select"] [role="option"],
+.stSelectbox [role="option"],
+[data-test-id*="option"] {
+    color: #000000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    background: #FFFFFF !important;
+    font-weight: 900 !important;
+    font-size: 17px !important;
+}
+
+/* Ultra specific targeting for listbox items */
+div[role="listbox"] > div,
+div[role="listbox"] > li {
+    color: #000000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 900 !important;
+    font-size: 17px !important;
+    padding: 20px 25px !important;
+}
+
+/* Target text content within options */
+div[role="option"] > *,
+li[role="option"] > * {
+    color: #000000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 900 !important;
+    font-size: 17px !important;
+    background: transparent !important;
+}
+
+/* Ensure no text color is overridden by Streamlit */
+.stSelectbox div[role="option"],
+.stSelectbox [role="option"] {
+    color: #000000 !important;
+}
+
+/* Remove any color inheritance issues */
+div[role="listbox"] div[role="option"] {
+    color: #000000 !important;
+    font-weight: 900 !important;
+    font-size: 17px !important;
+    line-height: 1.8 !important;
+}
+
+/* BaseWeb specific dropdown targeting */
+[data-baseweb="select"] ul,
+[data-baseweb="select"] [role="listbox"],
+[data-baseweb="select"] [role="option"] {
+    color: #000000 !important;
+    opacity: 1 !important;
+    background: #FFFFFF !important;
+    font-weight: 900 !important;
+}
+
+/* Last resort - target every child of listbox */
+div[role="listbox"] * {
+    color: #000000 !important !important !important;
+    opacity: 1 !important !important !important;
+    font-weight: 900 !important !important !important;
 }
 
 </style>
