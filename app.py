@@ -146,34 +146,42 @@ div[role="listbox"] {
     margin-top: 4px !important;
     box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
     padding: 0 !important;
+    min-width: 200px !important;
 }
 
 /* Setiap option dalam dropdown - HITAM JELAS */
 div[role="listbox"] div[role="option"] {
     color: #000000 !important;
-    font-weight: 700 !important;
+    font-weight: 900 !important;
     background: #FFFFFF !important;
-    font-size: 16px !important;
-    padding: 14px 18px !important;
-    border-bottom: 1px solid #CCCCCC !important;
+    font-size: 18px !important;
+    padding: 16px 20px !important;
+    border-bottom: 2px solid #DDDDDD !important;
     opacity: 1 !important;
-    text-shadow: none !important;
-    letter-spacing: 0.3px !important;
+    visibility: visible !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+    letter-spacing: 0.5px !important;
+    line-height: 1.5 !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* Option hover state */
 div[role="listbox"] div[role="option"]:hover {
     background: #E50914 !important;
     color: #FFFFFF !important;
-    font-weight: 800 !important;
+    font-weight: 900 !important;
     cursor: pointer !important;
+    border-bottom: 2px solid #C10810 !important;
 }
 
 /* Option selected state */
 div[role="listbox"] div[role="option"][aria-selected="true"] {
     background: #E50914 !important;
     color: #FFFFFF !important;
-    font-weight: 800 !important;
+    font-weight: 900 !important;
+    border-bottom: 2px solid #C10810 !important;
 }
 
 /* Input field text color - HITAM JELAS */
