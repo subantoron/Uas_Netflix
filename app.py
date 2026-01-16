@@ -145,30 +145,35 @@ div[role="listbox"] {
     border-radius: 8px !important;
     margin-top: 4px !important;
     box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
+    padding: 0 !important;
 }
 
 /* Setiap option dalam dropdown - HITAM JELAS */
 div[role="listbox"] div[role="option"] {
     color: #000000 !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     background: #FFFFFF !important;
     font-size: 16px !important;
-    padding: 12px 16px !important;
-    border-bottom: 1px solid #EEEEEE !important;
+    padding: 14px 18px !important;
+    border-bottom: 1px solid #CCCCCC !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+    letter-spacing: 0.3px !important;
 }
 
 /* Option hover state */
 div[role="listbox"] div[role="option"]:hover {
     background: #E50914 !important;
     color: #FFFFFF !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
 }
 
 /* Option selected state */
 div[role="listbox"] div[role="option"][aria-selected="true"] {
     background: #E50914 !important;
     color: #FFFFFF !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
 }
 
 /* Input field text color - HITAM JELAS */
