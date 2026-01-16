@@ -181,11 +181,11 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
 
 /* Label selectbox */
 .stSelectbox label {
-    color: #FFFFFF !important;
+    color: #000000 !important;
     font-weight: 800 !important;
     font-size: 1rem !important;
     margin-bottom: 0.5rem !important;
-    display: block !important;
+    display: none !important;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 
@@ -196,6 +196,11 @@ div[role="listbox"] div[role="option"][aria-selected="true"] {
     font-size: 1rem !important;
     margin-bottom: 0.5rem !important;
     display: block !important;
+}
+
+/* Hide radio label text */
+.stRadio > div > label {
+    display: none !important;
 }
 
 /* Enhanced Cards */
@@ -1127,10 +1132,10 @@ with st.sidebar:
     # Navigation Menu
     st.markdown('<div class="sidebar-section"><h4 style="color: #E50914 !important; margin-bottom: 0.8rem; font-weight: 800; font-size: 1.1rem;">🧭 MENU NAVIGASI</h4></div>', unsafe_allow_html=True)
     page = st.radio(
-        "Pilih Halaman:",
+        "",
         ["🎯 REKOMENDASI", "📊 DASHBOARD ANALITIK", "🤖 TENTANG SISTEM"],
         index=0,
-        label_visibility="collapsed",
+        label_visibility="hidden",
         key="nav_menu"
     )
 
@@ -1343,11 +1348,11 @@ if page == "🎯 REKOMENDASI":
             st.markdown('<p class="input-label">🎭 FILTER TIPE KONTEN</p>', unsafe_allow_html=True)
             
             filter_type_for_selector = st.selectbox(
-                "Pilih tipe konten:",
+                "",
                 options=type_options,
                 index=0,
                 help="Filter berdasarkan Movie atau TV Show",
-                label_visibility="collapsed",
+                label_visibility="hidden",
                 key="filter_type_title",
             )
 
@@ -1362,11 +1367,11 @@ if page == "🎯 REKOMENDASI":
             if len(selector_df) > 0:
                 options = selector_df["display_title"].tolist()
                 selected_display = st.selectbox(
-                    "Pilih judul untuk rekomendasi:",
+                    "",
                     options=options,
                     index=0,
                     help="Pilih satu judul untuk mendapatkan rekomendasi serupa",
-                    label_visibility="collapsed",
+                    label_visibility="hidden",
                     key="title_selector",
                 )
             else:
