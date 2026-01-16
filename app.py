@@ -25,7 +25,7 @@ st.set_page_config(
 DEFAULT_DATA_PATH = Path(__file__).parent / "netflix_titles.csv"
 
 # -----------------------------
-# Custom CSS - Netflix Black & Red Theme (FIXED DROPDOWN TEXT - HITAM JELAS)
+# Custom CSS - Netflix Black & Red Theme (FIXED ALL TEXT VISIBILITY)
 # -----------------------------
 st.markdown("""
 <style>
@@ -95,14 +95,22 @@ st.markdown("""
     line-height: 1.3 !important;
 }
 
-/* Typography */
+/* ========== FIXED ALL TEXT VISIBILITY ========== */
+/* Semua teks utama - PUTIH TEBAL dengan kontras tinggi */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Netflix Sans', sans-serif !important;
     font-weight: 800 !important;
     color: #FFFFFF !important;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important;
     line-height: 1.2 !important;
     margin-bottom: 0.8rem !important;
+}
+
+/* Semua teks paragraf dan konten */
+p, span, div, label, .stMarkdown, .element-container, .stText, .st-emotion-cache {
+    color: #F0F0F0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.8) !important;
 }
 
 /* ========== FIXED SELECTBOX - DROPDOWN TEXT COLOR HITAM JELAS ========== */
@@ -114,15 +122,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.4rem 0.6rem !important;
     transition: all 0.3s ease !important;
     min-height: 44px !important;
-    overflow: visible !important;
-}
-
-/* Hide label above selectbox completely */
-.stSelectbox > div:first-child > label {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
 }
 
 /* Text yang ditampilkan di selectbox - HITAM JELAS */
@@ -130,7 +129,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #000000 !important;
     font-weight: 700 !important;
     font-size: 16px !important;
-    opacity: 1 !important;
 }
 
 /* Text dalam input selectbox yang terlihat */
@@ -138,145 +136,51 @@ div[data-baseweb="select"] > div:first-child {
     color: #000000 !important;
     font-weight: 700 !important;
     font-size: 16px !important;
-    opacity: 1 !important;
-}
-
-/* Ensure selectbox itself is visible */
-.stSelectbox {
-    overflow: visible !important;
-}
-
-.stSelectbox > div {
-    overflow: visible !important;
 }
 
 /* Dropdown/menu options */
 div[role="listbox"] {
     background: #FFFFFF !important;
-    border: 3px solid #E50914 !important;
+    border: 2px solid #E50914 !important;
     border-radius: 8px !important;
     margin-top: 4px !important;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.95) !important;
-    padding: 8px 0 !important;
-    min-width: 350px !important;
-    z-index: 9999 !important;
-    overflow: visible !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
 }
 
-/* Setiap option dalam dropdown - HITAM SANGAT JELAS */
+/* Setiap option dalam dropdown - HITAM JELAS */
 div[role="listbox"] div[role="option"] {
     color: #000000 !important;
-    font-weight: 900 !important;
+    font-weight: 600 !important;
     background: #FFFFFF !important;
-    font-size: 17px !important;
-    padding: 20px 25px !important;
+    font-size: 16px !important;
+    padding: 12px 16px !important;
     border-bottom: 1px solid #EEEEEE !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    text-shadow: none !important;
-    letter-spacing: 0.4px !important;
-    line-height: 1.8 !important;
-    min-height: 65px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    position: relative !important;
-    z-index: 10000 !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important;
-    transition: all 0.2s ease !important;
-}
-
-div[role="listbox"] div[role="option"]:last-child {
-    border-bottom: none !important;
-}
-
-/* Pastikan text dalam option terlihat - dengan specificity tinggi */
-div[role="listbox"] div[role="option"] span,
-div[role="listbox"] div[role="option"] div,
-div[role="listbox"] div[role="option"] p {
-    color: #000000 !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    background: transparent !important;
-    text-decoration: none !important;
 }
 
 /* Option hover state */
 div[role="listbox"] div[role="option"]:hover {
     background: #E50914 !important;
     color: #FFFFFF !important;
-    font-weight: 900 !important;
-    cursor: pointer !important;
-    border-bottom: 1px solid #C10810 !important;
-    transform: translateX(2px) !important;
-}
-
-div[role="listbox"] div[role="option"]:hover span,
-div[role="listbox"] div[role="option"]:hover div,
-div[role="listbox"] div[role="option"]:hover p {
-    color: #FFFFFF !important;
-    background: transparent !important;
+    font-weight: 700 !important;
 }
 
 /* Option selected state */
 div[role="listbox"] div[role="option"][aria-selected="true"] {
     background: #E50914 !important;
     color: #FFFFFF !important;
-    font-weight: 900 !important;
-    border-bottom: 1px solid #C10810 !important;
+    font-weight: 700 !important;
 }
 
-div[role="listbox"] div[role="option"][aria-selected="true"] span,
-div[role="listbox"] div[role="option"][aria-selected="true"] div,
-div[role="listbox"] div[role="option"][aria-selected="true"] p {
-    color: #FFFFFF !important;
-    background: transparent !important;
-}
-
-/* Additional specificity for dropdown text - BaseWeb select */
-[data-baseweb="select"] [role="option"] {
-    color: #000000 !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    background: #FFFFFF !important;
-    padding: 20px 25px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* BaseWeb select option text */
-[data-baseweb="select"] [role="option"] span {
-    color: #000000 !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    opacity: 1 !important;
-}
-
-/* Target all possible selectors for dropdown items */
-li[role="option"],
-div[role="option"] {
-    color: #000000 !important;
-}
-}
-    padding: 16px 20px !important;
-}
-
-/* Popup overlay enhancement */
-[data-baseweb="popover"] {
-    z-index: 9999 !important;
-}
-
+/* ========== FIXED TEXT INPUTS ========== */
 /* Input field text color - HITAM JELAS */
 .stTextInput > div > div > input {
     color: #000000 !important;
     font-weight: 700 !important;
     background: #FFFFFF !important;
     font-size: 16px !important;
-    letter-spacing: 0.3px !important;
+    border: 2px solid #E50914 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.8rem !important;
 }
 
 /* Input field container */
@@ -287,58 +191,71 @@ div[role="option"] {
     padding: 0.4rem 0.6rem !important;
 }
 
-/* Input field focus state */
-.stTextInput > div > div > input:focus {
-    outline: none !important;
-    border-color: #FF0000 !important;
-    box-shadow: 0 0 10px rgba(229, 9, 20, 0.6) !important;
-    background: #FFFFFF !important;
+/* Placeholder text */
+.stTextInput > div > div > input::placeholder {
+    color: #666666 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
 }
 
-/* Label selectbox */
-.stSelectbox label {
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: none !important;
-    width: 0 !important;
-}
-
-/* Hide text input label */
-.stTextInput label {
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: none !important;
-}
-
-/* Hide all selectbox label elements */
-.stSelectbox [data-baseweb="select"] label {
-    visibility: hidden !important;
-    height: 0 !important;
-}
-
-/* Label text input */
-.stTextInput label {
+/* ========== FIXED ALL LABELS ========== */
+/* Label untuk semua input */
+label, .stRadio > div > label, .stCheckbox > div > label, .stSelectbox label, .stTextInput label, .stSlider label {
     color: #FFFFFF !important;
     font-weight: 800 !important;
     font-size: 1rem !important;
     margin-bottom: 0.5rem !important;
     display: block !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7) !important;
 }
 
-/* Hide radio label text completely */
-.stRadio > div > label {
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: none !important;
+/* ========== FIXED METRIC CARDS ========== */
+.metric-card {
+    background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
+    border-radius: 12px !important;
+    padding: 1.2rem 1rem !important;
+    text-align: center !important;
+    border: 1px solid #2D2D2D !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7) !important;
+    margin-bottom: 1rem !important;
+    min-height: 150px !important;
 }
 
-/* Enhanced Cards */
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E50914, #FF0000, #E50914) !important;
+}
+
+.metric-card h3 {
+    color: #FFFFFF !important;
+    font-size: 2rem !important;
+    margin-bottom: 0.3rem !important;
+    font-weight: 900 !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.9) !important;
+}
+
+.metric-card div:not(.metric-card h3) {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    margin-bottom: 0.3rem !important;
+}
+
+.metric-card div:last-child {
+    color: #BBBBBB !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+}
+
+/* ========== FIXED RECOMMENDATION CARDS ========== */
 .recommendation-card {
     background: linear-gradient(145deg, #0F0F0F 0%, #1A1A1A 100%) !important;
     border-radius: 12px !important;
@@ -364,60 +281,16 @@ div[role="option"] {
     font-size: 1.5rem !important;
     font-weight: 800 !important;
     margin-bottom: 1rem !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.9) !important;
 }
 
-/* Enhanced Metric Cards */
-.metric-card {
-    background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
-    border-radius: 12px !important;
-    padding: 1.2rem 1rem !important;
-    text-align: center !important;
-    border: 1px solid #2D2D2D !important;
-    transition: all 0.3s ease !important;
-    position: relative !important;
-    overflow: hidden !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7) !important;
-    margin-bottom: 1rem !important;
-    min-height: 150px !important;
-}
-
-.metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #E50914, #FF0000, #E50914) !important;
-}
-
-.metric-card:hover {
-    transform: translateY(-3px) !important;
-    border-color: #E50914 !important;
-    box-shadow: 0 12px 30px rgba(229, 9, 20, 0.3) !important;
-}
-
-.metric-card h3 {
-    color: #FFFFFF !important;
-    font-size: 2rem !important;
-    margin-bottom: 0.3rem !important;
-    font-weight: 900 !important;
-}
-
-.metric-card div:not(.metric-card h3) {
+.recommendation-card p, .recommendation-card span, .recommendation-card div {
     color: #E0E0E0 !important;
-    font-weight: 700 !important;
-    font-size: 1rem !important;
-    margin-bottom: 0.3rem !important;
-}
-
-.metric-card div:last-child {
-    color: #BBBBBB !important;
     font-weight: 600 !important;
-    font-size: 0.85rem !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* Enhanced Badges */
+/* ========== FIXED BADGES ========== */
 .badge {
     display: inline-flex !important;
     align-items: center !important;
@@ -458,7 +331,7 @@ div[role="option"] {
     font-weight: 800 !important;
 }
 
-/* Enhanced Buttons */
+/* ========== FIXED BUTTONS ========== */
 .stButton > button {
     background: linear-gradient(135deg, #E50914 0%, #B81D24 100%) !important;
     color: white !important;
@@ -481,7 +354,7 @@ div[role="option"] {
     background: linear-gradient(135deg, #FF0000 0%, #E50914 100%) !important;
 }
 
-/* Enhanced Tabs */
+/* ========== FIXED TABS ========== */
 .stTabs [data-baseweb="tab-list"] {
     gap: 0.5rem !important;
     background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
@@ -497,10 +370,11 @@ div[role="option"] {
     border-radius: 8px !important;
     padding: 0.8rem 1.5rem !important;
     font-weight: 700 !important;
-    color: #AAAAAA !important;
+    color: #FFFFFF !important;
     border: 1px solid transparent !important;
     transition: all 0.3s ease !important;
     font-size: 0.95rem !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
@@ -517,7 +391,7 @@ div[role="option"] {
     transform: translateY(-1px) !important;
 }
 
-/* Glass Panel Effect */
+/* ========== FIXED GLASS PANELS ========== */
 .glass-panel {
     background: rgba(15, 15, 15, 0.9) !important;
     backdrop-filter: blur(15px);
@@ -530,7 +404,19 @@ div[role="option"] {
     margin-bottom: 1rem !important;
 }
 
-/* Stats Cards */
+.glass-panel h4, .glass-panel h5, .glass-panel h6 {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.9) !important;
+}
+
+.glass-panel p, .glass-panel div, .glass-panel span {
+    color: #E0E0E0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
+}
+
+/* ========== FIXED STATS CARDS ========== */
 .stats-card {
     background: linear-gradient(145deg, #0F0F0F, #1A1A1A);
     border-radius: 12px;
@@ -553,13 +439,19 @@ div[role="option"] {
     background: linear-gradient(90deg, #E50914, #FF0000);
 }
 
-.stats-card:hover {
-    border-color: #E50914;
-    transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(229, 9, 20, 0.3);
+.stats-card strong, .stats-card h4, .stats-card h5 {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.9) !important;
 }
 
-/* Tags */
+.stats-card div:not(:first-child) {
+    color: #E0E0E0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
+}
+
+/* ========== FIXED TAGS ========== */
 .tag {
     display: inline-block;
     padding: 0.4rem 0.8rem;
@@ -580,12 +472,33 @@ div[role="option"] {
     box-shadow: 0 5px 15px rgba(229, 9, 20, 0.5);
 }
 
-/* Sidebar Enhancement */
+/* ========== FIXED SIDEBAR ========== */
 [data-testid="stSidebar"] {
     background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
     border-right: 3px solid #E50914 !important;
     box-shadow: 5px 0 20px rgba(0, 0, 0, 0.8) !important;
     padding: 1.5rem 1rem !important;
+}
+
+[data-testid="stSidebar"] h1, 
+[data-testid="stSidebar"] h2, 
+[data-testid="stSidebar"] h3, 
+[data-testid="stSidebar"] h4,
+[data-testid="stSidebar"] h5,
+[data-testid="stSidebar"] h6 {
+    color: #E50914 !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.8rem !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.9) !important;
+}
+
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] div,
+[data-testid="stSidebar"] label {
+    color: #E0E0E0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
 [data-testid="stSidebar"] .stButton > button {
@@ -607,7 +520,7 @@ div[role="option"] {
     box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6) !important;
 }
 
-/* Radio Button Enhancement */
+/* ========== FIXED RADIO BUTTONS ========== */
 .stRadio > div {
     background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
     padding: 1rem !important;
@@ -617,13 +530,13 @@ div[role="option"] {
     margin-bottom: 1.2rem !important;
 }
 
-.stRadio > div > label {
+.stRadio > div > div {
     color: #FFFFFF !important;
     font-weight: 600 !important;
-    font-size: 0.95rem !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* Expander Enhancement */
+/* ========== FIXED EXPANDERS ========== */
 .streamlit-expanderHeader {
     background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%) !important;
     color: #FFFFFF !important;
@@ -635,6 +548,7 @@ div[role="option"] {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6) !important;
     transition: all 0.2s ease !important;
     margin: 1.2rem 0 0.5rem 0 !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.8) !important;
 }
 
 .streamlit-expanderHeader:hover {
@@ -650,7 +564,55 @@ div[role="option"] {
     margin-bottom: 1.2rem !important;
 }
 
-/* Divider Enhancement */
+.streamlit-expanderContent p,
+.streamlit-expanderContent div,
+.streamlit-expanderContent span {
+    color: #E0E0E0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
+}
+
+/* ========== FIXED ALERTS ========== */
+.stAlert {
+    background: rgba(15, 15, 15, 0.95) !important;
+    border: 1px solid #E50914 !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(15px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7) !important;
+    margin: 1.2rem 0 !important;
+}
+
+.stAlert [data-testid="stMarkdownContainer"] p,
+.stAlert [data-testid="stMarkdownContainer"] div,
+.stAlert [data-testid="stMarkdownContainer"] span {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
+}
+
+/* ========== FIXED DATAFRAME ========== */
+[data-testid="stDataFrame"] {
+    background: #0F0F0F !important;
+    border: 1px solid #2D2D2D !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stDataFrame"] th {
+    background: #E50914 !important;
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+}
+
+[data-testid="stDataFrame"] td {
+    background: #1A1A1A !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid #2D2D2D !important;
+}
+
+/* ========== FIXED DIVIDERS ========== */
 hr {
     border: none;
     height: 2px;
@@ -659,7 +621,7 @@ hr {
     border-radius: 2px;
 }
 
-/* Scrollbar Styling */
+/* ========== FIXED SCROLLBARS ========== */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -680,22 +642,42 @@ hr {
     background: linear-gradient(135deg, #FF0000, #E50914);
 }
 
-/* Alert Box Enhancement */
-.stAlert {
-    background: rgba(15, 15, 15, 0.95) !important;
-    border: 1px solid #E50914 !important;
-    border-radius: 12px !important;
-    backdrop-filter: blur(15px) !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7) !important;
-    margin: 1.2rem 0 !important;
+/* ========== FIXED SLIDERS ========== */
+.stSlider {
+    margin-bottom: 1.5rem !important;
 }
 
-/* Column Spacing Fix */
+.stSlider div[data-baseweb="slider"] {
+    color: #FFFFFF !important;
+}
+
+.stSlider [data-testid="stTickBar"] {
+    background: #2D2D2D !important;
+}
+
+.stSlider [data-baseweb="slider"] [role="slider"] {
+    background: #E50914 !important;
+    border-color: #FFFFFF !important;
+}
+
+/* ========== FIXED CHECKBOXES ========== */
+.stCheckbox > div {
+    background: transparent !important;
+    padding: 0.5rem 0 !important;
+}
+
+.stCheckbox > div > label {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
+/* ========== FIXED COLUMN SPACING ========== */
 [data-testid="column"] {
     padding: 0.3rem !important;
 }
 
-/* Mobile Responsiveness */
+/* ========== FIXED MOBILE RESPONSIVENESS ========== */
 @media (max-width: 768px) {
     .netflix-title {
         font-size: 2.2rem !important;
@@ -717,45 +699,37 @@ hr {
         padding: 0.6rem 1rem !important;
         font-size: 0.85rem !important;
     }
+    
+    .badge {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
 }
 
-/* Ensure proper text rendering */
+/* ========== FIXED TEXT RENDERING ========== */
 * {
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
 }
 
-/* Text color for regular content */
-p, span, div, label {
-    color: #F5F5F5 !important;
-}
-
-/* Special styling for sidebar content */
-[data-testid="stSidebar"] div {
-    color: #F5F5F5 !important;
-}
-
-[data-testid="stSidebar"] h1, 
-[data-testid="stSidebar"] h2, 
-[data-testid="stSidebar"] h3, 
-[data-testid="stSidebar"] h4 {
-    color: #E50914 !important;
-    margin-top: 0.5rem !important;
-    margin-bottom: 0.8rem !important;
-}
-
-/* Fix for overlapping content */
-.css-1lcbmhc {
+/* ========== FIXED OVERFLOW TEXT ========== */
+.css-1lcbmhc, .css-1d391kg {
     overflow-wrap: break-word !important;
     word-wrap: break-word !important;
-}
-
-/* Ensure proper line heights */
-.css-1d391kg {
     line-height: 1.4 !important;
 }
 
-/* Better spacing in sidebar */
+/* ========== FIXED CUSTOM INPUT LABELS ========== */
+.input-label {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    font-size: 1.1rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7) !important;
+}
+
+/* ========== FIXED SIDEBAR SECTIONS ========== */
 .sidebar-section {
     margin-bottom: 1.5rem !important;
     padding-bottom: 1.5rem !important;
@@ -768,199 +742,90 @@ p, span, div, label {
     padding-bottom: 0 !important;
 }
 
-/* ========== LABEL STYLING FOR INPUTS ========== */
-/* Custom label styling for inputs */
-.input-label {
-    color: #FFFF00 !important;
-    font-weight: 900 !important;
-    font-size: 1.2rem !important;
-    margin-bottom: 0.8rem !important;
-    display: block !important;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(255,255,0,0.5) !important;
-    letter-spacing: 0.5px !important;
-}
-
-/* Slider labels */
-.stSlider label {
-    color: #FFFFFF !important;
-    font-weight: 800 !important;
-}
-
-/* Checkbox labels */
-.stCheckbox label {
+/* ========== FIXED ALL TEXT IN EXPANDERS ========== */
+div[role="button"] > div > p,
+div[role="button"] > div > div,
+div[role="button"] > div > span {
     color: #FFFFFF !important;
     font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* Placeholder text in inputs */
-::placeholder {
-    color: #FFFF00 !important;
-    font-weight: 700 !important;
+/* ========== FIXED TOOLTIPS ========== */
+[data-baseweb="tooltip"] {
+    background: #0F0F0F !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    border: 1px solid #E50914 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8) !important;
 }
 
-/* Search input styling */
-.stTextInput > div > div > input::placeholder {
-    color: #FFFF00 !important;
-    font-weight: 700 !important;
-    font-size: 14px !important;
+/* ========== FIXED PROGRESS BARS ========== */
+.stProgress > div > div > div > div {
+    background: linear-gradient(90deg, #E50914, #FF0000) !important;
 }
 
-/* ========== UNIVERSAL LABEL HIDING ========== */
-/* Hide all label text in widgets that we marked as hidden */
-label[data-testid*="selectbox"] {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
+/* ========== FIXED ALL ICON COLORS ========== */
+[data-testid="stMetricValue"] > div > div,
+[data-testid="stMetricLabel"] > div > div,
+[data-testid="stMetricDelta"] > div > div {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* Hide label wrapper completely */
-div.stSelectbox > div:nth-child(1) {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
+/* ========== FIXED SPINNERS ========== */
+.stSpinner > div > div {
+    border-color: #E50914 transparent transparent transparent !important;
 }
 
-div.stRadio > div:nth-child(1) > label {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
+/* ========== FIXED INFO BOXES ========== */
+.stInfo, .stSuccess, .stWarning, .stError {
+    background: rgba(15, 15, 15, 0.95) !important;
+    border: 1px solid #E50914 !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(15px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7) !important;
+    margin: 1.2rem 0 !important;
 }
 
-/* Universal label hide for all widgets */
-[data-testid="stSelectbox"] label,
-[data-testid="stRadio"] label {
-    visibility: hidden !important;
-    display: none !important;
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
+.stInfo div, .stSuccess div, .stWarning div, .stError div {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* ========== DROPDOWN PROTECTION - ENSURE ALWAYS VISIBLE ========== */
-/* Protect dropdown from being hidden by any other CSS */
-div[role="listbox"],
-div[role="listbox"] *,
-[data-baseweb="select"] {
-    opacity: 1 !important;
-    visibility: visible !important;
-    color: #000000 !important;
-    background-color: #FFFFFF !important;
+/* ========== FIXED ALL CONTAINER TEXT ========== */
+div[class*="st-"], section[class*="st-"], main[class*="st-"] {
+    color: #F0F0F0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* Force visibility of all dropdown text */
-div[role="listbox"] div[role="option"],
-div[role="listbox"] div[role="option"] *,
-div[role="listbox"] div[role="option"] span,
-div[role="listbox"] div[role="option"] div {
-    color: #000000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    background-color: #FFFFFF !important;
-    display: block !important;
+/* ========== FIXED ALL MARKDOWN TEXT ========== */
+[data-testid="stMarkdownContainer"] {
+    color: #F0F0F0 !important;
+    font-weight: 600 !important;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.8) !important;
 }
 
-/* Ensure dropdown menu shows on top */
-div[role="dialog"],
-[data-baseweb="select"],
-[data-baseweb="popover"] {
-    z-index: 9999 !important;
+[data-testid="stMarkdownContainer"] strong,
+[data-testid="stMarkdownContainer"] b {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.9) !important;
 }
 
-/* Make sure all text nodes are visible */
-div[role="listbox"] {
-    color: #000000 !important;
-    background: #FFFFFF !important;
-    opacity: 1 !important;
-}
-
-/* Protect against any inherited opacity or color */
-div[role="listbox"] div[role="option"]::before,
-div[role="listbox"] div[role="option"]::after {
-    opacity: 0 !important;
-}
-
-/* Remove any filter that might hide text */
-div[role="listbox"] {
-    filter: none !important;
-    -webkit-filter: none !important;
-}
-
-/* ========== EXTREME DROPDOWN TEXT VISIBILITY ========== */
-/* Target all possible dropdown item containers */
-div[role="listbox"],
-div[role="listbox"] div,
-div[role="listbox"] span,
-div[role="listbox"] p,
-div[role="listbox"] a,
-div[role="option"],
-li[role="option"],
-[role="option"],
-[data-baseweb="select"] [role="option"],
-.stSelectbox [role="option"],
-[data-test-id*="option"] {
-    color: #000000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    background: #FFFFFF !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-}
-
-/* Ultra specific targeting for listbox items */
-div[role="listbox"] > div,
-div[role="listbox"] > li {
-    color: #000000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    padding: 20px 25px !important;
-}
-
-/* Target text content within options */
-div[role="option"] > *,
-li[role="option"] > * {
-    color: #000000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    background: transparent !important;
-}
-
-/* Ensure no text color is overridden by Streamlit */
-.stSelectbox div[role="option"],
-.stSelectbox [role="option"] {
-    color: #000000 !important;
-}
-
-/* Remove any color inheritance issues */
-div[role="listbox"] div[role="option"] {
-    color: #000000 !important;
-    font-weight: 900 !important;
-    font-size: 17px !important;
-    line-height: 1.8 !important;
-}
-
-/* BaseWeb specific dropdown targeting */
-[data-baseweb="select"] ul,
-[data-baseweb="select"] [role="listbox"],
-[data-baseweb="select"] [role="option"] {
-    color: #000000 !important;
-    opacity: 1 !important;
-    background: #FFFFFF !important;
-    font-weight: 900 !important;
-}
-
-/* Last resort - target every child of listbox */
-div[role="listbox"] * {
-    color: #000000 !important !important !important;
-    opacity: 1 !important !important !important;
-    font-weight: 900 !important !important !important;
+/* ========== FIXED ALL CODE TEXT ========== */
+code, pre {
+    background: #1A1A1A !important;
+    color: #E50914 !important;
+    font-weight: 600 !important;
+    border: 1px solid #2D2D2D !important;
+    border-radius: 6px !important;
+    padding: 0.2rem 0.4rem !important;
+    font-family: 'Courier New', monospace !important;
 }
 
 </style>
@@ -1385,7 +1250,7 @@ st.markdown(
                 <p class="netflix-subtitle" style="word-break: break-word; overflow-wrap: break-word;">Sistem Rekomendasi Berbasis Konten</p>
             </div>
         </div>
-        <p style="position: relative; z-index: 2; color: #F0F0F0 !important; font-weight: 600; font-size: 1rem; max-width: 100%; line-height: 1.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); margin-bottom: 1.2rem; word-wrap: break-word;">
+        <p style="position: relative; z-index: 2; color: #FFFFFF !important; font-weight: 600; font-size: 1rem; max-width: 100%; line-height: 1.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); margin-bottom: 1.2rem; word-wrap: break-word;">
             Temukan konten yang paling sesuai dengan preferensi Anda menggunakan <strong style="color: #E50914 !important; font-weight: 800; text-shadow: 1px 1px 0 #000000;">Content-Based Filtering</strong> dengan <strong style="color: #E50914 !important; font-weight: 800; text-shadow: 1px 1px 0 #000000;">TF-IDF</strong> dan <strong style="color: #E50914 !important; font-weight: 800; text-shadow: 1px 1px 0 #000000;">Cosine Similarity</strong>.
         </p>
         <div style="display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; position: relative; z-index: 2;">
@@ -1417,7 +1282,7 @@ with st.sidebar:
         <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E50914, #FF0000);"></div>
         <div style="font-size: 3rem; color: #E50914; margin-bottom: 0.8rem; filter: drop-shadow(0 0 10px rgba(229,9,20,0.5));">🎬</div>
         <h3 style="color: #FFFFFF !important; margin: 0; font-size: 1.5rem; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); line-height: 1.1;">NETFLIX</h3>
-        <p style="color: rgba(255, 255, 255, 0.95); font-size: 0.95rem; margin-top: 0.3rem; font-weight: 700; line-height: 1.2;">Recommender System</p>
+        <p style="color: #FFFFFF !important; font-size: 0.95rem; margin-top: 0.3rem; font-weight: 700; line-height: 1.2;">Recommender System</p>
     </div>
     """,
         unsafe_allow_html=True,
@@ -1490,11 +1355,11 @@ if not data_loaded:
         """
         <div style="padding: 1rem;">
             <h4 style="color: #E50914 !important; margin-bottom: 0.8rem; font-weight: 800; text-shadow: 1px 1px 0 #000000; font-size: 1.2rem;">📋 CARA MENGGUNAKAN</h4>
-            <ol style="color: #CCCCCC !important; margin-left: 1.2rem; line-height: 1.5; font-weight: 600; font-size: 0.9rem;">
+            <ol style="color: #FFFFFF !important; margin-left: 1.2rem; line-height: 1.5; font-weight: 600; font-size: 0.9rem;">
                 <li>Unggah file CSV dataset Netflix, atau</li>
                 <li>Letakkan file <code style="color: #E50914 !important; font-weight: 800;">netflix_titles.csv</code> di folder aplikasi</li>
             </ol>
-            <div style="color: #CCCCCC !important; margin-top: 0.8rem; font-weight: 600; font-size: 0.9rem;">
+            <div style="color: #FFFFFF !important; margin-top: 0.8rem; font-weight: 600; font-size: 0.9rem;">
                 Format dataset: CSV dengan kolom standar Netflix (title, type, description, dsb).
             </div>
         </div>
@@ -1576,7 +1441,7 @@ with st.sidebar:
                 <div style="font-size: 1.5rem; color: #00B894; flex-shrink: 0;">✅</div>
                 <div style="flex: 1;">
                     <div style="font-weight: 800; color: #00B894 !important; font-size: 0.95rem; text-shadow: 1px 1px 0 #000000; line-height: 1.1;">SISTEM AKTIF</div>
-                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 600; line-height: 1.2;">Dataset berhasil diproses</div>
+                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600; line-height: 1.2;">Dataset berhasil diproses</div>
                 </div>
             </div>
             """,
@@ -1588,21 +1453,21 @@ with st.sidebar:
         <div class="glass-panel" style="padding: 1.2rem;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;">
                 <div style="flex: 1; min-width: 100px;">
-                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">TOTAL DATA</div>
+                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">TOTAL DATA</div>
                     <div style="font-size: 1.7rem; font-weight: 900; color: #E50914 !important; text-shadow: 1px 1px 0 #000000; line-height: 1;">{stats['total']:,}</div>
                 </div>
                 <div style="flex: 1; min-width: 100px; text-align: right;">
-                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">JENIS UNIK</div>
+                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">JENIS UNIK</div>
                     <div style="font-size: 1.7rem; font-weight: 900; color: #E50914 !important; text-shadow: 1px 1px 0 #000000; line-height: 1;">{stats['unique_types']}</div>
                 </div>
             </div>
             <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;">
                 <div style="flex: 1; min-width: 80px;">
-                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">FILM</div>
+                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">FILM</div>
                     <div style="font-size: 1.4rem; font-weight: 900; color: #00B894 !important; text-shadow: 1px 1px 0 #000000; line-height: 1;">{stats['movies']:,}</div>
                 </div>
                 <div style="flex: 1; min-width: 80px; text-align: right;">
-                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">SERIAL TV</div>
+                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.1;">SERIAL TV</div>
                     <div style="font-size: 1.4rem; font-weight: 900; color: #FDCB6E !important; text-shadow: 1px 1px 0 #000000; line-height: 1;">{stats['tv_shows']:,}</div>
                 </div>
             </div>
@@ -1623,7 +1488,7 @@ min_year = stats.get("min_year", 1900)
 max_year = stats.get("max_year", datetime.now().year)
 
 # -----------------------------
-# Page: Recommendation (DIPERBAIKI DENGAN TEXT HITAM JELAS)
+# Page: Recommendation
 # -----------------------------
 if page == "🎯 REKOMENDASI":
     tabs = st.tabs(["🎬 BERDASARKAN JUDUL", "🔍 BERDASARKAN KATA KUNCI", "⭐ KONTEN POPULER"])
@@ -1680,13 +1545,13 @@ if page == "🎯 REKOMENDASI":
 
             with col_settings1:
                 st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">JUMLAH REKOMENDASI</p>', unsafe_allow_html=True)
+                st.markdown('<p style="color: #FFFFFF !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">JUMLAH REKOMENDASI</p>', unsafe_allow_html=True)
                 top_n = st.slider("Jumlah:", 5, 20, 10, 1, label_visibility="collapsed", key="top_n_slider")
                 st.markdown("</div>", unsafe_allow_html=True)
 
             with col_settings2:
                 st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-                st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">FILTER TIPE</p>', unsafe_allow_html=True)
+                st.markdown('<p style="color: #FFFFFF !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">FILTER TIPE</p>', unsafe_allow_html=True)
                 same_type = st.checkbox("Hanya tipe yang sama", value=True, help="Movie↔Movie atau TV Show↔TV Show", key="same_type_check")
                 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1731,7 +1596,7 @@ if page == "🎯 REKOMENDASI":
                                     <span class="badge badge-rating">{_safe_str(selected_item['rating'])}</span>
                                     <span class="badge">⏱️ {_safe_str(selected_item['duration'])}</span>
                                 </div>
-                                <div style="color: #CCCCCC !important; line-height: 1.5; padding: 1.2rem; background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%); border-radius: 10px; border-left: 4px solid #E50914; font-weight: 600; box-shadow: inset 0 1px 6px rgba(0,0,0,0.5); word-wrap: break-word;">
+                                <div style="color: #FFFFFF !important; line-height: 1.5; padding: 1.2rem; background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%); border-radius: 10px; border-left: 4px solid #E50914; font-weight: 600; box-shadow: inset 0 1px 6px rgba(0,0,0,0.5); word-wrap: break-word;">
                                     {_safe_str(selected_item['description']) or "Tidak ada deskripsi tersedia"}
                                 </div>
                             </div>
@@ -1744,15 +1609,15 @@ if page == "🎯 REKOMENDASI":
                             f"""
                             <div class="stats-card">
                                 <div style="margin-bottom: 1.2rem;">
-                                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 700; margin-bottom: 0.5rem;">🎭 GENRE</div>
+                                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem;">🎭 GENRE</div>
                                     <div style="font-weight: 800; color: #FFFFFF !important; font-size: 0.9rem; padding: 0.6rem; background: rgba(229,9,20,0.1); border-radius: 6px; border-left: 3px solid #E50914; word-wrap: break-word;">{_safe_str(selected_item['listed_in']) or "Tidak tersedia"}</div>
                                 </div>
                                 <div style="margin-bottom: 1.2rem;">
-                                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 700; margin-bottom: 0.5rem;">🌍 NEGARA</div>
+                                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem;">🌍 NEGARA</div>
                                     <div style="font-weight: 800; color: #FFFFFF !important; font-size: 0.9rem; padding: 0.6rem; background: rgba(229,9,20,0.1); border-radius: 6px; border-left: 3px solid #E50914; word-wrap: break-word;">{_safe_str(selected_item['country']) or "Tidak tersedia"}</div>
                                 </div>
                                 <div>
-                                    <div style="font-size: 0.85rem; color: #CCCCCC !important; font-weight: 700; margin-bottom: 0.5rem;">🎬 SUTRADARA</div>
+                                    <div style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 700; margin-bottom: 0.5rem;">🎬 SUTRADARA</div>
                                     <div style="font-weight: 800; color: #FFFFFF !important; font-size: 0.9rem; padding: 0.6rem; background: rgba(229,9,20,0.1); border-radius: 6px; border-left: 3px solid #E50914; word-wrap: break-word;">{_safe_str(selected_item['director']) or "Tidak tersedia"}</div>
                                 </div>
                             </div>
@@ -1784,7 +1649,7 @@ if page == "🎯 REKOMENDASI":
                                     <div style="font-size: 2.5rem; color: #E50914; flex-shrink: 0;">🤖</div>
                                     <div style="flex: 1; min-width: 200px;">
                                         <h4 style="margin: 0; color: #E50914 !important; font-weight: 800; font-size: 1.2rem;">TIDAK MENEMUKAN REKOMENDASI</h4>
-                                        <div style="margin-top: 0.5rem; color: #CCCCCC !important; font-weight: 600; font-size: 0.9rem;">Coba sesuaikan filter untuk hasil lebih baik.</div>
+                                        <div style="margin-top: 0.5rem; color: #FFFFFF !important; font-weight: 600; font-size: 0.9rem;">Coba sesuaikan filter untuk hasil lebih baik.</div>
                                     </div>
                                 </div>
                             </div>
@@ -1802,7 +1667,7 @@ if page == "🎯 REKOMENDASI":
                                 <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E50914, #FF0000);"></div>
                                 <div style="font-size: 3rem; color: #E50914; margin-bottom: 0.8rem; filter: drop-shadow(0 0 15px rgba(229,9,20,0.6));">🎯</div>
                                 <h3 style="color: #FFFFFF !important; margin: 0; font-weight: 900; font-size: 1.5rem; text-shadow: 2px 2px 0 #000000; line-height: 1.2;">{len(recs)} REKOMENDASI TERBAIK</h3>
-                                <p style="color: #CCCCCC !important; margin: 0.5rem 0 0 0; font-weight: 600; font-size: 0.95rem; line-height: 1.3;">Berdasarkan kemiripan konten (TF-IDF + Cosine Similarity)</p>
+                                <p style="color: #FFFFFF !important; margin: 0.5rem 0 0 0; font-weight: 600; font-size: 0.95rem; line-height: 1.3;">Berdasarkan kemiripan konten (TF-IDF + Cosine Similarity)</p>
                             </div>
                             """,
                             unsafe_allow_html=True,
@@ -1846,7 +1711,7 @@ if page == "🎯 REKOMENDASI":
     # Tab 2 - Berdasarkan Kata Kunci
     with tabs[1]:
         st.markdown('<h3 style="color: #E50914 !important; margin-bottom: 1.2rem; font-weight: 800;">🔍 PENCARIAN DENGAN KATA KUNCI</h3>', unsafe_allow_html=True)
-        st.markdown('<p style="color: #CCCCCC !important; font-size: 0.95rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4;">Masukkan kata kunci untuk menemukan konten yang sesuai.</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #FFFFFF !important; font-size: 0.95rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4;">Masukkan kata kunci untuk menemukan konten yang sesuai.</p>', unsafe_allow_html=True)
 
         # Input Pencarian dengan label custom
         col_search1, col_search2 = st.columns([3, 1])
@@ -1869,19 +1734,19 @@ if page == "🎯 REKOMENDASI":
         
         with col_filter1:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">FILTER TIPE</p>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFFFFF !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">FILTER TIPE</p>', unsafe_allow_html=True)
             type_filter = st.selectbox("Tipe:", options=type_options, index=0, label_visibility="collapsed", key="type_filter_search")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col_filter2:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">JUMLAH HASIL</p>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFFFFF !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">JUMLAH HASIL</p>', unsafe_allow_html=True)
             top_n_q = st.slider("Hasil:", 5, 20, 10, label_visibility="collapsed", key="top_n_search")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col_filter3:
             st.markdown('<div class="stats-card">', unsafe_allow_html=True)
-            st.markdown('<p style="color: #CCCCCC !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">TAHUN RILIS</p>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFFFFF !important; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem;">TAHUN RILIS</p>', unsafe_allow_html=True)
             year_range_q = st.slider("Tahun:", min_value=min_year, max_value=max_year, value=(min_year, max_year), key="year_range_search", label_visibility="collapsed")
             st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1914,8 +1779,8 @@ if page == "🎯 REKOMENDASI":
                                 <div style="font-size: 2rem; color: #E50914; flex-shrink: 0;">❌</div>
                                 <div style="flex: 1; min-width: 200px;">
                                     <h4 style="margin: 0; color: #E50914 !important; font-weight: 800; font-size: 1.1rem;">TIDAK MENEMUKAN HASIL</h4>
-                                    <div style="margin-top: 0.4rem; color: #CCCCCC !important; font-weight: 600; font-size: 0.9rem;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
-                                    <div style="margin-top: 0.8rem; color: #CCCCCC !important; font-weight: 600; font-size: 0.85rem;">
+                                    <div style="margin-top: 0.4rem; color: #FFFFFF !important; font-weight: 600; font-size: 0.9rem;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
+                                    <div style="margin-top: 0.8rem; color: #FFFFFF !important; font-weight: 600; font-size: 0.85rem;">
                                         Tips: pakai keyword bahasa Inggris, kurangi filter, dan gunakan kata yang lebih umum.
                                     </div>
                                 </div>
@@ -1930,7 +1795,7 @@ if page == "🎯 REKOMENDASI":
                         <div style="text-align: center; padding: 1.2rem;">
                             <div style="font-size: 2rem; color: #00B894; filter: drop-shadow(0 0 10px rgba(0,184,148,0.5));">🎉</div>
                             <div style="font-weight: 800; color: #00B894 !important; font-size: 1.3rem; text-shadow: 1px 1px 0 #000000; line-height: 1.1;">{len(recs_q)} HASIL DITEMUKAN!</div>
-                            <div style="color: #CCCCCC !important; margin-top: 0.5rem; font-weight: 600; font-size: 0.9rem; line-height: 1.2;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
+                            <div style="color: #FFFFFF !important; margin-top: 0.5rem; font-weight: 600; font-size: 0.9rem; line-height: 1.2;">Untuk pencarian: <b>{_safe_str(query)}</b></div>
                         </div>
                         """,
                     )
@@ -1981,12 +1846,12 @@ if page == "🎯 REKOMENDASI":
                                 <span class="badge badge-movie" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">{_safe_str(item['type'])}</span>
                                 <span class="badge badge-year" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">{int(item['release_year'])}</span>
                             </div>
-                            <div style="color: #CCCCCC !important; font-size: 0.9rem; line-height: 1.4; margin-bottom: 1.2rem; font-weight: 600; word-wrap: break-word;">
+                            <div style="color: #FFFFFF !important; font-size: 0.9rem; line-height: 1.4; margin-bottom: 1.2rem; font-weight: 600; word-wrap: break-word;">
                                 {_safe_str(item['description'])[:90]}{'...' if len(_safe_str(item['description']))>90 else ''}
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding-top: 0.8rem; border-top: 1px solid #2D2D2D; flex-wrap: wrap; gap: 0.4rem;">
-                                <span style="color: #CCCCCC !important; font-weight: 700; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;">⭐ {_safe_str(item['rating']) or 'N/A'}</span>
-                                <span style="color: #CCCCCC !important; font-weight: 700; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;">⏱️ {_safe_str(item['duration']) or 'N/A'}</span>
+                                <span style="color: #FFFFFF !important; font-weight: 700; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;">⭐ {_safe_str(item['rating']) or 'N/A'}</span>
+                                <span style="color: #FFFFFF !important; font-weight: 700; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;">⏱️ {_safe_str(item['duration']) or 'N/A'}</span>
                             </div>
                         </div>
                         """,
@@ -2075,12 +1940,12 @@ elif page == "📊 DASHBOARD ANALITIK":
             use_container_width=True,
             hide_index=True,
             column_config={
-                "title": "🎬 Judul",
-                "type": "🎭 Tipe",
-                "release_year": "📅 Tahun",
-                "rating": "⭐ Rating",
-                "duration": "⏱️ Durasi",
-                "listed_in": "🎨 Genre",
+                "title": st.column_config.TextColumn("🎬 Judul", width="large"),
+                "type": st.column_config.TextColumn("🎭 Tipe", width="small"),
+                "release_year": st.column_config.NumberColumn("📅 Tahun", format="%d"),
+                "rating": st.column_config.TextColumn("⭐ Rating", width="small"),
+                "duration": st.column_config.TextColumn("⏱️ Durasi", width="medium"),
+                "listed_in": st.column_config.TextColumn("🎨 Genre", width="large"),
             },
         )
     else:
@@ -2113,7 +1978,7 @@ elif page == "📊 DASHBOARD ANALITIK":
             """
             <div class="glass-panel">
                 <h5 style="color: #E50914 !important; margin-bottom: 0.8rem; font-weight: 800; font-size: 1.1rem;">📥 DOWNLOAD DATASET</h5>
-                <p style="color: #CCCCCC !important; margin-bottom: 0; font-weight: 600; font-size: 0.9rem;">Unduh dataset yang telah diproses dalam format CSV.</p>
+                <p style="color: #FFFFFF !important; margin-bottom: 0; font-weight: 600; font-size: 0.9rem;">Unduh dataset yang telah diproses dalam format CSV.</p>
             </div>
             """,
             unsafe_allow_html=True,
@@ -2141,7 +2006,7 @@ elif page == "🤖 TENTANG SISTEM":
             """
         <div class="glass-panel">
             <h4 style="color: #E50914 !important; margin-bottom: 1rem; font-weight: 800; font-size: 1.2rem;">📌 RINGKASAN</h4>
-            <p style="color: #CCCCCC !important; line-height: 1.5; margin-bottom: 0; font-weight: 600; font-size: 0.95rem; word-wrap: break-word;">
+            <p style="color: #FFFFFF !important; line-height: 1.5; margin-bottom: 0; font-weight: 600; font-size: 0.95rem; word-wrap: break-word;">
                 Sistem ini menggunakan <b style="color: #E50914 !important; font-weight: 800;">Content-Based Filtering</b> dengan <b style="color: #E50914 !important; font-weight: 800;">TF-IDF</b> dan <b style="color: #E50914 !important; font-weight: 800;">Cosine Similarity</b>
                 untuk memberikan rekomendasi berdasarkan kemiripan metadata (genre, deskripsi, cast, director, dsb).
             </p>
@@ -2171,7 +2036,7 @@ elif page == "🤖 TENTANG SISTEM":
         <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E50914, #FF0000);"></div>
         <div style="font-size: 3rem; color: #E50914; margin-bottom: 1rem; filter: drop-shadow(0 0 15px rgba(229,9,20,0.6));">🎬</div>
         <h4 style="color: #E50914 !important; margin: 1rem 0; font-weight: 900; font-size: 1.5rem; text-shadow: 2px 2px 0 #000000; line-height: 1.2;">TERIMA KASIH!</h4>
-        <p style="color: #CCCCCC !important; margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.2;">Built with Streamlit + Scikit-learn</p>
+        <p style="color: #FFFFFF !important; margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.2;">Built with Streamlit + Scikit-learn</p>
         <div style="display: flex; justify-content: center; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap;">
             <span class="badge" style="background: linear-gradient(135deg, #E50914 0%, #8B0000 100%) !important; font-size: 0.9rem;">NETFLIX STYLE</span>
             <span class="badge" style="background: linear-gradient(135deg, #2D2D2D 0%, #4A4A4A 100%) !important; font-size: 0.9rem;">MACHINE LEARNING</span>
@@ -2201,7 +2066,7 @@ st.markdown(
             <span style="color: #E50914 !important; font-weight: 800; font-size: 0.9rem;">•</span>
             <span style="color: #E50914 !important; font-weight: 800; font-size: 0.9rem; text-shadow: 1px 1px 0 #000000; line-height: 1.1;">NETFLIX</span>
         </div>
-        <p style="color: #888888 !important; margin: 0; font-size: 0.8rem; font-weight: 600; line-height: 1.2;">
+        <p style="color: #FFFFFF !important; margin: 0; font-size: 0.8rem; font-weight: 600; line-height: 1.2;">
             © 2024 Netflix Recommender System. All rights reserved.
         </p>
     </div>
